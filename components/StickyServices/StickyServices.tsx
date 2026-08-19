@@ -191,7 +191,13 @@ export default function StickyServices({ titleHighlight, titleNormal, subtitle, 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-6 items-start">
             <div>
               {(titleHighlight || titleNormal) && (
-                <h2 className="text-4xl font-black leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-[42px]">
+                <h2
+  className="text-4xl font-semibold leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-[42px]"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+  }}
+>
                   {titleHighlight && (
                     <span className="bg-brand-gradient bg-clip-text text-transparent">
                       {titleHighlight}

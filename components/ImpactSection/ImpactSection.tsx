@@ -49,7 +49,13 @@ export default function ImpactSection({
 
         <div className="text-center mb-4">
           {(titleHighlight || titleNormal) && (
-            <h2 className="text-3xl font-black leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-5xl mb-6 mx-auto max-w-2xl">
+            <h2
+  className="text-3xl font-semibold leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-5xl mb-6 mx-auto max-w-2xl"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+  }}
+>
               {titleHighlight && (
                 <span className="bg-brand-gradient bg-clip-text text-transparent">
                   {titleHighlight}

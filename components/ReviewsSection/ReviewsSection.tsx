@@ -165,7 +165,7 @@ export default function ReviewsSection({
               className="reviews-title"
               style={{
                 fontSize: "clamp(32px, 4vw, 42px)",
-                fontWeight: 900,
+                fontWeight: 600,
                 letterSpacing: "-0.02em",
                 lineHeight: 1.2,
                 color: "#0f172a",

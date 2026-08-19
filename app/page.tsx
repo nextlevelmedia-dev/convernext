@@ -167,7 +167,13 @@ export default async function Home() {
         <section className="px-6 pt-24 text-center text-slate-950">
           <div className="mx-auto max-w-2xl">
             {page?.homeProjects?.title && (
-              <h2 className="text-4xl font-black leading-[1.2] tracking-tight md:text-[42px]">
+              <h2
+  className="text-4xl leading-[1.2] tracking-tight md:text-[42px]"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+  }}
+>
                 {page.homeProjects.title}{" "}
                 {page?.homeProjects?.highlight && (
                   <span className="bg-brand-gradient bg-clip-text text-transparent">

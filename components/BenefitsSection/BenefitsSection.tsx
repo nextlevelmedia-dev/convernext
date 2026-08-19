@@ -24,11 +24,21 @@ export default function BenefitsSection({ titleHighlight, titleNormal, items, ct
       <div className="mx-auto max-w-6xl">
         {(titleHighlight || titleNormal) && (
           <div className="text-center mb-16 max-w-lg mx-auto">
-            <h2 className="benefits-title text-4xl font-black leading-[1.2] tracking-tight md:text-[42px]">
-              {titleHighlight && <span className="bg-brand-gradient bg-clip-text text-transparent">{titleHighlight}</span>}
-              {titleHighlight && titleNormal && " "}
-              {titleNormal}
-            </h2>
+            <h2
+  className="benefits-title text-4xl leading-[1.2] tracking-tight md:text-[42px]"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+  }}
+>
+  {titleHighlight && (
+    <span className="bg-brand-gradient bg-clip-text text-transparent">
+      {titleHighlight}
+    </span>
+  )}
+  {titleHighlight && titleNormal && " "}
+  {titleNormal}
+</h2>
           </div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

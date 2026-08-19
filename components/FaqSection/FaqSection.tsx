@@ -23,7 +23,13 @@ export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSe
       <div className="mx-auto" style={{ maxWidth: "760px" }}>
 
         {(titleHighlight || titleNormal) && (
-          <h2 className="text-4xl font-black tracking-tight leading-[1.2] text-slate-950 dark:text-white text-center mb-16">
+          <h2
+  className="text-4xl font-semibold tracking-tight leading-[1.2] text-slate-950 dark:text-white text-center mb-16"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+  }}
+>
             {titleHighlight && (
               <span className="bg-brand-gradient bg-clip-text text-transparent">{titleHighlight}</span>
             )}

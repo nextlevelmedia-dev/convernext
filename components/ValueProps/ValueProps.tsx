@@ -61,7 +61,7 @@ function LazyMount({
   }, [rootMargin, shouldLoad])
 
   return (
-    <div ref={ref} className="w-full h-full">
+    <div ref={ref} className="h-full w-full">
       {shouldLoad ? children : null}
     </div>
   )
@@ -78,7 +78,7 @@ function LazyVideo({ item }: { item: ValuePropItem }) {
       try {
         await video.play()
       } catch {
-        // autoplay può essere bloccato dal browser: nessun problema
+        // Autoplay può essere bloccato dal browser
       }
     }
 
@@ -96,7 +96,7 @@ function LazyVideo({ item }: { item: ValuePropItem }) {
       loop
       playsInline
       preload="metadata"
-      className="w-full h-full object-cover"
+      className="h-full w-full object-cover"
     >
       {item.videoWebm && <source src={item.videoWebm} type="video/webm" />}
       {item.videoMp4 && <source src={item.videoMp4} type="video/mp4" />}
@@ -117,7 +117,9 @@ function LazyLottie({ file }: { file: string }) {
       })
       .catch(() => {})
 
-    return () => { cancelled = true }
+    return () => {
+      cancelled = true
+    }
   }, [file])
 
   if (!animationData) return null
@@ -127,7 +129,10 @@ function LazyLottie({ file }: { file: string }) {
       animationData={animationData}
       loop
       autoplay
-      style={{ width: "100%", height: "100%" }}
+      style={{
+        width: "100%",
+        height: "100%",
+      }}
     />
   )
 }
@@ -143,7 +148,7 @@ function MediaBlock({ item }: { item: ValuePropItem }) {
 
   if (item.mediaType === "video" && (item.videoWebm || item.videoMp4)) {
     return (
-      <div className="w-full rounded-2xl overflow-hidden aspect-video bg-slate-900">
+      <div className="aspect-video w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-neutral-900">
         <LazyMount rootMargin="250px 0px">
           <LazyVideo item={item} />
         </LazyMount>
@@ -153,7 +158,7 @@ function MediaBlock({ item }: { item: ValuePropItem }) {
 
   if (item.mediaType === "lottie" && item.lottieFile) {
     return (
-      <div className="w-full rounded-2xl aspect-video flex items-center justify-center overflow-hidden">
+      <div className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl">
         <LazyMount rootMargin="250px 0px">
           <LazyLottie file={item.lottieFile} />
         </LazyMount>
@@ -163,7 +168,7 @@ function MediaBlock({ item }: { item: ValuePropItem }) {
 
   if (item.mediaType === "image" && item.image) {
     return (
-      <div className="w-full rounded-2xl overflow-hidden aspect-video">
+      <div className="aspect-video w-full overflow-hidden rounded-2xl">
         <Image
           src={urlFor(item.image).width(800).height(450).url()}
           alt={item.titleNormal || ""}
@@ -171,54 +176,102 @@ function MediaBlock({ item }: { item: ValuePropItem }) {
           height={450}
           loading="lazy"
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="w-full h-full object-cover"
+          className="h-full w-full object-cover"
         />
       </div>
     )
   }
 
   return (
-    <div className="w-full rounded-2xl bg-slate-100 aspect-video flex items-center justify-center">
-      <p className="text-slate-400 text-sm">Media</p>
+    <div className="flex aspect-video w-full items-center justify-center rounded-2xl bg-slate-100 dark:bg-neutral-900">
+      <p className="text-sm text-slate-400 dark:text-white/40">
+        Media
+      </p>
     </div>
   )
 }
 
-function ValuePropRow({ item, index }: { item: ValuePropItem; index: number }) {
+function ValuePropRow({
+  item,
+  index,
+}: {
+  item: ValuePropItem
+  index: number
+}) {
   const isReversed = index % 2 !== 0
   const link = item.ctaHref || "/contatti"
 
   return (
-    <div className={`flex flex-col md:flex-row items-center gap-12 md:gap-20 ${isReversed ? "md:flex-row-reverse" : ""}`}>
+    <div
+      className={`flex flex-col items-center gap-12 md:flex-row md:gap-20 ${
+        isReversed ? "md:flex-row-reverse" : ""
+      }`}
+    >
+      {/* MEDIA */}
       <div className="w-full md:w-1/2">
         <MediaBlock item={item} />
       </div>
 
-      <div className="w-full md:w-1/2">
+      {/* TEXT */}
+      <div
+        className="w-full md:w-1/2"
+        style={{
+          fontFamily: "var(--font-lato), sans-serif",
+        }}
+      >
         {item.label && (
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "12px" }}>
+          <p
+            className="mb-3 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-white/50"
+            style={{
+              fontFamily: "var(--font-lato), sans-serif",
+            }}
+          >
             {item.label}
           </p>
         )}
 
         {(item.titleHighlight || item.titleNormal) && (
-          <h3 className="text-3xl font-black leading-[1.2] tracking-tight text-white md:text-4xl mb-4">
+          <h3
+            className="mb-4 text-3xl font-semibold leading-[1.2] tracking-tight text-slate-950 md:text-4xl dark:text-white"
+            style={{
+              fontFamily: "var(--font-archivo), sans-serif",
+              fontWeight: 600,
+            }}
+          >
             {item.titleHighlight && (
-              <span className="bg-brand-gradient bg-clip-text text-transparent">{item.titleHighlight}</span>
+              <span className="bg-brand-gradient bg-clip-text text-transparent">
+                {item.titleHighlight}
+              </span>
             )}
+
             {item.titleHighlight && item.titleNormal && " "}
+
             {item.titleNormal}
           </h3>
         )}
 
         {item.subtitle && (
-          <p className="text-lg leading-7 mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>
+          <p
+            className="mb-8 text-lg leading-7 text-slate-600 dark:text-white/70"
+            style={{
+              fontFamily: "var(--font-lato), sans-serif",
+              fontWeight: 400,
+            }}
+          >
             {item.subtitle}
           </p>
         )}
 
         {item.ctaText && (
-          <a href={link} style={{ color: "#ffffff", display: "inline-flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(to right, #fc03b0, #047cf9)", padding: "12px 32px", borderRadius: "999px", fontWeight: 700, fontSize: "14px", textDecoration: "none", boxShadow: "0 8px 32px rgba(252,3,176,0.25)", cursor: "pointer" }}>
+          <a
+            href={link}
+            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand-gradient px-8 py-3 text-sm font-bold !text-white shadow-xl"
+            style={{
+              fontFamily: "var(--font-lato), sans-serif",
+              textDecoration: "none",
+              boxShadow: "0 8px 32px rgba(252,3,176,0.25)",
+            }}
+          >
             {item.ctaText}
           </a>
         )}
@@ -231,10 +284,19 @@ export default function ValueProps({ items }: ValuePropsProps) {
   if (!items?.length) return null
 
   return (
-    <section className="py-24 px-6" style={{ backgroundColor: "#0f1f3d" }}>
-      <div className="mx-auto max-w-6xl flex flex-col gap-24">
+    <section
+      className="bg-[#f7f7f7] px-6 py-24 text-slate-950 transition-colors duration-300 dark:bg-black dark:text-white"
+      style={{
+        fontFamily: "var(--font-lato), sans-serif",
+      }}
+    >
+      <div className="mx-auto flex max-w-6xl flex-col gap-24">
         {items.map((item, i) => (
-          <ValuePropRow key={i} item={item} index={i} />
+          <ValuePropRow
+            key={i}
+            item={item}
+            index={i}
+          />
         ))}
       </div>
     </section>

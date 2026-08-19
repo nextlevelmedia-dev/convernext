@@ -1,13 +1,19 @@
 import type { Metadata } from "next"
-import { DM_Sans, Geist_Mono } from "next/font/google"
+import { Archivo, Lato, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Footer from "../components/Footer/Footer"
 import ScrollToTop from "../components/ScrollToTop"
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const lato = Lato({
+  variable: "--font-lato",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "700", "900"],
+})
+
+const archivo = Archivo({
+  variable: "--font-archivo",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 })
 
 const geistMono = Geist_Mono({
@@ -28,15 +34,18 @@ export default function RootLayout({
   return (
     <html
       lang="it"
-      className={`${dmSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${lato.variable} ${archivo.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full bg-black">
         <ScrollToTop />
+
         <main className="main-bg relative z-10 min-h-screen rounded-b-[42px]">
           {children}
         </main>
+
         <div className="h-[100vh]" />
+
         <Footer />
       </body>
     </html>

@@ -66,7 +66,13 @@ export default function TeamCards({ titleHighlight, titleNormal, subtitle, cards
         <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-5 items-start">
           <div className="md:col-span-2">
             {(titleHighlight || titleNormal) && (
-              <h2 className="text-4xl font-black leading-[1.2] tracking-tight md:text-[42px] text-slate-950 dark:text-white">
+              <h2
+  className="text-4xl leading-[1.2] tracking-tight md:text-[42px] text-slate-950 dark:text-white"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+  }}
+>
                 {titleHighlight && (
                   <span className="bg-brand-gradient bg-clip-text text-transparent">
                     {titleHighlight}

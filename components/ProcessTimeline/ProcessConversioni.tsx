@@ -222,7 +222,16 @@ export default function ProcessConversioni({
         {(titleHighlight || titleNormal || subtitle) && (
           <div style={{ textAlign: "center", maxWidth: "620px", margin: "0 auto 48px" }}>
             {(titleHighlight || titleNormal) && (
-              <h2 style={{ margin: "0 0 10px", fontSize: "clamp(28px, 3vw, 42px)", fontWeight: 900, letterSpacing: "-0.02em", lineHeight: 1.15 }}>
+              <h2
+  style={{
+    margin: "0 0 10px",
+    fontSize: "clamp(28px, 3vw, 42px)",
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+    letterSpacing: "-0.02em",
+    lineHeight: 1.15,
+  }}
+>
                 {titleHighlight && (
                   <span style={{ background: "linear-gradient(to right, #fc03b0, #047cf9)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                     {titleHighlight}

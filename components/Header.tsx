@@ -54,7 +54,7 @@ export default function Header() {
         className={`fixed inset-0 z-[70] bg-white dark:bg-[#111118] shadow-2xl md:hidden transition-transform duration-300 ease-in-out ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="flex h-20 items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700">
-          <Image src="/logo.webp" alt="Next Level Media" width={80} height={32} priority />
+          <Image src="/logo-convernext.webp" alt="Next Level Media" width={80} height={32} priority />
           <button
             onClick={closeDrawer}
             aria-label="Chiudi menu"
@@ -136,7 +136,7 @@ export default function Header() {
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
           <Link href="/" className="flex items-center" aria-label="Home — Next Level Media">
-            <Image src="/logo.webp" alt="Next Level Media" width={90} height={36} priority />
+            <Image src="/logo-convernext.webp" alt="Next Level Media" width={90} height={36} priority />
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Navigazione principale">

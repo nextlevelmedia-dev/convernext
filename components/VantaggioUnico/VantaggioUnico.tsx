@@ -27,7 +27,13 @@ export default function VantaggioUnico({
   return (
     <section className="py-24 px-6">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-4xl font-black leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-[42px] mb-6">
+        <h2
+  className="mb-6 text-4xl font-semibold leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-[42px]"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+  }}
+>
           {titleOne && <>{titleOne}{" "}</>}
           {highlightOne && (
             <span className="bg-brand-gradient bg-clip-text text-transparent">

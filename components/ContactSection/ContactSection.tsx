@@ -36,9 +36,16 @@ export default function ContactSection() {
               <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(0,0,0,0.4)", marginBottom: "12px" }}>
                 Contattaci
               </p>
-              <h2 className="text-3xl font-black tracking-tight text-slate-950 mb-2" style={{ lineHeight: 1.2 }}>
-                Parliamo del tuo progetto
-              </h2>
+              <h2
+  className="text-3xl tracking-tight text-slate-950 mb-2"
+  style={{
+    fontFamily: "var(--font-archivo), sans-serif",
+    fontWeight: 600,
+    lineHeight: 1.2,
+  }}
+>
+  Parliamo del tuo progetto
+</h2>
               <p className="text-base mb-8" style={{ color: "rgba(0,0,0,0.5)", lineHeight: 1.6 }}>
                 Rispondiamo entro 24 ore. Nessun impegno.
               </p>
