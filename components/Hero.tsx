@@ -1,5 +1,11 @@
 import type { ReactNode } from "react"
 
+type SocialProofStat = {
+  value?: string
+  label?: string
+  hideOnMobile?: boolean
+}
+
 type HeroProps = {
   eyebrow?: string
   title?: string
@@ -8,6 +14,13 @@ type HeroProps = {
   highlightTwo?: string
   subtitle?: string
   ctaText?: string
+
+  trustPoints?: string[]
+
+  socialProofBadgeTitle?: string
+  socialProofBadgeSubtitle?: string
+  socialProofStats?: SocialProofStat[]
+
   rightContent?: ReactNode
 }
 
@@ -19,10 +32,22 @@ export default function Hero({
   highlightTwo,
   subtitle,
   ctaText,
+  trustPoints,
+  socialProofBadgeTitle,
+  socialProofBadgeSubtitle,
+  socialProofStats,
   rightContent,
 }: HeroProps) {
+  const hasSocialProof =
+    Boolean(socialProofBadgeTitle) ||
+    Boolean(socialProofBadgeSubtitle) ||
+    Boolean(socialProofStats?.length)
+
   return (
     <>
+      {/* =====================================================
+          HERO
+      ===================================================== */}
       <section
         className="relative overflow-hidden bg-white px-6 pb-24 pt-40 text-black transition-colors duration-300 dark:bg-black dark:text-white"
         style={{
@@ -34,7 +59,7 @@ export default function Hero({
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-20 lg:grid-cols-2">
           {/* LEFT */}
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+          <div className="flex min-w-0 flex-col items-center text-center lg:items-start lg:text-left">
             {eyebrow && (
               <div className="mb-6 inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold ring-1 ring-slate-200 transition-colors dark:bg-white dark:ring-white/10">
                 <a
@@ -54,12 +79,15 @@ export default function Hero({
               }}
             >
               {title}{" "}
+
               {highlightOne && (
                 <span className="bg-brand-gradient bg-clip-text text-transparent">
                   {highlightOne}
                 </span>
               )}{" "}
+
               {titleTwo}{" "}
+
               {highlightTwo && (
                 <span className="bg-brand-gradient bg-clip-text text-transparent">
                   {highlightTwo}
@@ -92,32 +120,41 @@ export default function Hero({
               </div>
             )}
 
-            <div
-              className="mt-8 flex items-center justify-center gap-4 text-xs font-bold text-black/55 sm:gap-6 sm:text-sm lg:justify-start dark:text-white/60"
-              style={{
-                fontFamily: "var(--font-lato), sans-serif",
-              }}
-            >
-              <span>✓ Risultati misurabili</span>
-              <span>✓ Test continui</span>
-              <span>✓ Crescita reale</span>
-            </div>
+            {/* TRUST POINTS */}
+            {trustPoints && trustPoints.length > 0 && (
+              <div
+                className="mt-8 flex max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-bold text-black/55 sm:gap-x-6 sm:text-sm lg:justify-start dark:text-white/60"
+                style={{
+                  fontFamily: "var(--font-lato), sans-serif",
+                }}
+              >
+                {trustPoints.map((point, index) => (
+                  <span
+                    key={`${point}-${index}`}
+                    className="whitespace-normal"
+                  >
+                    ✓ {point}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* RIGHT */}
-          <div>
+          <div className="min-w-0">
             {rightContent ? (
               rightContent
             ) : (
               <div className="relative w-full">
                 <div className="relative z-10 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-2xl shadow-black/10 transition-colors dark:border-white/10 dark:bg-neutral-950 dark:shadow-black/40">
+                  {/* WINDOW HEADER */}
                   <div className="mb-4 flex items-center gap-2">
                     <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
                     <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
                     <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
 
                     <span
-                      className="ml-2 text-xs font-medium"
+                      className="ml-2 min-w-0 truncate text-xs font-medium"
                       style={{
                         color: "#94a3b8",
                         fontFamily: "var(--font-lato), sans-serif",
@@ -127,8 +164,9 @@ export default function Hero({
                     </span>
                   </div>
 
+                  {/* CHART */}
                   <div className="mb-4 rounded-2xl bg-gradient-to-br from-slate-50 to-blue-50 p-4 dark:from-neutral-900 dark:to-neutral-950">
-                    <div className="mb-3 flex items-center justify-between">
+                    <div className="mb-3 flex items-center justify-between gap-4">
                       <span
                         className="text-xs font-semibold"
                         style={{
@@ -140,7 +178,7 @@ export default function Hero({
                       </span>
 
                       <span
-                        className="text-xs font-bold"
+                        className="shrink-0 text-xs font-bold"
                         style={{
                           color: "#22c55e",
                           fontFamily: "var(--font-lato), sans-serif",
@@ -151,21 +189,21 @@ export default function Hero({
                     </div>
 
                     <div className="flex h-20 items-end gap-1.5">
-                      {[30, 45, 35, 55, 48, 65, 58, 75, 68, 85, 78, 95].map(
-                        (h, i) => (
-                          <div
-                            key={i}
-                            className="flex-1 rounded-t-sm"
-                            style={{
-                              height: `${h}%`,
-                              background:
-                                i >= 9
-                                  ? "linear-gradient(to top, #fc03b0, #047cf9)"
-                                  : "rgba(148,163,184,0.3)",
-                            }}
-                          />
-                        )
-                      )}
+                      {[
+                        30, 45, 35, 55, 48, 65, 58, 75, 68, 85, 78, 95,
+                      ].map((h, i) => (
+                        <div
+                          key={i}
+                          className="flex-1 rounded-t-sm"
+                          style={{
+                            height: `${h}%`,
+                            background:
+                              i >= 9
+                                ? "linear-gradient(to top, #fc03b0, #047cf9)"
+                                : "rgba(148,163,184,0.3)",
+                          }}
+                        />
+                      ))}
                     </div>
 
                     <div
@@ -183,8 +221,9 @@ export default function Hero({
                     </div>
                   </div>
 
+                  {/* ANALYTICS CARDS */}
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="rounded-xl bg-slate-50 p-3 text-center dark:bg-neutral-900">
+                    <div className="min-w-0 rounded-xl bg-slate-50 p-3 text-center dark:bg-neutral-900">
                       <p
                         className="bg-brand-gradient bg-clip-text text-lg text-transparent"
                         style={{
@@ -206,7 +245,7 @@ export default function Hero({
                       </p>
                     </div>
 
-                    <div className="rounded-xl bg-slate-50 p-3 text-center dark:bg-neutral-900">
+                    <div className="min-w-0 rounded-xl bg-slate-50 p-3 text-center dark:bg-neutral-900">
                       <p
                         className="text-lg text-slate-950 dark:text-white"
                         style={{
@@ -228,7 +267,7 @@ export default function Hero({
                       </p>
                     </div>
 
-                    <div className="rounded-xl bg-slate-50 p-3 text-center dark:bg-neutral-900">
+                    <div className="min-w-0 rounded-xl bg-slate-50 p-3 text-center dark:bg-neutral-900">
                       <p
                         className="text-lg text-slate-950 dark:text-white"
                         style={{
@@ -253,9 +292,9 @@ export default function Hero({
                 </div>
 
                 {/* FLOAT CARD TOP */}
-                <div className="float-1 absolute -right-4 -top-6 z-20 rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-xl dark:border-white/10 dark:bg-neutral-950">
+                <div className="float-1 absolute -right-2 -top-6 z-20 rounded-2xl border border-slate-100 bg-white px-3 py-2.5 shadow-xl sm:-right-4 sm:px-4 sm:py-3 dark:border-white/10 dark:bg-neutral-950">
                   <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100">
                       <span className="text-sm text-green-600">✓</span>
                     </div>
 
@@ -283,10 +322,10 @@ export default function Hero({
                 </div>
 
                 {/* FLOAT CARD BOTTOM */}
-                <div className="float-2 absolute -bottom-6 -left-4 z-20 rounded-2xl border border-slate-100 bg-white px-4 py-3 shadow-xl dark:border-white/10 dark:bg-neutral-950">
+                <div className="float-2 absolute -bottom-6 -left-2 z-20 rounded-2xl border border-slate-100 bg-white px-3 py-2.5 shadow-xl sm:-left-4 sm:px-4 sm:py-3 dark:border-white/10 dark:bg-neutral-950">
                   <div className="flex items-center gap-2">
                     <div
-                      className="flex h-8 w-8 items-center justify-center rounded-full"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
                       style={{
                         background:
                           "linear-gradient(135deg, #fc03b0, #047cf9)",
@@ -323,131 +362,154 @@ export default function Hero({
         </div>
       </section>
 
-      {/* BANDA STATISTICHE */}
-      <div
-        className="hero-stats border-y border-slate-200 px-6 py-8 transition-colors dark:border-white/10"
-        style={{
-          fontFamily: "var(--font-lato), sans-serif",
-        }}
-      >
-        <div className="mx-auto flex max-w-7xl flex-col-reverse items-center gap-6 md:flex-row md:gap-0">
-          <div className="flex w-full shrink-0 items-center justify-center gap-3 md:w-auto md:justify-start md:border-r md:border-slate-200 md:pr-8 dark:md:border-white/10">
-            <div className="relative shrink-0">
-              <svg
-                width="52"
-                height="52"
-                viewBox="0 0 52 52"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <defs>
-                  <linearGradient
-                    id="badgeGrad"
-                    x1="0"
-                    y1="0"
-                    x2="52"
-                    y2="52"
-                    gradientUnits="userSpaceOnUse"
+      {/* =====================================================
+          SOCIAL PROOF BAND
+      ===================================================== */}
+      {hasSocialProof && (
+        <div
+          className="hero-stats w-full overflow-hidden border-y border-slate-200 px-4 py-7 transition-colors sm:px-6 md:py-8 dark:border-white/10"
+          style={{
+            fontFamily: "var(--font-lato), sans-serif",
+          }}
+        >
+          <div className="mx-auto flex w-full max-w-7xl min-w-0 flex-col-reverse items-center gap-7 md:flex-row md:gap-0">
+            {/* BADGE */}
+            {(socialProofBadgeTitle || socialProofBadgeSubtitle) && (
+              <div className="flex w-full min-w-0 items-center justify-center gap-3 border-t border-slate-200 pt-6 md:w-auto md:shrink-0 md:justify-start md:border-r md:border-t-0 md:pr-8 md:pt-0 dark:border-white/10">
+                <div className="relative shrink-0">
+                  <svg
+                    width="46"
+                    height="46"
+                    viewBox="0 0 52 52"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="sm:h-[52px] sm:w-[52px]"
                   >
-                    <stop offset="0%" stopColor="#fc03b0" />
-                    <stop offset="100%" stopColor="#047cf9" />
-                  </linearGradient>
-                </defs>
+                    <defs>
+                      <linearGradient
+                        id="badgeGrad"
+                        x1="0"
+                        y1="0"
+                        x2="52"
+                        y2="52"
+                        gradientUnits="userSpaceOnUse"
+                      >
+                        <stop offset="0%" stopColor="#fc03b0" />
+                        <stop offset="100%" stopColor="#047cf9" />
+                      </linearGradient>
+                    </defs>
 
-                <path
-                  d="M26 2L6 10V26C6 36.5 14.8 46.2 26 49C37.2 46.2 46 36.5 46 26V10L26 2Z"
-                  fill="url(#badgeGrad)"
-                />
+                    <path
+                      d="M26 2L6 10V26C6 36.5 14.8 46.2 26 49C37.2 46.2 46 36.5 46 26V10L26 2Z"
+                      fill="url(#badgeGrad)"
+                    />
 
-                <path
-                  d="M26 7L11 13.5V26C11 34.2 17.6 41.8 26 44C34.4 41.8 41 34.2 41 26V13.5L26 7Z"
-                  fill="white"
-                  fillOpacity="0.15"
-                />
+                    <path
+                      d="M26 7L11 13.5V26C11 34.2 17.6 41.8 26 44C34.4 41.8 41 34.2 41 26V13.5L26 7Z"
+                      fill="white"
+                      fillOpacity="0.15"
+                    />
 
-                <path
-                  d="M18 26L23 31L34 20"
-                  stroke="white"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
+                    <path
+                      d="M18 26L23 31L34 20"
+                      stroke="white"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
 
-                <path
-                  d="M26 8L27.2 11.5H31L28 13.5L29.2 17L26 15L22.8 17L24 13.5L21 11.5H24.8L26 8Z"
-                  fill="white"
-                  fillOpacity="0.9"
-                />
-              </svg>
-            </div>
+                    <path
+                      d="M26 8L27.2 11.5H31L28 13.5L29.2 17L26 15L22.8 17L24 13.5L21 11.5H24.8L26 8Z"
+                      fill="white"
+                      fillOpacity="0.9"
+                    />
+                  </svg>
+                </div>
 
-            <div>
-              <p
-                className="text-xs uppercase tracking-widest"
-                style={{
-                  background: "linear-gradient(to right, #fc03b0, #047cf9)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  fontFamily: "var(--font-archivo), sans-serif",
-                  fontWeight: 600,
-                }}
-              >
-                Verified Agency
-              </p>
+                <div className="min-w-0">
+                  {socialProofBadgeTitle && (
+                    <p
+                      className="break-words text-[10px] uppercase leading-4 tracking-[0.14em] sm:text-xs sm:tracking-widest"
+                      style={{
+                        background:
+                          "linear-gradient(to right, #fc03b0, #047cf9)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        fontFamily: "var(--font-archivo), sans-serif",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {socialProofBadgeTitle}
+                    </p>
+                  )}
 
-              <p className="text-[11px] font-semibold text-slate-500 dark:text-white/50">
-                Results Certified
-              </p>
-            </div>
-          </div>
+                  {socialProofBadgeSubtitle && (
+                    <p className="mt-0.5 break-words text-[10px] font-semibold leading-4 text-slate-500 sm:text-[11px] dark:text-white/50">
+                      {socialProofBadgeSubtitle}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
 
-          <div className="grid w-full grid-cols-3 divide-x divide-slate-200 md:grid-cols-4 md:pl-8 dark:divide-white/10">
-            {[
-              {
-                value: "+100",
-                label: "Siti realizzati",
-                hideOnMobile: false,
-              },
-              {
-                value: "98%",
-                label: "Clienti soddisfatti",
-                hideOnMobile: false,
-              },
-              {
-                value: "3x",
-                label: "Lead in più in media",
-                hideOnMobile: false,
-              },
-              {
-                value: "60gg",
-                label: "Primi risultati garantiti",
-                hideOnMobile: true,
-              },
-            ].map((stat) => (
+            {/* STATS */}
+            {socialProofStats && socialProofStats.length > 0 && (
               <div
-                key={stat.label}
-                className={`px-4 text-center first:pl-0 last:pr-0 ${
-                  stat.hideOnMobile ? "hidden md:block" : ""
+                className={`grid w-full min-w-0 md:pl-8 ${
+                  socialProofStats.length >= 4
+                    ? "grid-cols-2 md:grid-cols-4"
+                    : socialProofStats.length === 3
+                      ? "grid-cols-2 md:grid-cols-3"
+                      : socialProofStats.length === 2
+                        ? "grid-cols-2"
+                        : "grid-cols-1"
                 }`}
               >
-                <p
-                  className="bg-brand-gradient bg-clip-text text-3xl text-transparent"
-                  style={{
-                    fontFamily: "var(--font-archivo), sans-serif",
-                    fontWeight: 600,
-                  }}
-                >
-                  {stat.value}
-                </p>
+                {socialProofStats.map((stat, index) => (
+                  <div
+                    key={`${stat.label}-${index}`}
+                    className={`
+                      min-w-0 px-3 py-4 text-center
+                      max-md:odd:border-r
+max-md:odd:border-slate-200
+max-md:[&:nth-child(-n+2)]:border-b
+max-md:[&:nth-child(-n+2)]:border-slate-200
 
-                <p className="mt-1 text-sm font-medium text-slate-500 dark:text-white/50">
-                  {stat.label}
-                </p>
+md:border-r
+md:border-slate-200
+                      md:px-5
+                      md:py-0
+                      md:last:border-r-0
+
+                      dark:border-white/10
+
+                      ${stat.hideOnMobile ? "hidden md:block" : ""}
+                    `}
+                  >
+                    {stat.value && (
+                      <p
+                        className="break-words bg-brand-gradient bg-clip-text text-xl leading-tight text-transparent sm:text-2xl md:text-3xl"
+                        style={{
+                          fontFamily: "var(--font-archivo), sans-serif",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {stat.value}
+                      </p>
+                    )}
+
+                    {stat.label && (
+                      <p className="mx-auto mt-1.5 max-w-[150px] break-words text-xs font-medium leading-5 text-slate-500 sm:text-sm dark:text-white/50">
+                        {stat.label}
+                      </p>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         </div>
-      </div>
+      )}
     </>
   )
 }

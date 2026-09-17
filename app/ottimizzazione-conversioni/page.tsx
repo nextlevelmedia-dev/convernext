@@ -13,38 +13,95 @@ import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
 const query = `*[_type == "page" && slug.current == "ottimizzazione-conversioni"][0]{
-  hero,
+
+  hero{
+    eyebrow,
+    title,
+    titleTwo,
+    highlightOne,
+    highlightTwo,
+    subtitle,
+    ctaText,
+
+    trustPoints,
+
+    socialProofBadgeTitle,
+    socialProofBadgeSubtitle,
+
+    socialProofStats[]{
+      value,
+      label,
+      hideOnMobile
+    }
+  },
+
   impactSection{
     titleHighlight,
     titleNormal,
     subtitle,
     impactText
   },
+
   beforeAfter{
     pairs[]{
       label,
       uplift,
-      beforeImage{ asset->{ _id, url } },
-      afterImage{ asset->{ _id, url } }
+
+      beforeImage{
+        asset->{
+          _id,
+          url
+        }
+      },
+
+      afterImage{
+        asset->{
+          _id,
+          url
+        }
+      }
     }
   },
+
   reviews{
     titleHighlight,
     titleNormal,
     ctaText,
     ctaHref,
     socialProofText,
-    socialProofAvatars[]{ photo{ asset->{ _id, url } } },
+
+    socialProofAvatars[]{
+      photo{
+        asset->{
+          _id,
+          url
+        }
+      }
+    },
+
     items[]{
       stars,
       reviewTitle,
       reviewText,
       authorName,
       authorRole,
-      authorPhoto{ asset->{ _id, url } },
-      companyLogo{ asset->{ _id, url } }
+
+      authorPhoto{
+        asset->{
+          _id,
+          url
+        }
+      },
+
+      companyLogo{
+        asset->{
+          _id,
+          url
+        }
+      }
     }
   },
+
   valueProps[]{
     label,
     titleHighlight,
@@ -53,35 +110,61 @@ const query = `*[_type == "page" && slug.current == "ottimizzazione-conversioni"
     ctaText,
     ctaHref,
     mediaType,
-    image{ asset->{ _id, url } },
+
+    image{
+      asset->{
+        _id,
+        url
+      }
+    },
+
     videoWebm,
     videoMp4,
     lottieFile,
     modelUrl,
     componentKey
   },
+
   benefits{
     titleHighlight,
     titleNormal,
     ctaText,
     ctaHref,
+
     items[]{
-      image{ asset->{ _id, url } },
+      image{
+        asset->{
+          _id,
+          url
+        }
+      },
+
       title,
       description
     }
   },
+
   processSection{
     titleHighlight,
     titleNormal,
     subtitle,
-    steps[]{ title, description }
+
+    steps[]{
+      title,
+      description
+    }
   },
+
   faqSection{
     titleHighlight,
     titleNormal,
-    items[]{ question, answer }
+
+    items[]{
+      question,
+      answer
+    }
   },
+
   finalRecap{
     eyebrow,
     titleHighlight,
@@ -92,7 +175,14 @@ const query = `*[_type == "page" && slug.current == "ottimizzazione-conversioni"
     ctaHref,
     ctaSubText,
     mediaType,
-    image{ asset->{ _id, url } },
+
+    image{
+      asset->{
+        _id,
+        url
+      }
+    },
+
     videoWebm,
     videoMp4,
     lottieFile
@@ -105,7 +195,9 @@ export default async function OttimizzazioneConversioniPage() {
   return (
     <>
       <Header />
+
       <main>
+        {/* HERO */}
         <Hero
           eyebrow={page?.hero?.eyebrow}
           title={page?.hero?.title}
@@ -114,9 +206,17 @@ export default async function OttimizzazioneConversioniPage() {
           highlightTwo={page?.hero?.highlightTwo}
           subtitle={page?.hero?.subtitle}
           ctaText={page?.hero?.ctaText}
+
+          trustPoints={page?.hero?.trustPoints}
+
+          socialProofBadgeTitle={page?.hero?.socialProofBadgeTitle}
+          socialProofBadgeSubtitle={page?.hero?.socialProofBadgeSubtitle}
+          socialProofStats={page?.hero?.socialProofStats}
+
           rightContent={<CROHeroVisual />}
         />
 
+        {/* IMPACT */}
         <ImpactSection
           titleHighlight={page?.impactSection?.titleHighlight}
           titleNormal={page?.impactSection?.titleNormal}
@@ -124,8 +224,10 @@ export default async function OttimizzazioneConversioniPage() {
           impactText={page?.impactSection?.impactText}
         />
 
+        {/* BEFORE / AFTER */}
         <BeforeAfterPDP pairs={page?.beforeAfter?.pairs} />
 
+        {/* REVIEWS */}
         <ReviewsSection
           titleHighlight={page?.reviews?.titleHighlight}
           titleNormal={page?.reviews?.titleNormal}
@@ -136,8 +238,10 @@ export default async function OttimizzazioneConversioniPage() {
           socialProofAvatars={page?.reviews?.socialProofAvatars}
         />
 
+        {/* VALUE PROPOSITIONS */}
         <ValueProps items={page?.valueProps} />
 
+        {/* BENEFITS */}
         <BenefitsSection
           titleHighlight={page?.benefits?.titleHighlight}
           titleNormal={page?.benefits?.titleNormal}
@@ -146,6 +250,7 @@ export default async function OttimizzazioneConversioniPage() {
           items={page?.benefits?.items}
         />
 
+        {/* PROCESS */}
         <ProcessConversioni
           titleHighlight={page?.processSection?.titleHighlight}
           titleNormal={page?.processSection?.titleNormal}
@@ -153,6 +258,7 @@ export default async function OttimizzazioneConversioniPage() {
           steps={page?.processSection?.steps}
         />
 
+        {/* FINAL RECAP */}
         <FinalRecap
           eyebrow={page?.finalRecap?.eyebrow}
           titleHighlight={page?.finalRecap?.titleHighlight}
@@ -169,12 +275,14 @@ export default async function OttimizzazioneConversioniPage() {
           lottieFile={page?.finalRecap?.lottieFile}
         />
 
+        {/* FAQ */}
         <FaqSection
           titleHighlight={page?.faqSection?.titleHighlight}
           titleNormal={page?.faqSection?.titleNormal}
           items={page?.faqSection?.items}
         />
 
+        {/* CONTACT */}
         <ContactSection />
       </main>
     </>

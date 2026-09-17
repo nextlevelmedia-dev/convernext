@@ -14,52 +14,114 @@ import { client } from "@/sanity/lib/client"
 
 const sitiWebSlides = [
   {
-    imac: '/mockups/siti-web-imac-1.webp',
-    tablet: '/mockups/siti-web-tablet-1.webp',
-    mobile: '/mockups/siti-web-mobile-1.webp',
+    imac: "/mockups/siti-web-imac-1.webp",
+    tablet: "/mockups/siti-web-tablet-1.webp",
+    mobile: "/mockups/siti-web-mobile-1.webp",
   },
   {
-    imac: '/mockups/siti-web-imac-2.webp',
-    tablet: '/mockups/siti-web-tablet-2.webp',
-    mobile: '/mockups/siti-web-mobile-2.webp',
+    imac: "/mockups/siti-web-imac-2.webp",
+    tablet: "/mockups/siti-web-tablet-2.webp",
+    mobile: "/mockups/siti-web-mobile-2.webp",
   },
   {
-    imac: '/mockups/siti-web-imac-3.webp',
-    tablet: '/mockups/siti-web-tablet-3.webp',
-    mobile: '/mockups/siti-web-mobile-3.webp',
+    imac: "/mockups/siti-web-imac-3.webp",
+    tablet: "/mockups/siti-web-tablet-3.webp",
+    mobile: "/mockups/siti-web-mobile-3.webp",
   },
 ]
 
 async function getPageData() {
   const query = `*[_type == "page" && slug.current == "siti-web"][0]{
-    hero,
+
+    hero{
+      eyebrow,
+      title,
+      titleTwo,
+      highlightOne,
+      highlightTwo,
+      subtitle,
+      ctaText,
+
+      trustPoints,
+
+      socialProofBadgeTitle,
+      socialProofBadgeSubtitle,
+
+      socialProofStats[]{
+        value,
+        label,
+        hideOnMobile
+      }
+    },
+
     impactSection{
       titleHighlight,
       titleNormal,
       subtitle,
       impactText
     },
+
     mockupMarquee{
-      rowOne[]{ image{ asset->{ _id, url } }, alt },
-      rowTwo[]{ image{ asset->{ _id, url } }, alt }
+      rowOne[]{
+        image{
+          asset->{
+            _id,
+            url
+          }
+        },
+        alt
+      },
+
+      rowTwo[]{
+        image{
+          asset->{
+            _id,
+            url
+          }
+        },
+        alt
+      }
     },
+
     reviews{
       titleHighlight,
       titleNormal,
       ctaText,
       ctaHref,
       socialProofText,
-      socialProofAvatars[]{ photo{ asset->{ _id, url } } },
+
+      socialProofAvatars[]{
+        photo{
+          asset->{
+            _id,
+            url
+          }
+        }
+      },
+
       items[]{
         stars,
         reviewTitle,
         reviewText,
         authorName,
         authorRole,
-        authorPhoto{ asset->{ _id, url } },
-        companyLogo{ asset->{ _id, url } }
+
+        authorPhoto{
+          asset->{
+            _id,
+            url
+          }
+        },
+
+        companyLogo{
+          asset->{
+            _id,
+            url
+          }
+        }
       }
     },
+
     valueProps[]{
       label,
       titleHighlight,
@@ -68,35 +130,60 @@ async function getPageData() {
       ctaText,
       ctaHref,
       mediaType,
-      image{ asset->{ _id, url } },
+
+      image{
+        asset->{
+          _id,
+          url
+        }
+      },
+
       videoWebm,
       videoMp4,
       lottieFile,
       modelUrl,
       componentKey
     },
+
     benefits{
       titleHighlight,
       titleNormal,
       ctaText,
       ctaHref,
+
       items[]{
-        image{ asset->{ _id, url } },
+        image{
+          asset->{
+            _id,
+            url
+          }
+        },
         title,
         description
       }
     },
+
     processSection{
       titleHighlight,
       titleNormal,
       subtitle,
-      steps[]{ title, description }
+
+      steps[]{
+        title,
+        description
+      }
     },
+
     faqSection{
       titleHighlight,
       titleNormal,
-      items[]{ question, answer }
+
+      items[]{
+        question,
+        answer
+      }
     },
+
     finalRecap{
       eyebrow,
       titleHighlight,
@@ -107,7 +194,14 @@ async function getPageData() {
       ctaHref,
       ctaSubText,
       mediaType,
-      image{ asset->{ _id, url } },
+
+      image{
+        asset->{
+          _id,
+          url
+        }
+      },
+
       videoWebm,
       videoMp4,
       lottieFile
@@ -123,18 +217,28 @@ export default async function SitiWebPage() {
   return (
     <>
       <Header />
+
       <main>
+        {/* HERO */}
         <Hero
-          eyebrow={data.hero.eyebrow}
-          title={data.hero.title}
-          highlightOne={data.hero.highlightOne}
-          titleTwo={data.hero.titleTwo}
-          highlightTwo={data.hero.highlightTwo}
-          subtitle={data.hero.subtitle}
-          ctaText={data.hero.ctaText}
+          eyebrow={data?.hero?.eyebrow}
+          title={data?.hero?.title}
+          highlightOne={data?.hero?.highlightOne}
+          titleTwo={data?.hero?.titleTwo}
+          highlightTwo={data?.hero?.highlightTwo}
+          subtitle={data?.hero?.subtitle}
+          ctaText={data?.hero?.ctaText}
+
+          trustPoints={data?.hero?.trustPoints}
+
+          socialProofBadgeTitle={data?.hero?.socialProofBadgeTitle}
+          socialProofBadgeSubtitle={data?.hero?.socialProofBadgeSubtitle}
+          socialProofStats={data?.hero?.socialProofStats}
+
           rightContent={<DeviceMockups slides={sitiWebSlides} />}
         />
 
+        {/* IMPACT SECTION */}
         <ImpactSection
           titleHighlight={data?.impactSection?.titleHighlight}
           titleNormal={data?.impactSection?.titleNormal}
@@ -142,11 +246,13 @@ export default async function SitiWebPage() {
           impactText={data?.impactSection?.impactText}
         />
 
+        {/* MOCKUP MARQUEE */}
         <MockupMarquee
           rowOne={data?.mockupMarquee?.rowOne}
           rowTwo={data?.mockupMarquee?.rowTwo}
         />
 
+        {/* REVIEWS */}
         <ReviewsSection
           titleHighlight={data?.reviews?.titleHighlight}
           titleNormal={data?.reviews?.titleNormal}
@@ -157,8 +263,10 @@ export default async function SitiWebPage() {
           socialProofAvatars={data?.reviews?.socialProofAvatars}
         />
 
+        {/* VALUE PROPOSITIONS */}
         <ValueProps items={data?.valueProps} />
 
+        {/* BENEFITS */}
         <BenefitsSection
           titleHighlight={data?.benefits?.titleHighlight}
           titleNormal={data?.benefits?.titleNormal}
@@ -167,6 +275,7 @@ export default async function SitiWebPage() {
           items={data?.benefits?.items}
         />
 
+        {/* PROCESS */}
         <ProcessSitiWeb
           titleHighlight={data?.processSection?.titleHighlight}
           titleNormal={data?.processSection?.titleNormal}
@@ -174,6 +283,7 @@ export default async function SitiWebPage() {
           steps={data?.processSection?.steps}
         />
 
+        {/* FINAL RECAP */}
         <FinalRecap
           eyebrow={data?.finalRecap?.eyebrow}
           titleHighlight={data?.finalRecap?.titleHighlight}
@@ -190,12 +300,14 @@ export default async function SitiWebPage() {
           lottieFile={data?.finalRecap?.lottieFile}
         />
 
+        {/* FAQ */}
         <FaqSection
           titleHighlight={data?.faqSection?.titleHighlight}
           titleNormal={data?.faqSection?.titleNormal}
           items={data?.faqSection?.items}
         />
 
+        {/* CONTACT */}
         <ContactSection />
       </main>
     </>

@@ -281,19 +281,105 @@ export const pageType = defineType({
         }),
 
         defineField({
-          name: "ctaText",
-          title: "Testo bottone",
+  name: "ctaText",
+  title: "Testo bottone",
+  type: "string",
+}),
+
+// ─────────────────────────────────────────────────────────────
+// PUNTI SOTTO CTA
+// ─────────────────────────────────────────────────────────────
+
+defineField({
+  name: "trustPoints",
+  title: "Punti sotto CTA",
+  description: "Es: Risultati misurabili, Test continui, Crescita reale",
+  type: "array",
+
+  validation: (Rule) => Rule.max(3),
+
+  of: [
+    {
+      type: "string",
+    },
+  ],
+}),
+
+// ─────────────────────────────────────────────────────────────
+// SOCIAL PROOF BAND
+// ─────────────────────────────────────────────────────────────
+
+defineField({
+  name: "socialProofBadgeTitle",
+  title: "Social Proof — Titolo badge",
+  type: "string",
+  description: "Es: Verified Agency",
+}),
+
+defineField({
+  name: "socialProofBadgeSubtitle",
+  title: "Social Proof — Sottotitolo badge",
+  type: "string",
+  description: "Es: Results Certified",
+}),
+
+defineField({
+  name: "socialProofStats",
+  title: "Social Proof — Statistiche",
+  type: "array",
+
+  validation: (Rule) => Rule.max(4),
+
+  of: [
+    {
+      type: "object",
+      title: "Statistica",
+
+      fields: [
+        defineField({
+          name: "value",
+          title: "Valore",
           type: "string",
+          description: "Es: +100, 98%, 3x",
         }),
 
         defineField({
-          name: "lottieFile",
-          title: "Lottie destra Hero — es: Software-Development.json",
+          name: "label",
+          title: "Descrizione",
           type: "string",
-
-          hidden: ({ document }) =>
-            (document as any)?.slug?.current !== "chi-siamo",
+          description: "Es: Ecommerce realizzati",
         }),
+
+        defineField({
+          name: "hideOnMobile",
+          title: "Nascondi su mobile",
+          type: "boolean",
+          initialValue: false,
+        }),
+      ],
+
+      preview: {
+        select: {
+          title: "value",
+          subtitle: "label",
+        },
+      },
+    },
+  ],
+}),
+
+// ─────────────────────────────────────────────────────────────
+// LOTTIE — CHI SIAMO
+// ─────────────────────────────────────────────────────────────
+
+defineField({
+  name: "lottieFile",
+  title: "Lottie destra Hero — es: Software-Development.json",
+  type: "string",
+
+  hidden: ({ document }) =>
+    (document as any)?.slug?.current !== "chi-siamo",
+}),
       ],
     }),
 

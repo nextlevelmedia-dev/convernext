@@ -17,8 +17,10 @@ const fallbackServices = [
     text: "Ottieni più vendite con un ecommerce Shopify progettato per convertire e offrire un'esperienza fluida.",
     cta: "Ottimizza il tuo ecommerce",
     href: "/ecommerce",
-    videoWebm: "https://next-level-media.it/wp-content/uploads/2026/03/Ecommerce.webm",
-    videoMp4: "https://next-level-media.it/wp-content/uploads/2026/03/Ecommerce.mp4",
+    videoWebm:
+      "https://next-level-media.it/wp-content/uploads/2026/03/Ecommerce.webm",
+    videoMp4:
+      "https://next-level-media.it/wp-content/uploads/2026/03/Ecommerce.mp4",
   },
   {
     label: "Conversion Optimization",
@@ -27,7 +29,7 @@ const fallbackServices = [
     cta: "Ottieni di più dal tuo traffico",
     href: "/ottimizzazione-conversioni",
     mediaType: "lottie",
-lottieFile: "Stats-Going-Up (1).json",
+    lottieFile: "Stats-Going-Up (1).json",
   },
   {
     label: "Web Performance",
@@ -35,13 +37,36 @@ lottieFile: "Stats-Going-Up (1).json",
     text: "Ottieni più lead e clienti con pagine ottimizzate per guidare ogni utente all'azione.",
     cta: "Ottimizza il tuo sito web",
     href: "/siti-web",
-    videoWebm: "https://next-level-media.it/wp-content/uploads/2025/12/website.webm",
-    videoMp4: "https://next-level-media.it/wp-content/uploads/2025/12/website.mp4",
+    videoWebm:
+      "https://next-level-media.it/wp-content/uploads/2025/12/website.webm",
+    videoMp4:
+      "https://next-level-media.it/wp-content/uploads/2025/12/website.mp4",
   },
 ]
 
 const query = `*[_type == "page" && slug.current == "home"][0]{
-  hero,
+
+  hero{
+    eyebrow,
+    title,
+    titleTwo,
+    highlightOne,
+    highlightTwo,
+    subtitle,
+    ctaText,
+
+    trustPoints,
+
+    socialProofBadgeTitle,
+    socialProofBadgeSubtitle,
+
+    socialProofStats[]{
+      value,
+      label,
+      hideOnMobile
+    }
+  },
+
   homeProjects{
     title,
     highlight,
@@ -51,10 +76,29 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
     ctaText,
     ctaHref
   },
+
   logoMarquee{
-    logosRowOne[]{ alt, logo{asset->{_id,url}} },
-    logosRowTwo[]{ alt, logo{asset->{_id,url}} }
+    logosRowOne[]{
+      alt,
+      logo{
+        asset->{
+          _id,
+          url
+        }
+      }
+    },
+
+    logosRowTwo[]{
+      alt,
+      logo{
+        asset->{
+          _id,
+          url
+        }
+      }
+    }
   },
+
   vantaggioUnico{
     titleOne,
     highlightOne,
@@ -65,6 +109,7 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
     ctaText,
     ctaHref
   },
+
   valueProps[]{
     label,
     titleHighlight,
@@ -73,49 +118,93 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
     ctaText,
     ctaHref,
     mediaType,
-    image{ asset->{ _id, url } },
+
+    image{
+      asset->{
+        _id,
+        url
+      }
+    },
+
     videoWebm,
     videoMp4,
     lottieFile
   },
+
   stickyServices{
-  titleHighlight,
-  titleNormal,
-  subtitle,
-  cards[]{
-    label,
-    title,
-    text,
-    cta,
-    href,
-    mediaType,
-    videoWebm,
-    videoMp4,
-    image{ asset->{ _id, url } },
-    lottieFile
-  }
-},
+    titleHighlight,
+    titleNormal,
+    subtitle,
+
+    cards[]{
+      label,
+      title,
+      text,
+      cta,
+      href,
+      mediaType,
+      videoWebm,
+      videoMp4,
+
+      image{
+        asset->{
+          _id,
+          url
+        }
+      },
+
+      lottieFile
+    }
+  },
+
   teamCards{
     titleHighlight,
     titleNormal,
     subtitle,
-    cards[]{ title, description, lottieFile }
+
+    cards[]{
+      title,
+      description,
+      lottieFile
+    }
   },
+
   reviews{
     titleHighlight,
     titleNormal,
     ctaText,
     ctaHref,
     socialProofText,
-    socialProofAvatars[]{ photo{ asset->{ _id, url } } },
+
+    socialProofAvatars[]{
+      photo{
+        asset->{
+          _id,
+          url
+        }
+      }
+    },
+
     items[]{
       stars,
       reviewTitle,
       reviewText,
       authorName,
       authorRole,
-      authorPhoto{ asset->{ _id, url } },
-      companyLogo{ asset->{ _id, url } }
+
+      authorPhoto{
+        asset->{
+          _id,
+          url
+        }
+      },
+
+      companyLogo{
+        asset->{
+          _id,
+          url
+        }
+      }
     }
   }
 }`
@@ -126,9 +215,12 @@ export default async function Home() {
   return (
     <>
       <Header />
+
       <main>
+        {/* HERO */}
         <Hero {...page?.hero} />
 
+        {/* RECENSIONI */}
         <ReviewsSection
           titleHighlight={page?.reviews?.titleHighlight}
           titleNormal={page?.reviews?.titleNormal}
@@ -139,11 +231,13 @@ export default async function Home() {
           socialProofAvatars={page?.reviews?.socialProofAvatars}
         />
 
+        {/* LOGHI CLIENTI */}
         <LogoMarquee
           logosRowOne={page?.logoMarquee?.logosRowOne}
           logosRowTwo={page?.logoMarquee?.logosRowTwo}
         />
 
+        {/* VANTAGGIO UNICO */}
         <VantaggioUnico
           titleOne={page?.vantaggioUnico?.titleOne}
           highlightOne={page?.vantaggioUnico?.highlightOne}
@@ -155,35 +249,40 @@ export default async function Home() {
           ctaHref={page?.vantaggioUnico?.ctaHref}
         />
 
+        {/* VALUE PROPOSITIONS */}
         <ValueProps items={page?.valueProps} />
 
+        {/* SERVIZI */}
         <StickyServices
-  titleHighlight={page?.stickyServices?.titleHighlight}
-  titleNormal={page?.stickyServices?.titleNormal}
-  subtitle={page?.stickyServices?.subtitle}
-  services={page?.stickyServices?.cards ?? fallbackServices}
-/>
+          titleHighlight={page?.stickyServices?.titleHighlight}
+          titleNormal={page?.stickyServices?.titleNormal}
+          subtitle={page?.stickyServices?.subtitle}
+          services={page?.stickyServices?.cards ?? fallbackServices}
+        />
 
+        {/* INTRO PROGETTI */}
         <section className="px-6 pt-24 text-center text-slate-950">
           <div className="mx-auto max-w-2xl">
             {page?.homeProjects?.title && (
               <h2
-  className="text-4xl leading-[1.2] tracking-tight md:text-[42px]"
-  style={{
-    fontFamily: "var(--font-archivo), sans-serif",
-    fontWeight: 600,
-  }}
->
+                className="text-4xl leading-[1.2] tracking-tight md:text-[42px]"
+                style={{
+                  fontFamily: "var(--font-archivo), sans-serif",
+                  fontWeight: 600,
+                }}
+              >
                 {page.homeProjects.title}{" "}
+
                 {page?.homeProjects?.highlight && (
                   <span className="bg-brand-gradient bg-clip-text text-transparent">
                     {page.homeProjects.highlight}
                   </span>
-                )}
-                {" "}
+                )}{" "}
+
                 {page?.homeProjects?.titleTwo}
               </h2>
             )}
+
             {page?.homeProjects?.subtitle && (
               <p className="mx-auto mt-6 max-w-2xl text-lg font-medium leading-8 text-slate-600">
                 {page.homeProjects.subtitle}
@@ -192,10 +291,13 @@ export default async function Home() {
           </div>
         </section>
 
+        {/* PROGETTI */}
         <ProjectCarousel />
 
+        {/* TEAM */}
         <TeamCards {...page?.teamCards} />
 
+        {/* CONTATTI */}
         <ContactSection />
       </main>
     </>
