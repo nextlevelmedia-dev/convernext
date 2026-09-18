@@ -1,7 +1,7 @@
 import Header from "../components/Header"
 import Hero from "../components/Hero"
 import ProjectCarousel from "../components/ProjectCarousel/ProjectCarousel"
-import StickyServices from "../components/StickyServices/StickyServices"
+import ServicesGrid from "../components/ServicesGrid/ServicesGrid"
 import ReviewsSection from "../components/ReviewsSection/ReviewsSection"
 import LogoMarquee from "../components/LogoMarquee/LogoMarquee"
 import VantaggioUnico from "../components/VantaggioUnico/VantaggioUnico"
@@ -17,6 +17,7 @@ const fallbackServices = [
     text: "Ottieni più vendite con un ecommerce Shopify progettato per convertire e offrire un'esperienza fluida.",
     cta: "Ottimizza il tuo ecommerce",
     href: "/ecommerce",
+    mediaType: "video" as const,
     videoWebm:
       "https://next-level-media.it/wp-content/uploads/2026/03/Ecommerce.webm",
     videoMp4:
@@ -28,7 +29,7 @@ const fallbackServices = [
     text: "Genera più ricavi dagli stessi visitatori migliorando conversioni e performance.",
     cta: "Ottieni di più dal tuo traffico",
     href: "/ottimizzazione-conversioni",
-    mediaType: "lottie",
+    mediaType: "lottie" as const,
     lottieFile: "Stats-Going-Up (1).json",
   },
   {
@@ -37,6 +38,7 @@ const fallbackServices = [
     text: "Ottieni più lead e clienti con pagine ottimizzate per guidare ogni utente all'azione.",
     cta: "Ottimizza il tuo sito web",
     href: "/siti-web",
+    mediaType: "video" as const,
     videoWebm:
       "https://next-level-media.it/wp-content/uploads/2025/12/website.webm",
     videoMp4:
@@ -212,6 +214,11 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
 export default async function Home() {
   const page = await client.fetch(query)
 
+  const services =
+    page?.stickyServices?.cards?.length > 0
+      ? page.stickyServices.cards
+      : fallbackServices
+
   return (
     <>
       <Header />
@@ -252,12 +259,14 @@ export default async function Home() {
         {/* VALUE PROPOSITIONS */}
         <ValueProps items={page?.valueProps} />
 
-        {/* SERVIZI */}
-        <StickyServices
+        {/* SERVIZI — NUOVA VERSIONE SENZA STICKY */}
+        <ServicesGrid
           titleHighlight={page?.stickyServices?.titleHighlight}
           titleNormal={page?.stickyServices?.titleNormal}
           subtitle={page?.stickyServices?.subtitle}
-          services={page?.stickyServices?.cards ?? fallbackServices}
+          services={services}
+          ctaText="Parliamo del tuo progetto"
+          ctaHref="/contatti"
         />
 
         {/* INTRO PROGETTI */}
