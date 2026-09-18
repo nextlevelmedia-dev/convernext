@@ -130,7 +130,9 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
 
     videoWebm,
     videoMp4,
-    lottieFile
+    lottieFile,
+    modelUrl,
+    componentKey
   },
 
   stickyServices{
@@ -259,7 +261,7 @@ export default async function Home() {
         {/* VALUE PROPOSITIONS */}
         <ValueProps items={page?.valueProps} />
 
-        {/* SERVIZI — NUOVA VERSIONE SENZA STICKY */}
+        {/* SERVIZI */}
         <ServicesGrid
           titleHighlight={page?.stickyServices?.titleHighlight}
           titleNormal={page?.stickyServices?.titleNormal}
