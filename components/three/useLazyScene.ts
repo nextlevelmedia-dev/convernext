@@ -13,13 +13,25 @@ export type SceneEnv = {
 }
 
 /**
- * Monta una scena three.js nel contenitore quando il browser è libero
- * (così non pesa sul primo caricamento) e la mette in pausa quando è fuori
+ * Quando caricare three.js (≈140 KB gzip):
+ * - "near": quando il contenitore si avvicina alla viewport (scene sotto la piega)
+ * - "interaction": alla prima interazione dell'utente o, in mancanza, qualche
+ *   secondo dopo il load della pagina (scene above the fold)
+ * In entrambi i casi il caricamento non pesa su LCP/TBT del primo render.
+ */
+export type SceneTrigger = "near" | "interaction"
+
+const INTERACTION_EVENTS = ["pointermove", "pointerdown", "scroll", "keydown", "touchstart"] as const
+const FALLBACK_AFTER_LOAD_MS = 3000
+
+/**
+ * Monta una scena three.js nel contenitore e la mette in pausa quando è fuori
  * dallo schermo o la scheda non è attiva.
  */
 export function useLazyScene(
   ref: RefObject<HTMLElement | null>,
-  create: (el: HTMLElement, env: SceneEnv) => Promise<SceneApi>
+  create: (el: HTMLElement, env: SceneEnv) => Promise<SceneApi>,
+  trigger: SceneTrigger = "near"
 ) {
   const [ready, setReady] = useState(false)
   const createRef = useRef(create)
@@ -30,19 +42,17 @@ export function useLazyScene(
     if (!el) return
 
     let disposed = false
+    let started = false
     let api: SceneApi | undefined
     let visible = false
+    let fallback = 0
 
     const sync = () => api?.setRunning(visible && !document.hidden)
 
-    const io = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting
-      sync()
-    })
-    io.observe(el)
-    document.addEventListener("visibilitychange", sync)
-
-    const start = () =>
+    const start = () => {
+      if (started || disposed) return
+      started = true
+      cleanupTriggers()
       createRef
         .current(el, {
           lite: window.innerWidth < 768,
@@ -54,21 +64,51 @@ export function useLazyScene(
           setReady(true)
           sync()
         })
+    }
 
-    const hasIdle = typeof window.requestIdleCallback === "function"
-    const idle = hasIdle
-      ? window.requestIdleCallback(start, { timeout: 1500 })
-      : setTimeout(start, 300)
+    // visibilità: pausa/ripresa del loop, e trigger "near"
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting
+      sync()
+    })
+    io.observe(el)
+
+    const near = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) start()
+      },
+      { rootMargin: "300px 0px" }
+    )
+
+    const onLoad = () => {
+      fallback = window.setTimeout(start, FALLBACK_AFTER_LOAD_MS)
+    }
+
+    function cleanupTriggers() {
+      near.disconnect()
+      INTERACTION_EVENTS.forEach((e) => window.removeEventListener(e, start))
+      window.removeEventListener("load", onLoad)
+      clearTimeout(fallback)
+    }
+
+    if (trigger === "near") {
+      near.observe(el)
+    } else {
+      INTERACTION_EVENTS.forEach((e) => window.addEventListener(e, start, { once: true, passive: true }))
+      if (document.readyState === "complete") onLoad()
+      else window.addEventListener("load", onLoad, { once: true })
+    }
+
+    document.addEventListener("visibilitychange", sync)
 
     return () => {
       disposed = true
-      if (hasIdle) window.cancelIdleCallback(idle as number)
-      else clearTimeout(idle)
+      cleanupTriggers()
       io.disconnect()
       document.removeEventListener("visibilitychange", sync)
       api?.dispose()
     }
-  }, [ref])
+  }, [ref, trigger])
 
   return ready
 }

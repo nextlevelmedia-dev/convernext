@@ -44,9 +44,10 @@ export default function TeamIntro({
 
   return (
     <section className="relative overflow-clip px-5 py-24 md:px-8 md:py-32 xl:px-10">
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-14 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] md:gap-16 lg:gap-24">
+      {/* mobile: titolo → foto → testo; desktop: foto a sinistra, titolo e testo a destra */}
+      <div className="mx-auto grid w-full max-w-7xl gap-y-10 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] md:grid-rows-[1fr_auto_auto_1fr] md:gap-x-16 md:gap-y-0 lg:gap-x-24">
         {imageUrl && (
-          <div className="relative mx-auto w-full max-w-[460px] md:mx-0">
+          <div className="relative order-2 mx-auto w-full max-w-[460px] md:order-none md:col-start-1 md:row-span-4 md:row-start-1 md:mx-0 md:self-center">
             <div
               aria-hidden
               className="absolute -inset-10 rounded-[48px] bg-[radial-gradient(60%_55%_at_30%_25%,rgb(252_3_176/0.16),transparent_70%),radial-gradient(60%_55%_at_70%_80%,rgb(4_124_249/0.14),transparent_70%)] blur-2xl"
@@ -87,7 +88,7 @@ export default function TeamIntro({
           </div>
         )}
 
-        <div>
+        <div className="order-1 md:order-none md:col-start-2 md:row-start-2">
           {eyebrow && (
             <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.16em] text-slate-500 dark:text-white/60">
               <span aria-hidden className="h-px w-8 bg-brand-gradient" />
@@ -97,7 +98,7 @@ export default function TeamIntro({
 
           {(title || titleHighlight) && (
             <h2
-              className="mt-5 text-4xl leading-[1.1] tracking-tight text-slate-950 md:text-5xl lg:text-[56px] dark:text-white"
+              className="mt-5 text-4xl leading-[1.2] tracking-tight text-slate-950 md:text-[42px] dark:text-white"
               style={{
                 fontFamily: "var(--font-archivo), sans-serif",
                 fontWeight: 600,
@@ -112,9 +113,11 @@ export default function TeamIntro({
               )}
             </h2>
           )}
+        </div>
 
+        <div className="order-3 md:order-none md:col-start-2 md:row-start-3 md:mt-8">
           {paragraphs && paragraphs.length > 0 && (
-            <div className="mt-8 max-w-2xl space-y-5 text-lg leading-8 text-black/65 dark:text-white/70">
+            <div className="max-w-2xl space-y-5 text-lg leading-8 text-black/65 dark:text-white/70">
               {paragraphs.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
@@ -124,12 +127,10 @@ export default function TeamIntro({
           {ctaText && ctaHref && (
             <Link
               href={ctaHref}
-              className="group/al mt-10 inline-flex items-center gap-1.5 font-bold text-slate-950 transition-colors hover:text-[#047cf9] dark:text-white"
+              className="group/btn mt-10 inline-flex h-14 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-gradient px-8 text-base font-bold !text-white shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_18px_44px_-12px_rgb(252_3_176/0.6)] active:scale-[0.98]"
             >
-              <span className="bg-[linear-gradient(90deg,#fc03b0,#047cf9)] bg-[length:0%_1.5px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/al:bg-[length:100%_1.5px]">
-                {ctaText}
-              </span>
-              <span aria-hidden className="transition-transform duration-300 group-hover/al:translate-x-1">
+              {ctaText}
+              <span aria-hidden className="transition-transform duration-300 group-hover/btn:translate-x-1">
                 →
               </span>
             </Link>

@@ -56,7 +56,9 @@ export default function ConversionScene() {
           timers.current.add(timer)
         },
       })
-    )
+    ),
+    // above the fold: three.js parte alla prima interazione, non durante il caricamento
+    "interaction"
   )
 
   return (

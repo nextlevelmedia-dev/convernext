@@ -1,7 +1,11 @@
 import Header from "@/components/Header"
-import HeroChiSiamo from "@/components/HeroChiSiamo/HeroChiSiamo"
-import AboutManifesto from "@/components/AboutManifesto/AboutManifesto"
-import AboutFounder from "@/components/AboutFounder/AboutFounder"
+import AboutHero from "@/components/About/AboutHero"
+import AboutCompare from "@/components/About/AboutCompare"
+import AboutModel from "@/components/About/AboutModel"
+import AboutSpecialties from "@/components/About/AboutSpecialties"
+import AboutApproach from "@/components/About/AboutApproach"
+import AboutPromise from "@/components/About/AboutPromise"
+import TeamIntro from "@/components/TeamIntro/TeamIntro"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
@@ -10,7 +14,7 @@ import { pageMetadata } from "@/lib/seo"
 export const metadata = pageMetadata({
   title: "Chi siamo — Studio digitale indipendente",
   description:
-    "NEXT è uno studio digitale indipendente specializzato in siti web, ecommerce e conversione. Partiamo dalla comprensione dei tuoi clienti per progettare esperienze che aiutano a sceglierti.",
+    "Next è uno studio digitale indipendente specializzato in siti web, ecommerce e conversione. Un referente diretto e, quando serve, gli specialisti giusti per il tuo progetto.",
   path: "/chi-siamo",
 })
 
@@ -22,20 +26,20 @@ const query = `*[_type == "page" && slug.current == "chi-siamo"][0]{
     titleTwo,
     highlightTwo,
     subtitle,
-    ctaText,
-    lottieFile
+    ctaText
   },
 
-  aboutManifesto{
+  aboutAdvantages{
     eyebrow,
     title,
-    text,
-    closingText
+    subtitle,
+    items[]{ title, text }
   },
 
   aboutFounder{
     eyebrow,
     title,
+    titleHighlight,
     name,
     role,
     text,
@@ -45,52 +49,83 @@ const query = `*[_type == "page" && slug.current == "chi-siamo"][0]{
       }
     },
     imageAlt
+  },
+
+  aboutModel{
+    eyebrow,
+    title,
+    text,
+    coreTitle,
+    coreSkills,
+    specialistsTitle,
+    specialistSkills
+  },
+
+  aboutPrinciples{
+    eyebrow,
+    title,
+    subtitle,
+    items[]{ title, text }
+  },
+
+  aboutManifesto{
+    eyebrow,
+    title,
+    text,
+    closingText
+  },
+
+  aboutFinal{
+    eyebrow,
+    title,
+    text,
+    ctaText,
+    ctaHref,
+    ctaSubText
   }
 }`
 
 export default async function ChiSiamoPage() {
   const page = await client.fetch(query)
+  const founder = page?.aboutFounder
+  const model = page?.aboutModel
 
   return (
     <>
       <Header />
 
       <div>
-
-        {/* HERO */}
-        <HeroChiSiamo
-          eyebrow={page?.hero?.eyebrow}
-          title={page?.hero?.title}
-          highlightOne={page?.hero?.highlightOne}
-          titleTwo={page?.hero?.titleTwo}
-          highlightTwo={page?.hero?.highlightTwo}
-          subtitle={page?.hero?.subtitle}
-          ctaText={page?.hero?.ctaText}
-          lottieFile={page?.hero?.lottieFile}
+        {/* HERO — il modello in un colpo d'occhio */}
+        <AboutHero
+          {...page?.hero}
+          imageUrl={founder?.image?.asset?.url}
+          imageAlt={founder?.imageAlt}
+          name={founder?.name}
+          role="il tuo referente"
+          coreSkills={model?.coreSkills}
+          specialistSkills={model?.specialistSkills}
         />
 
-        {/* FILOSOFIA NEXT */}
-        <AboutManifesto
-          eyebrow={page?.aboutManifesto?.eyebrow}
-          title={page?.aboutManifesto?.title}
-          text={page?.aboutManifesto?.text}
-          closingText={page?.aboutManifesto?.closingText}
-        />
+        {/* NÉ AGENZIA, NÉ FREELANCE */}
+        <AboutCompare {...page?.aboutAdvantages} />
 
         {/* FOUNDER */}
-        <AboutFounder
-          eyebrow={page?.aboutFounder?.eyebrow}
-          title={page?.aboutFounder?.title}
-          name={page?.aboutFounder?.name}
-          role={page?.aboutFounder?.role}
-          text={page?.aboutFounder?.text}
-          image={page?.aboutFounder?.image}
-          imageAlt={page?.aboutFounder?.imageAlt}
-        />
+        <TeamIntro {...founder} />
+
+        {/* MODELLO */}
+        <AboutModel {...model} />
+
+        {/* SPECIALIZZAZIONE */}
+        <AboutSpecialties {...page?.aboutPrinciples} />
+
+        {/* APPROCCIO */}
+        <AboutApproach {...page?.aboutManifesto} />
+
+        {/* PROMESSA */}
+        <AboutPromise {...page?.aboutFinal} />
 
         {/* CONTATTI */}
         <ContactSection />
-
       </div>
     </>
   )

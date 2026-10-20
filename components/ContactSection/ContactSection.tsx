@@ -86,7 +86,7 @@ export default function ContactSection() {
               </p>
 
               <h2
-                className="mt-5 text-4xl leading-[1.1] tracking-tight text-slate-950 sm:whitespace-nowrap md:text-5xl xl:text-[54px] dark:text-white"
+                className="mt-5 text-4xl leading-[1.2] tracking-tight text-slate-950 sm:whitespace-nowrap md:text-[42px] dark:text-white"
                 style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
               >
                 Parliamo del

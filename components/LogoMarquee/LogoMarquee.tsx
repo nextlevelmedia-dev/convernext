@@ -19,14 +19,14 @@ function MarqueeRow({ logos, direction }: { logos: Logo[]; direction: "left" | "
   const trackRef = useRef<HTMLDivElement>(null)
 
   // Animazione CSS (compositor) invece di requestAnimationFrame:
-  // stessa velocità di prima (0.4px/frame mobile, 0.8px/frame desktop a 60fps)
+  // velocità in px/frame a 60fps: 1.4 mobile, 0.96 desktop
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
 
     const update = () => {
       const isMobile = window.innerWidth < 768
-      const pxPerSecond = (isMobile ? 0.4 : 0.8) * 60
+      const pxPerSecond = (isMobile ? 1.4 : 0.96) * 60
       const half = track.scrollWidth / 2
       if (!half) return
       track.style.animationDuration = `${half / pxPerSecond}s`

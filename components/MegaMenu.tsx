@@ -13,6 +13,17 @@ const items = [
     ),
   },
   {
+    title: "Temi Shopify su misura",
+    href: "/temi-shopify",
+    description: "Temi custom e immersivi che gestisci in autonomia, con i nostri tutorial.",
+    features: ["Sezioni custom e immersive", "Modifiche dall'editor", "Tutorial su misura", "Online Store 2.0"],
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+      </svg>
+    ),
+  },
+  {
     title: "Ottimizzazione Conversioni",
     href: "/ottimizzazione-conversioni",
     description: "Trasformiamo i visitatori in clienti con strategie data-driven.",
@@ -43,13 +54,13 @@ export default function MegaMenu() {
     <div className="absolute left-1/2 top-full w-screen -translate-x-1/2 border-t border-slate-200 bg-transparent dark:border-white/10">
       <div className="mx-auto max-w-7xl px-6 pb-6">
         <div className="rounded-b-3xl border border-t-0 border-slate-200 bg-white/[0.98] shadow-2xl shadow-slate-200/60 backdrop-blur-xl dark:border-white/10 dark:bg-[#0f1726]/[0.97] dark:shadow-black/50">
-          <div className="grid grid-cols-4 gap-0 p-8">
+          <div className="grid grid-cols-[repeat(4,minmax(0,1fr))_minmax(0,0.95fr)] gap-0 p-8">
 
             {items.map((item, i) => (
               <Link
                 key={item.title}
                 href={item.href}
-                className={`group/col flex flex-col pr-8 ${i > 0 ? "pl-8" : ""} ${i < items.length - 1 ? "border-r border-slate-200 dark:border-white/10" : ""}`}
+                className={`group/col flex flex-col pr-6 ${i > 0 ? "pl-6" : ""} ${i < items.length - 1 ? "border-r border-slate-200 dark:border-white/10" : ""}`}
               >
                 <div className="mb-5 flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover/col:scale-105 bg-[linear-gradient(135deg,rgb(252_3_176/0.10),rgb(4_124_249/0.10))] dark:bg-[linear-gradient(135deg,rgb(252_3_176/0.18),rgb(4_124_249/0.18))] [&_svg]:!text-[#7c3aed] dark:[&_svg]:!text-[#a78bfa]">
                   {item.icon}
@@ -81,7 +92,7 @@ export default function MegaMenu() {
             ))}
 
             {/* COLONNA DESTRA — CTA */}
-            <div className="flex flex-col justify-center border-l border-slate-200 pl-8 dark:border-white/10">
+            <div className="flex flex-col justify-center border-l border-slate-200 pl-6 dark:border-white/10">
               <p className="mb-2 text-xs font-bold uppercase tracking-widest !text-[#7c3aed] dark:!text-[#a78bfa]">
                 Hai un&apos;idea in mente?
               </p>

@@ -89,6 +89,18 @@ export default function Header() {
                 E-commerce Shopify
               </Link>
               <Link
+                href="/temi-shopify"
+                onClick={closeDrawer}
+                className="flex items-center gap-3 py-2.5 text-base font-medium text-slate-700 dark:text-white/80"
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#fc03b0] to-[#047cf9]">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                  </svg>
+                </span>
+                Temi Shopify su misura
+              </Link>
+              <Link
                 href="/ottimizzazione-conversioni"
                 onClick={closeDrawer}
                 className="flex items-center gap-3 py-2.5 text-base font-medium text-slate-700 dark:text-white/80"

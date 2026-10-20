@@ -498,3 +498,11 @@ body {
   12%, 82% { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(-6px) scale(0.98); }
 }
+
+/* Orbite del visual "team" in Chi siamo */
+@keyframes orbit-spin {
+  to { rotate: 360deg; }
+}
+@keyframes orbit-spin-reverse {
+  to { rotate: -360deg; }
+}

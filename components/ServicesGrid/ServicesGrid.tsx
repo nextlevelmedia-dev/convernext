@@ -230,7 +230,7 @@ export default function ServicesGrid({
                   }}
                 >
                   {titleHighlight && (
-                    <span className="services-grid-highlight">
+                    <span className="bg-brand-gradient bg-clip-text text-transparent">
                       {titleHighlight}
                     </span>
                   )}

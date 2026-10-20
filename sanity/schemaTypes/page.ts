@@ -8,6 +8,7 @@ const INNER_SLUGS = [
   "ecommerce",
   "siti-web",
   "ottimizzazione-conversioni",
+  "temi-shopify",
 ]
 
 const isInnerPage = (doc: any) =>
@@ -180,7 +181,7 @@ export const pageType = defineType({
     },
     {
       name: "stickyServicesSection",
-      title: "📦 Sezione Servizi (Sticky)",
+      title: "📦 Sezione Servizi",
       options: {
         collapsible: true,
         collapsed: false,
@@ -421,14 +422,63 @@ defineField({
 // LOTTIE — CHI SIAMO
 // ─────────────────────────────────────────────────────────────
 
-defineField({
-  name: "lottieFile",
-  title: "Lottie destra Hero — es: Software-Development.json",
-  type: "string",
+      ],
+    }),
 
-  hidden: ({ document }) =>
-    (document as any)?.slug?.current !== "chi-siamo",
-}),
+    // ─── HERO VIDEO EDITOR (TEMI SHOPIFY) ────────────────────────────────────
+
+    defineField({
+      name: "heroVideo",
+      title: "Hero video — registrazione dell'editor",
+      description:
+        "Video in loop nella hero di Temi Shopify. Se è vuoto vengono mostrati i mockup.",
+      type: "object",
+      fieldset: "heroSection",
+
+      hidden: ({ document }) =>
+        (document as any)?.slug?.current !== "temi-shopify",
+
+      fields: [
+        defineField({
+          name: "webm",
+          title: "Video WebM (consigliato, più leggero)",
+          type: "file",
+          options: { accept: "video/webm" },
+        }),
+
+        defineField({
+          name: "mp4",
+          title: "Video MP4 (per Safari / iPhone)",
+          type: "file",
+          options: { accept: "video/mp4" },
+        }),
+
+        defineField({
+          name: "webmMobile",
+          title: "Video WebM mobile (opzionale, es. 768×480)",
+          type: "file",
+          options: { accept: "video/webm" },
+        }),
+
+        defineField({
+          name: "mp4Mobile",
+          title: "Video MP4 mobile (opzionale, es. 768×480)",
+          type: "file",
+          options: { accept: "video/mp4" },
+        }),
+
+        defineField({
+          name: "poster",
+          title: "Immagine di anteprima (primo fotogramma)",
+          type: "image",
+        }),
+
+        defineField({
+          name: "address",
+          title: "Testo nella barra del browser",
+          type: "string",
+          description: "Es: Editor del tema — tuonegozio.com",
+        }),
       ],
     }),
 
@@ -437,12 +487,12 @@ defineField({
     defineField({
       name: "mockupSlides",
       title: "Hero mockup slides",
-      description: "Compila solo per Siti Web ed Ecommerce.",
+      description: "Compila solo per Siti Web ed Ecommerce (in Temi Shopify solo se non c'è il video).",
       type: "array",
       fieldset: "heroSection",
 
       hidden: ({ document }) =>
-        !["ecommerce", "siti-web"].includes(
+        !["ecommerce", "siti-web", "temi-shopify"].includes(
           (document as any)?.slug?.current ?? ""
         ),
 
@@ -520,6 +570,7 @@ defineField({
           name: "title",
           title: "Titolo",
           type: "string",
+          description: "Metti tra *asterischi* la parte col gradiente.",
         }),
 
         defineField({
@@ -561,7 +612,13 @@ defineField({
 
         defineField({
           name: "title",
-          title: "Titolo",
+          title: "Titolo - prima riga",
+          type: "string",
+        }),
+
+        defineField({
+          name: "titleHighlight",
+          title: "Titolo - parte evidenziata (gradiente)",
           type: "string",
         }),
 
@@ -627,6 +684,7 @@ defineField({
           name: "title",
           title: "Titolo",
           type: "string",
+          description: "Metti tra *asterischi* la parte col gradiente.",
         }),
 
         defineField({
@@ -700,6 +758,7 @@ defineField({
           name: "title",
           title: "Titolo",
           type: "string",
+          description: "Metti tra *asterischi* la parte col gradiente.",
         }),
 
         defineField({
@@ -769,6 +828,7 @@ defineField({
           name: "title",
           title: "Titolo",
           type: "string",
+          description: "Metti tra *asterischi* la parte col gradiente.",
         }),
 
         defineField({
@@ -838,6 +898,7 @@ defineField({
           name: "title",
           title: "Titolo",
           type: "string",
+          description: "Metti tra *asterischi* la parte col gradiente.",
         }),
 
         defineField({
@@ -997,7 +1058,7 @@ defineField({
       fieldset: "mockupMarqueeSection",
 
       hidden: ({ document }) =>
-        !["ecommerce", "siti-web"].includes(
+        !["ecommerce", "siti-web", "temi-shopify"].includes(
           (document as any)?.slug?.current ?? ""
         ),
 
@@ -1724,7 +1785,7 @@ defineField({
 
     defineField({
       name: "stickyServices",
-      title: "Sezione Servizi Sticky",
+      title: "Sezione Servizi",
       type: "object",
       fieldset: "stickyServicesSection",
 

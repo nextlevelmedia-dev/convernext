@@ -12,6 +12,7 @@ import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
+import { MOCKUP_SLIDES_PROJECTION, resolveMockupSlides } from "@/lib/mockupSlides"
 import { pageMetadata } from "@/lib/seo"
 
 export const metadata = pageMetadata({
@@ -21,6 +22,7 @@ export const metadata = pageMetadata({
   path: "/siti-web",
 })
 
+// usate solo se in Sanity non ci sono slide complete
 const sitiWebSlides = [
   {
     imac: "/mockups/siti-web-imac-1.webp",
@@ -62,6 +64,8 @@ async function getPageData() {
         hideOnMobile
       }
     },
+
+    ${MOCKUP_SLIDES_PROJECTION},
 
     impactSection{
       titleHighlight,
@@ -244,7 +248,7 @@ export default async function SitiWebPage() {
           socialProofBadgeSubtitle={data?.hero?.socialProofBadgeSubtitle}
           socialProofStats={data?.hero?.socialProofStats}
 
-          rightContent={<DeviceMockups slides={sitiWebSlides} />}
+          rightContent={<DeviceMockups slides={resolveMockupSlides(data?.mockupSlides, sitiWebSlides)} />}
         />
 
         {/* IMPACT SECTION */}

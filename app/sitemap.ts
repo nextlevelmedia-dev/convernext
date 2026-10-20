@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/ecommerce", priority: 0.9 },
     { path: "/siti-web", priority: 0.9 },
     { path: "/ottimizzazione-conversioni", priority: 0.9 },
-    { path: "/temi-shopify", priority: 0.7 },
+    { path: "/temi-shopify", priority: 0.9 },
     { path: "/progetti", priority: 0.8 },
     { path: "/chi-siamo", priority: 0.7 },
   ]

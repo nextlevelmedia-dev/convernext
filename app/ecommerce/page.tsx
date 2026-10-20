@@ -12,6 +12,7 @@ import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
+import { MOCKUP_SLIDES_PROJECTION, resolveMockupSlides } from "@/lib/mockupSlides"
 import { pageMetadata } from "@/lib/seo"
 
 export const metadata = pageMetadata({
@@ -21,6 +22,7 @@ export const metadata = pageMetadata({
   path: "/ecommerce",
 })
 
+// usate solo se in Sanity non ci sono slide complete
 const ecommerceSlides = [
   {
     imac: "/mockups/ecommerce-imac-1.webp",
@@ -76,6 +78,8 @@ const query = `*[_type == "page" && slug.current == "ecommerce"][0]{
       hideOnMobile
     }
   },
+
+  ${MOCKUP_SLIDES_PROJECTION},
 
   impactSection{
     titleHighlight,
@@ -256,7 +260,7 @@ export default async function EcommercePage() {
           socialProofBadgeSubtitle={page?.hero?.socialProofBadgeSubtitle}
           socialProofStats={page?.hero?.socialProofStats}
 
-          rightContent={<DeviceMockups slides={ecommerceSlides} />}
+          rightContent={<DeviceMockups slides={resolveMockupSlides(page?.mockupSlides, ecommerceSlides)} />}
         />
 
         {/* IMPACT */}
