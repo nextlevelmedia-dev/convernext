@@ -343,7 +343,7 @@ defineField({
 defineField({
   name: "trustPoints",
   title: "Punti sotto CTA",
-  description: "Es: Risultati misurabili, Test continui, Crescita reale",
+  description: "Max 3 punti brevi che riducono la frizione. Es: Analisi gratuita, Risposta entro 24 ore, Nessun impegno",
   type: "array",
 
   validation: (Rule) => Rule.max(3),
@@ -1481,10 +1481,12 @@ defineField({
               type: "object",
 
               fields: [
+                // l'icona ora è disegnata dal sito in base al testo
                 defineField({
                   name: "image",
                   title: "Icona / Immagine",
                   type: "image",
+                  hidden: true,
                   options: {
                     hotspot: true,
                   },
@@ -1494,6 +1496,7 @@ defineField({
                   name: "title",
                   title: "Titolo",
                   type: "string",
+                  description: "L'icona viene scelta e disegnata automaticamente in base a titolo e descrizione.",
                 }),
 
                 defineField({

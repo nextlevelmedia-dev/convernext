@@ -26,7 +26,8 @@ const query = `*[_type == "page" && slug.current == "chi-siamo"][0]{
     titleTwo,
     highlightTwo,
     subtitle,
-    ctaText
+    ctaText,
+    trustPoints
   },
 
   aboutAdvantages{

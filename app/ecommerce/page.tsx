@@ -6,7 +6,7 @@ import MockupMarquee from "@/components/MockupMarquee/MockupMarquee"
 import ReviewsSection from "@/components/ReviewsSection/ReviewsSection"
 import ValueProps from "@/components/ValueProps/ValueProps"
 import BenefitsSection from "@/components/BenefitsSection/BenefitsSection"
-import ProcessEcommerce from "@/components/ProcessTimeline/ProcessEcommerce"
+import ProcessSection from "@/components/ProcessTimeline/ProcessSection"
 import FinalRecap from "@/components/FinalRecap/FinalRecap"
 import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
@@ -301,7 +301,7 @@ export default async function EcommercePage() {
         />
 
         {/* PROCESS */}
-        <ProcessEcommerce
+        <ProcessSection
           titleHighlight={page?.processSection?.titleHighlight}
           titleNormal={page?.processSection?.titleNormal}
           subtitle={page?.processSection?.subtitle}

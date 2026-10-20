@@ -6,7 +6,7 @@ import MockupMarquee from "@/components/MockupMarquee/MockupMarquee"
 import ReviewsSection from "@/components/ReviewsSection/ReviewsSection"
 import ValueProps from "@/components/ValueProps/ValueProps"
 import BenefitsSection from "@/components/BenefitsSection/BenefitsSection"
-import ProcessSitiWeb from "@/components/ProcessTimeline/ProcessSitiWeb"
+import ProcessSection from "@/components/ProcessTimeline/ProcessSection"
 import FinalRecap from "@/components/FinalRecap/FinalRecap"
 import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
@@ -289,7 +289,7 @@ export default async function SitiWebPage() {
         />
 
         {/* PROCESS */}
-        <ProcessSitiWeb
+        <ProcessSection
           titleHighlight={data?.processSection?.titleHighlight}
           titleNormal={data?.processSection?.titleNormal}
           subtitle={data?.processSection?.subtitle}

@@ -62,7 +62,7 @@ export default function ConversionScene() {
   )
 
   return (
-    <div className="relative mx-auto aspect-[11/10] w-full max-w-[640px] select-none">
+    <div className="relative mx-auto aspect-[11/10] w-full max-w-[640px] select-none max-md:-mt-8">
       {/* alone di base, visibile anche prima che la scena sia pronta */}
       <div
         aria-hidden

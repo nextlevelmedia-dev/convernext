@@ -1,5 +1,6 @@
 import Header from "@/components/Header"
 import ContactSection from "@/components/ContactSection/ContactSection"
+import TrustPoints from "@/components/TrustPoints/TrustPoints"
 import { client } from "@/sanity/lib/client"
 import Image from "next/image"
 
@@ -20,7 +21,8 @@ const query = `{
       titleTwo,
       subtitle,
       ctaText,
-      ctaHref
+      ctaHref,
+      trustPoints
     }
   },
   "projects": *[_type == "project"] | order(order asc) {
@@ -112,7 +114,7 @@ export default async function ProgettiPage() {
 
   const hero = data?.page?.hero
   const projects: Project[] = data?.projects ?? []
-  const ctaHref = hero?.ctaHref ?? "/contatti"
+  const ctaHref = hero?.ctaHref || "#contatti"
 
   return (
     <>
@@ -121,7 +123,7 @@ export default async function ProgettiPage() {
       <div className="pt-20">
         <section className="px-6 py-24">
           <div className="mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-[400px_1fr]">
+            <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[400px_1fr] lg:gap-16">
 
               {/* =========================
                   LEFT CONTENT
@@ -176,6 +178,8 @@ export default async function ProgettiPage() {
                     {hero.ctaText}
                   </a>
                 )}
+
+                <TrustPoints points={hero?.trustPoints} className="mt-6" />
               </div>
 
               {/* =========================

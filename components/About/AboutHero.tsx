@@ -1,5 +1,6 @@
 import Link from "next/link"
 import TeamOrbit from "./TeamOrbit"
+import TrustPoints from "../TrustPoints/TrustPoints"
 
 type AboutHeroProps = {
   eyebrow?: string
@@ -9,6 +10,7 @@ type AboutHeroProps = {
   highlightTwo?: string
   subtitle?: string
   ctaText?: string
+  trustPoints?: string[]
   imageUrl?: string
   imageAlt?: string
   name?: string
@@ -25,6 +27,7 @@ export default function AboutHero({
   highlightTwo,
   subtitle,
   ctaText,
+  trustPoints,
   imageUrl,
   imageAlt,
   name,
@@ -44,7 +47,7 @@ export default function AboutHero({
         className="absolute inset-0 bg-[radial-gradient(60%_60%_at_8%_0%,rgb(252_3_176/0.12),transparent_70%),radial-gradient(60%_60%_at_95%_10%,rgb(4_124_249/0.1),transparent_70%)] dark:bg-[radial-gradient(60%_60%_at_8%_0%,rgb(252_3_176/0.16),transparent_70%),radial-gradient(60%_60%_at_95%_10%,rgb(4_124_249/0.14),transparent_70%)]"
       />
 
-      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
+      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
         <div className="flex min-w-0 flex-col items-start">
           {eyebrow && (
             <div className="mb-7 inline-flex rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-bold backdrop-blur md:mb-6 dark:border-white/10 dark:bg-[#0f1726]/80">
@@ -88,6 +91,8 @@ export default function AboutHero({
               <span aria-hidden className="transition-transform duration-300 group-hover/al:translate-y-0.5">↓</span>
             </Link>
           </div>
+
+          <TrustPoints points={trustPoints} className="mt-8" />
         </div>
 
         <TeamOrbit

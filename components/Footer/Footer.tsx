@@ -21,34 +21,27 @@ export default function Footer() {
           style={{
             gridColumn: "1 / -1",
 
-            /* esce dal max-width di footer-inner */
-            width: "100vw",
-            marginLeft: "calc(50% - 50vw)",
-
+            /* a filo del contenuto (stessa larghezza delle colonne di link) */
             marginTop: 0,
             marginBottom: 0,
-            padding: 0,
+            padding: "min(5vw, 72px) 0",
 
             lineHeight: 0,
             overflow: "hidden",
           }}
         >
+          {/* SVG vettoriale: nitido a tutta larghezza su ogni schermo */}
           <img
-            src="/logo-convernext-footer.webp"
+            src="/logo-convernext.svg"
             alt="Convernext"
-            width={178}
-            height={35}
+            width={1010}
+            height={106}
             loading="lazy"
             decoding="async"
             style={{
               display: "block",
-
-              /* logo largo esattamente tutta la viewport */
-              width: "100vw",
-
-              /* usa il rapporto REALE del file */
+              width: "100%",
               height: "auto",
-
               margin: 0,
               padding: 0,
             }}

@@ -6,7 +6,7 @@ import BeforeAfterPDP from "@/components/BeforeAfter/BeforeAfterPDP"
 import ReviewsSection from "@/components/ReviewsSection/ReviewsSection"
 import ValueProps from "@/components/ValueProps/ValueProps"
 import BenefitsSection from "@/components/BenefitsSection/BenefitsSection"
-import ProcessConversioni from "@/components/ProcessTimeline/ProcessConversioni"
+import ProcessSection from "@/components/ProcessTimeline/ProcessSection"
 import FinalRecap from "@/components/FinalRecap/FinalRecap"
 import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
@@ -260,7 +260,7 @@ export default async function OttimizzazioneConversioniPage() {
         />
 
         {/* PROCESS */}
-        <ProcessConversioni
+        <ProcessSection
           titleHighlight={page?.processSection?.titleHighlight}
           titleNormal={page?.processSection?.titleNormal}
           subtitle={page?.processSection?.subtitle}

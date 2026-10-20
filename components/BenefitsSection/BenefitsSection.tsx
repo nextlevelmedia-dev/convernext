@@ -1,8 +1,7 @@
-import Image from "next/image"
-import { urlFor } from "../../sanity/lib/image"
+import BenefitIcon from "./BenefitIcon"
+import { pickBenefitIcon } from "./benefitIcons"
 
 interface BenefitItem {
-  image?: { asset: { _ref: string } }
   title: string
   description: string
 }
@@ -17,7 +16,7 @@ interface BenefitsSectionProps {
 
 export default function BenefitsSection({ titleHighlight, titleNormal, items, ctaText, ctaHref }: BenefitsSectionProps) {
   if (!items?.length) return null
-  const link = ctaHref || "/contatti"
+  const link = ctaHref || "#contatti"
 
   return (
     <section className="benefits-section py-24 px-6">
@@ -41,16 +40,23 @@ export default function BenefitsSection({ titleHighlight, titleNormal, items, ct
 </h2>
           </div>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((item, i) => (
-            <div key={i} className="benefit-card card-adaptive rounded-2xl p-8">
-              {item.image && (
-                <div className="mb-6">
-                  <Image src={urlFor(item.image).width(1080).height(1080).url()} alt={item.title} width={64} height={64} className="object-contain" />
-                </div>
-              )}
-              <h3 className="benefit-card-title text-lg font-bold mb-3">{item.title}</h3>
-              <p className="benefit-card-text text-base leading-7">{item.description}</p>
+            <div key={i} className="benefit-card card-adaptive group/benefit rounded-2xl p-5 sm:p-7 lg:p-8">
+              {/* mobile: icona e titolo sulla stessa riga; da sm in su icona sopra */}
+              <div className="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-6">
+                <BenefitIcon name={pickBenefitIcon(item.title, item.description)} delay={i * 140} />
+                <h3 className="benefit-card-title pr-7 text-lg font-bold leading-snug sm:pr-0">{item.title}</h3>
+              </div>
+              <span
+                aria-hidden
+                className="absolute right-5 top-5 font-mono text-xs tracking-[0.14em] !text-slate-400 sm:right-7 sm:top-7 lg:right-8 lg:top-8 dark:!text-white/35"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="benefit-card-text mt-3 text-base leading-7 text-black/65 sm:mt-3 dark:text-white/70">
+                {item.description}
+              </p>
             </div>
           ))}
         </div>

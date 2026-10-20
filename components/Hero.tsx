@@ -2,6 +2,7 @@ import type { ReactNode } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { urlFor } from "../sanity/lib/image"
+import TrustPoints from "./TrustPoints/TrustPoints"
 
 type CtaProofAvatar = {
   photo?: Parameters<typeof urlFor>[0]
@@ -81,7 +82,7 @@ export default function Hero({
           className="absolute inset-0 bg-[radial-gradient(60%_60%_at_8%_0%,rgb(252_3_176/0.12),transparent_70%),radial-gradient(60%_60%_at_95%_10%,rgb(4_124_249/0.1),transparent_70%)] dark:bg-[radial-gradient(60%_60%_at_8%_0%,rgb(252_3_176/0.16),transparent_70%),radial-gradient(60%_60%_at_95%_10%,rgb(4_124_249/0.14),transparent_70%)]"
         />
 
-        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-20 lg:grid-cols-2">
+        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
           {/* LEFT */}
           <div className="flex min-w-0 flex-col items-start text-left">
             {eyebrow && (
@@ -135,7 +136,7 @@ export default function Hero({
               <div className="mt-9 flex flex-col items-start gap-6 md:mt-10 sm:flex-row sm:items-center">
                 {ctaText && (
                   <Link
-                    href="/contatti"
+                    href="#contatti"
                     className="group/btn inline-flex h-14 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-gradient px-8 text-base font-bold !text-white shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_18px_44px_-12px_rgb(252_3_176/0.6)] active:scale-[0.98]"
                     style={{
                       fontFamily: "var(--font-lato), sans-serif",
@@ -193,24 +194,8 @@ export default function Hero({
               </div>
             )}
 
-            {/* TRUST POINTS */}
-            {trustPoints && trustPoints.length > 0 && (
-              <div
-                className="mt-8 flex max-w-full flex-wrap items-center justify-start gap-x-4 gap-y-2 text-xs font-bold text-black/55 sm:gap-x-6 sm:text-sm dark:text-white/60"
-                style={{
-                  fontFamily: "var(--font-lato), sans-serif",
-                }}
-              >
-                {trustPoints.map((point, index) => (
-                  <span
-                    key={`${point}-${index}`}
-                    className="whitespace-normal"
-                  >
-                    ✓ {point}
-                  </span>
-                ))}
-              </div>
-            )}
+            {/* PUNTI SOTTO CTA */}
+            <TrustPoints points={trustPoints} className="mt-8" />
           </div>
 
           {/* RIGHT */}

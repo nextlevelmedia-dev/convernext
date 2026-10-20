@@ -56,7 +56,7 @@ export default function Header() {
         className={`fixed inset-0 z-[70] bg-white dark:bg-[#111118] shadow-2xl md:hidden transition-transform duration-300 ease-in-out ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="flex h-20 items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700">
-          <Image src="/logo-convernext.webp" alt="Next Level Media" width={180} height={90} preload className="h-auto w-[104px]" />
+          <Image src="/logo-convernext.svg" alt="Next Level Media" width={1010} height={106} preload className="ml-[2px] h-auto w-[98px]" />
           <button
             onClick={closeDrawer}
             aria-label="Chiudi menu"
@@ -149,8 +149,8 @@ export default function Header() {
       <header className={`fixed left-0 top-0 z-50 w-full transition-[background-color,box-shadow,backdrop-filter] duration-300 ${scrolled || open ? "bg-white/80 shadow-[0_1px_0_#e2e8f0] backdrop-blur-xl dark:bg-black/80 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)]" : "bg-transparent"}`}>
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 md:h-20 md:px-6">
 
-          <Link href="/" className="flex items-center" aria-label="Home — Next Level Media">
-            <Image src="/logo-convernext.webp" alt="Next Level Media" width={180} height={90} preload className="h-auto w-[104px] md:w-[116px]" />
+          <Link href="/" className="flex items-center py-4" aria-label="Home — Next Level Media">
+            <Image src="/logo-convernext.svg" alt="Next Level Media" width={1010} height={106} preload className="ml-[2px] h-auto w-[98px] md:w-[109px]" />
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Navigazione principale">

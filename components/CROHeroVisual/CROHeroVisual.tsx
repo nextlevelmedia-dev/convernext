@@ -16,7 +16,7 @@ export default function CROHeroVisual() {
   }, [])
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full max-md:mt-4">
       {/* Card principale */}
       <div
         className="relative z-10 rounded-[2rem] border border-white/10 bg-white p-6 shadow-2xl shadow-black/30"
