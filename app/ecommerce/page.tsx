@@ -12,6 +12,15 @@ import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
+import { pageMetadata } from "@/lib/seo"
+
+export const metadata = pageMetadata({
+  title: "Ecommerce Shopify progettati per convertire",
+  description:
+    "Ecommerce Shopify su misura, progettati per guidare all’acquisto, migliorare l’esperienza utente e aumentare conversioni e valore degli ordini.",
+  path: "/ecommerce",
+})
+
 const ecommerceSlides = [
   {
     imac: "/mockups/ecommerce-imac-1.webp",
@@ -230,7 +239,7 @@ export default async function EcommercePage() {
     <>
       <Header />
 
-      <main>
+      <div>
         {/* HERO */}
         <Hero
           eyebrow={page?.hero?.eyebrow}
@@ -321,7 +330,7 @@ export default async function EcommercePage() {
 
         {/* CONTACT */}
         <ContactSection />
-      </main>
+      </div>
     </>
   )
 }

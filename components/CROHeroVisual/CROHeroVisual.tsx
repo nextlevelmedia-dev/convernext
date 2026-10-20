@@ -28,11 +28,11 @@ export default function CROHeroVisual() {
             <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
             <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
             <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
-            <span style={{ color: "#94a3b8" }} className="ml-2 text-xs font-medium">
+            <span style={{ color: "#64748b" }} className="ml-2 text-xs font-medium">
               A/B Test attivo
             </span>
           </div>
-          <span className="animate-pulse rounded-full bg-green-100 px-3 py-1 text-[11px] font-semibold text-green-600">
+          <span className="animate-pulse rounded-full bg-green-100 px-3 py-1 text-[11px] font-semibold text-green-800">
             ● Live
           </span>
         </div>
@@ -50,7 +50,7 @@ export default function CROHeroVisual() {
               <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-semibold text-slate-500">A</span>
               <span className="text-sm" style={{ color: "#0f172a" }}>"Scopri di più"</span>
             </div>
-            <span className="text-sm font-bold" style={{ color: "#0f172a" }}>2,3% <span className="text-xs font-normal text-slate-400">CVR</span></span>
+            <span className="text-sm font-bold" style={{ color: "#0f172a" }}>2,3% <span className="text-xs font-normal text-slate-500">CVR</span></span>
           </div>
           <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
             <div
@@ -59,7 +59,7 @@ export default function CROHeroVisual() {
               style={{ width: "0%" }}
             />
           </div>
-          <p className="mt-1 text-[11px]" style={{ color: "#94a3b8" }}>2.368 visite · 54 conversioni</p>
+          <p className="mt-1 text-[11px]" style={{ color: "#64748b" }}>2.368 visite · 54 conversioni</p>
         </div>
 
         {/* Variante B */}
@@ -70,7 +70,7 @@ export default function CROHeroVisual() {
               <span className="text-sm" style={{ color: "#0f172a" }}>"Ottimizza ora gratis"</span>
               <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700">+92%</span>
             </div>
-            <span className="text-sm font-bold text-blue-600">4,4% <span className="text-xs font-normal text-slate-400">CVR</span></span>
+            <span className="text-sm font-bold text-blue-600">4,4% <span className="text-xs font-normal text-slate-500">CVR</span></span>
           </div>
           <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
             <div
@@ -79,13 +79,13 @@ export default function CROHeroVisual() {
               style={{ width: "0%", background: "linear-gradient(to right, #fc03b0, #047cf9)" }}
             />
           </div>
-          <p className="mt-1 text-[11px]" style={{ color: "#94a3b8" }}>2.444 visite · 107 conversioni</p>
+          <p className="mt-1 text-[11px]" style={{ color: "#64748b" }}>2.444 visite · 107 conversioni</p>
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-between border-t border-slate-100 pt-3">
           <span className="text-xs font-semibold text-blue-600">🏆 Variante B vincitrice · 97% confidenza</span>
-          <span className="text-[11px]" style={{ color: "#94a3b8" }}>2 gg al termine</span>
+          <span className="text-[11px]" style={{ color: "#64748b" }}>2 gg al termine</span>
         </div>
       </div>
 
@@ -111,7 +111,7 @@ export default function CROHeroVisual() {
           </div>
           <div>
             <p className="text-xs font-bold" style={{ color: "#1e293b" }}>Test completato</p>
-            <p className="text-[10px]" style={{ color: "#94a3b8" }}>Winner dichiarato</p>
+            <p className="text-[10px]" style={{ color: "#64748b" }}>Winner dichiarato</p>
           </div>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function CROHeroVisual() {
           </div>
           <div>
             <p className="text-xs font-bold" style={{ color: "#1e293b" }}>Revenue +€4.200</p>
-            <p className="text-[10px]" style={{ color: "#94a3b8" }}>Questo mese</p>
+            <p className="text-[10px]" style={{ color: "#64748b" }}>Questo mese</p>
           </div>
         </div>
       </div>

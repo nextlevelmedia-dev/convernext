@@ -267,7 +267,7 @@ export default function ProcessConversioni({
             #nlm-cro-process-timeline .card__top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
             #nlm-cro-process-timeline .badge{width:34px;height:34px;border-radius:10px;background:rgba(4,124,249,.10);display:grid;place-items:center;color:rgba(4,124,249,.95);font-weight:800;font-size:13px;flex:0 0 auto}
             #nlm-cro-process-timeline .icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(252,3,176,.12),rgba(4,124,249,.10));color:rgba(15,23,42,.9);border:1px solid rgba(15,23,42,.06);flex:0 0 auto}
-            #nlm-cro-process-timeline .card h4{margin:0;font-size:24px;letter-spacing:-0.01em;line-height:1.2}
+            #nlm-cro-process-timeline .card h3{margin:0;font-size:24px;letter-spacing:-0.01em;line-height:1.2}
             #nlm-cro-process-timeline .card p{margin:8px 0 0;line-height:1.65;font-size:18px;color:inherit}
             #nlm-cro-process-timeline .graphic{border-radius:22px;overflow:hidden;border:1px solid rgba(15,23,42,.06);box-shadow:0 18px 60px rgba(15,23,42,.08);background:rgba(255,255,255,.85);max-width:520px;width:100%;min-width:0}
             #nlm-cro-process-timeline .graphic__pad{padding:14px}
@@ -377,7 +377,7 @@ export default function ProcessConversioni({
                         <path d="M16.8 16.8 21 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                       </svg>
                     </div>
-                    <h4>{s[0]?.title || "Step 1"}</h4>
+                    <h3>{s[0]?.title || "Step 1"}</h3>
                   </div>
                   <p>{s[0]?.description || ""}</p>
                 </div>
@@ -481,7 +481,7 @@ export default function ProcessConversioni({
                         <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4m0 0h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                       </svg>
                     </div>
-                    <h4>{s[1]?.title || "Step 2"}</h4>
+                    <h3>{s[1]?.title || "Step 2"}</h3>
                   </div>
                   <p>{s[1]?.description || ""}</p>
                 </div>
@@ -500,7 +500,7 @@ export default function ProcessConversioni({
                         <path d="M20 8v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
-                    <h4>{s[2]?.title || "Step 3"}</h4>
+                    <h3>{s[2]?.title || "Step 3"}</h3>
                   </div>
                   <p>{s[2]?.description || ""}</p>
                 </div>

@@ -25,7 +25,6 @@ export default function AboutFounder({
 }: AboutFounderProps) {
   const imageUrl = image?.asset?.url
 
-  console.log("FOUNDER IMAGE:", imageUrl)
 
   if (!eyebrow && !title && !name && !role && !text && !imageUrl) {
     return null
@@ -39,6 +38,8 @@ export default function AboutFounder({
           {imageUrl ? (
             <img
               src={imageUrl}
+              loading="lazy"
+              decoding="async"
               alt={imageAlt || name || "Founder NEXT"}
               className={styles.image}
             />

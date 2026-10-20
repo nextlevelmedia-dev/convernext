@@ -1,14 +1,25 @@
 import Header from "../components/Header"
 import Hero from "../components/Hero"
-import ProjectCarousel from "../components/ProjectCarousel/ProjectCarousel"
+import ConversionScene from "../components/ConversionScene/ConversionScene"
+import FeaturedProjects from "../components/FeaturedProjects/FeaturedProjects"
 import ServicesGrid from "../components/ServicesGrid/ServicesGrid"
 import ReviewsSection from "../components/ReviewsSection/ReviewsSection"
 import LogoMarquee from "../components/LogoMarquee/LogoMarquee"
 import VantaggioUnico from "../components/VantaggioUnico/VantaggioUnico"
 import ValueProps from "../components/ValueProps/ValueProps"
-import TeamCards from "../components/TeamCards/TeamCards"
+import TeamIntro from "../components/TeamIntro/TeamIntro"
 import ContactSection from "../components/ContactSection/ContactSection"
 import { client } from "../sanity/lib/client"
+
+import { pageMetadata } from "@/lib/seo"
+
+export const metadata = pageMetadata({
+  title: "Convernext — Siti web, ecommerce e CRO che generano clienti",
+  description:
+    "Hai traffico ma poche vendite? Ottimizziamo la tua presenza digitale con dati reali e UX strategica per aumentare lead e conversioni: siti web, ecommerce Shopify e CRO.",
+  path: "/",
+  absoluteTitle: true,
+})
 
 const fallbackServices = [
   {
@@ -58,6 +69,16 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
     ctaText,
 
     trustPoints,
+
+    ctaProofText,
+    ctaProofAvatars[]{
+      photo{
+        asset->{
+          _id,
+          url
+        }
+      }
+    },
 
     socialProofBadgeTitle,
     socialProofBadgeSubtitle,
@@ -161,16 +182,21 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
     }
   },
 
-  teamCards{
+  homeTeam{
+    eyebrow,
+    title,
     titleHighlight,
-    titleNormal,
-    subtitle,
-
-    cards[]{
-      title,
-      description,
-      lottieFile
-    }
+    text,
+    name,
+    role,
+    image{
+      asset->{
+        url
+      }
+    },
+    imageAlt,
+    ctaText,
+    ctaHref
   },
 
   reviews{
@@ -225,9 +251,9 @@ export default async function Home() {
     <>
       <Header />
 
-      <main>
+      <div>
         {/* HERO */}
-        <Hero {...page?.hero} />
+        <Hero {...page?.hero} rightContent={<ConversionScene />} />
 
         {/* RECENSIONI */}
         <ReviewsSection
@@ -271,46 +297,20 @@ export default async function Home() {
           ctaHref="/contatti"
         />
 
-        {/* INTRO PROGETTI */}
-        <section className="px-6 pt-24 text-center text-slate-950">
-          <div className="mx-auto max-w-2xl">
-            {page?.homeProjects?.title && (
-              <h2
-                className="text-4xl leading-[1.2] tracking-tight md:text-[42px]"
-                style={{
-                  fontFamily: "var(--font-archivo), sans-serif",
-                  fontWeight: 600,
-                }}
-              >
-                {page.homeProjects.title}{" "}
-
-                {page?.homeProjects?.highlight && (
-                  <span className="bg-brand-gradient bg-clip-text text-transparent">
-                    {page.homeProjects.highlight}
-                  </span>
-                )}{" "}
-
-                {page?.homeProjects?.titleTwo}
-              </h2>
-            )}
-
-            {page?.homeProjects?.subtitle && (
-              <p className="mx-auto mt-6 max-w-2xl text-lg font-medium leading-8 text-slate-600">
-                {page.homeProjects.subtitle}
-              </p>
-            )}
-          </div>
-        </section>
-
         {/* PROGETTI */}
-        <ProjectCarousel />
+        <FeaturedProjects
+          title={page?.homeProjects?.title}
+          highlight={page?.homeProjects?.highlight}
+          titleTwo={page?.homeProjects?.titleTwo}
+          subtitle={page?.homeProjects?.subtitle}
+        />
 
         {/* TEAM */}
-        <TeamCards {...page?.teamCards} />
+        <TeamIntro {...page?.homeTeam} />
 
         {/* CONTATTI */}
         <ContactSection />
-      </main>
+      </div>
     </>
   )
 }

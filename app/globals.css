@@ -58,7 +58,9 @@ header a.logo-link span,
 }
 
 header a.cta-bubble,
-.dark header a.cta-bubble {
+.dark header a.cta-bubble,
+header a.cta-bubble *,
+.dark header a.cta-bubble * {
   color: #ffffff;
 }
 
@@ -105,14 +107,11 @@ header a.cta-bubble,
 
 /* Card bianche — testi restano scuri */
 
-.dark .main-bg .team-card,
 .dark .main-bg .nlm-card,
 .dark .main-bg .stack-card {
   color: #171717;
 }
 
-.dark .main-bg .team-card h3,
-.dark .main-bg .team-card p,
 .dark .main-bg .nlm-card h3,
 .dark .main-bg .nlm-card h4,
 .dark .main-bg .nlm-card p,
@@ -135,12 +134,10 @@ header a.cta-bubble,
   border-color: #eeeeee;
 }
 
+/* sfondo pieno, senza aloni colorati */
 .dark .hero-stats {
   background-color: #0c0c14;
-
-  background-image:
-    radial-gradient(ellipse at 0% 50%, rgba(252, 3, 176, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse at 100% 50%, rgba(4, 124, 249, 0.10) 0%, transparent 60%);
+  background-image: none;
 
   border-top-color: rgba(255, 255, 255, 0.04);
   border-bottom-color: rgba(255, 255, 255, 0.04);
@@ -308,6 +305,7 @@ header a.cta-bubble,
   color: rgba(255, 255, 255, 0.75);
 }
 
+.footer-inner h2,
 .footer-inner h3 {
   margin-bottom: 24px;
   color: white;
@@ -478,4 +476,25 @@ body {
 .dark .benefits-section {
   background-color: #111118 !important;
   background-image: none !important;
+}
+
+/* =========================
+   MOCKUP MARQUEE
+========================= */
+
+@keyframes mockup-marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes mockup-marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* Notifiche del visual 3D in hero */
+@keyframes toast-in {
+  0% { opacity: 0; transform: translateY(8px) scale(0.96); }
+  12%, 82% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-6px) scale(0.98); }
 }

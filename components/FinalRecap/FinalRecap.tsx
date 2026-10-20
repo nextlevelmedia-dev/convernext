@@ -110,7 +110,7 @@ function MediaBlock({
 
   return (
     <div className="flex h-full w-full items-center justify-center rounded-2xl border border-slate-200 bg-white/60 dark:border-white/10 dark:bg-white/[0.04]">
-      <p className="text-sm text-slate-400 dark:text-white/30">
+      <p className="text-sm text-slate-500 dark:text-white/30">
         Media
       </p>
     </div>
@@ -147,7 +147,7 @@ export default function FinalRecap({
         <div className="flex flex-col items-center gap-12 md:flex-row md:gap-16">
           <div className="flex w-full flex-col md:w-1/2">
             {eyebrow && (
-              <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400 dark:text-white/45">
+              <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-white/45">
                 {eyebrow}
               </p>
             )}
@@ -230,7 +230,7 @@ export default function FinalRecap({
                 </a>
 
                 {ctaSubText && (
-                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400 dark:text-white/35">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600 dark:text-white/35">
                     {ctaSubText}
                   </p>
                 )}

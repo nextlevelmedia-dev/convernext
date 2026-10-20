@@ -12,6 +12,15 @@ import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
+import { pageMetadata } from "@/lib/seo"
+
+export const metadata = pageMetadata({
+  title: "Ottimizzazione delle conversioni (CRO)",
+  description:
+    "Ottimizziamo copy, UX, CTA e funnel con heatmap, session recording e A/B test per trasformare più click in clienti reali, senza aumentare il budget ads.",
+  path: "/ottimizzazione-conversioni",
+})
+
 const query = `*[_type == "page" && slug.current == "ottimizzazione-conversioni"][0]{
 
   hero{
@@ -196,7 +205,7 @@ export default async function OttimizzazioneConversioniPage() {
     <>
       <Header />
 
-      <main>
+      <div>
         {/* HERO */}
         <Hero
           eyebrow={page?.hero?.eyebrow}
@@ -284,7 +293,7 @@ export default async function OttimizzazioneConversioniPage() {
 
         {/* CONTACT */}
         <ContactSection />
-      </main>
+      </div>
     </>
   )
 }

@@ -147,7 +147,7 @@ function LazyLottie({ file }: { file: string }) {
   }, [shouldLoad, file])
 
   return (
-    <div ref={wrapperRef} className="services-grid-lottie-wrapper">
+    <div ref={wrapperRef} aria-hidden className="services-grid-lottie-wrapper">
       {animationData && (
         <Lottie
           animationData={animationData}

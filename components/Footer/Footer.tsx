@@ -36,6 +36,10 @@ export default function Footer() {
           <img
             src="/logo-convernext-footer.webp"
             alt="Convernext"
+            width={178}
+            height={35}
+            loading="lazy"
+            decoding="async"
             style={{
               display: "block",
 
@@ -56,14 +60,14 @@ export default function Footer() {
         ========================= */}
 
         <div>
-          <h3
+          <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
               fontWeight: 600,
             }}
           >
             Contatti aziendali
-          </h3>
+          </h2>
 
           <p>
             Via Risorgimento, 61
@@ -79,14 +83,14 @@ export default function Footer() {
         ========================= */}
 
         <div>
-          <h3
+          <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
               fontWeight: 600,
             }}
           >
             Soluzioni e servizi
-          </h3>
+          </h2>
 
           <ul>
             <li>Siti web</li>
@@ -101,14 +105,14 @@ export default function Footer() {
         ========================= */}
 
         <div>
-          <h3
+          <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
               fontWeight: 600,
             }}
           >
             About Next
-          </h3>
+          </h2>
 
           <ul>
             <li>Chi siamo</li>
@@ -123,14 +127,14 @@ export default function Footer() {
         ========================= */}
 
         <div>
-          <h3
+          <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
               fontWeight: 600,
             }}
           >
             Seguici sui social
-          </h3>
+          </h2>
 
           <ul>
             <li>Instagram</li>

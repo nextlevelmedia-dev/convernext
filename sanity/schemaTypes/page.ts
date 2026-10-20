@@ -187,8 +187,8 @@ export const pageType = defineType({
       },
     },
     {
-      name: "teamCardsSection",
-      title: "👥 Sezione Team/Cards",
+      name: "homeTeamSection",
+      title: "👥 Sezione Team",
       options: {
         collapsible: true,
         collapsed: false,
@@ -284,6 +284,55 @@ export const pageType = defineType({
   name: "ctaText",
   title: "Testo bottone",
   type: "string",
+}),
+
+// ─────────────────────────────────────────────────────────────
+// SOCIAL PROOF ACCANTO ALLA CTA
+// ─────────────────────────────────────────────────────────────
+
+defineField({
+  name: "ctaProofText",
+  title: "Social proof accanto al bottone — Testo",
+  description: "Es: +100 aziende stanno già crescendo con Next",
+  type: "string",
+}),
+
+defineField({
+  name: "ctaProofAvatars",
+  title: "Social proof accanto al bottone — Foto (max 4)",
+  type: "array",
+
+  validation: (Rule) => Rule.max(4),
+
+  of: [
+    {
+      type: "object",
+
+      fields: [
+        defineField({
+          name: "photo",
+          title: "Foto",
+          type: "image",
+          options: {
+            hotspot: true,
+          },
+        }),
+      ],
+
+      preview: {
+        select: {
+          media: "photo",
+        },
+
+        prepare({ media }) {
+          return {
+            title: "Avatar",
+            media,
+          }
+        },
+      },
+    },
+  ],
 }),
 
 // ─────────────────────────────────────────────────────────────
@@ -1818,99 +1867,86 @@ defineField({
     }),
 
     // =========================================================================
-    // TEAM CARDS — SOLO HOME
+    // TEAM — SOLO HOME
     // =========================================================================
 
     defineField({
-      name: "teamCards",
-      title: "Sezione Team Cards",
+      name: "homeTeam",
+      title: "Sezione Team",
       type: "object",
-      fieldset: "teamCardsSection",
+      fieldset: "homeTeamSection",
 
       hidden: ({ document }) =>
         !isHomePage(document),
 
       fields: [
         defineField({
+          name: "eyebrow",
+          title: "Eyebrow",
+          type: "string",
+          description: "Es: DIETRO CONVERNEXT",
+        }),
+
+        defineField({
+          name: "title",
+          title: "Titolo - prima riga",
+          type: "string",
+        }),
+
+        defineField({
           name: "titleHighlight",
-          title: "Titolo - parte evidenziata",
+          title: "Titolo - parte evidenziata (gradiente)",
           type: "string",
         }),
 
         defineField({
-          name: "titleNormal",
-          title: "Titolo - parte normale",
+          name: "text",
+          title: "Testo",
+          type: "text",
+          rows: 8,
+          description:
+            "Lascia una riga vuota tra un paragrafo e l'altro.",
+        }),
+
+        defineField({
+          name: "name",
+          title: "Nome",
           type: "string",
         }),
 
         defineField({
-          name: "subtitle",
-          title: "Sottotitolo",
-          type: "array",
-
-          of: [
-            {
-              type: "block",
-
-              styles: [
-                {
-                  title: "Normal",
-                  value: "normal",
-                },
-              ],
-
-              marks: {
-                decorators: [
-                  {
-                    title: "Bold",
-                    value: "strong",
-                  },
-                  {
-                    title: "Italic",
-                    value: "em",
-                  },
-                ],
-              },
-            },
-          ],
+          name: "role",
+          title: "Ruolo",
+          type: "string",
         }),
 
         defineField({
-          name: "cards",
-          title: "Card",
-          type: "array",
+          name: "image",
+          title: "Foto",
+          type: "image",
+          options: {
+            hotspot: true,
+          },
+        }),
 
-          of: [
-            {
-              type: "object",
+        defineField({
+          name: "imageAlt",
+          title: "Alt immagine",
+          type: "string",
+        }),
 
-              fields: [
-                defineField({
-                  name: "title",
-                  title: "Titolo card",
-                  type: "string",
-                }),
+        defineField({
+          name: "ctaText",
+          title: "Testo link",
+          type: "string",
+          description: "Es: Scopri chi siamo",
+        }),
 
-                defineField({
-                  name: "description",
-                  title: "Descrizione",
-                  type: "text",
-                }),
-
-                defineField({
-                  name: "lottieFile",
-                  title: "Nome file Lottie (es: Work-Chat.json)",
-                  type: "string",
-                }),
-              ],
-
-              preview: {
-                select: {
-                  title: "title",
-                },
-              },
-            },
-          ],
+        defineField({
+          name: "ctaHref",
+          title: "URL link",
+          type: "string",
+          description: "Es: /chi-siamo",
         }),
       ],
     }),

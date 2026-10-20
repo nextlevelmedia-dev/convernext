@@ -5,6 +5,15 @@ import AboutFounder from "@/components/AboutFounder/AboutFounder"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
+import { pageMetadata } from "@/lib/seo"
+
+export const metadata = pageMetadata({
+  title: "Chi siamo — Studio digitale indipendente",
+  description:
+    "NEXT è uno studio digitale indipendente specializzato in siti web, ecommerce e conversione. Partiamo dalla comprensione dei tuoi clienti per progettare esperienze che aiutano a sceglierti.",
+  path: "/chi-siamo",
+})
+
 const query = `*[_type == "page" && slug.current == "chi-siamo"][0]{
   hero{
     eyebrow,
@@ -46,7 +55,7 @@ export default async function ChiSiamoPage() {
     <>
       <Header />
 
-      <main>
+      <div>
 
         {/* HERO */}
         <HeroChiSiamo
@@ -82,7 +91,7 @@ export default async function ChiSiamoPage() {
         {/* CONTATTI */}
         <ContactSection />
 
-      </main>
+      </div>
     </>
   )
 }

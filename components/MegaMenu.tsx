@@ -36,44 +36,37 @@ const items = [
   },
 ]
 
+// i colori usano `!` perché in globals.css gli elementi dentro <header>
+// hanno già un colore forzato (sia in light che in dark)
 export default function MegaMenu() {
   return (
-    <div className="absolute left-1/2 top-full w-screen -translate-x-1/2 border-t border-slate-200 dark:border-slate-800 bg-transparent">
+    <div className="absolute left-1/2 top-full w-screen -translate-x-1/2 border-t border-slate-200 bg-transparent dark:border-white/10">
       <div className="mx-auto max-w-7xl px-6 pb-6">
-        <div
-          className="rounded-b-3xl shadow-2xl shadow-slate-200/60 dark:shadow-black/40"
-          style={{ background: "rgba(255,255,255,0.98)", backdropFilter: "blur(20px)" }}
-        >
+        <div className="rounded-b-3xl border border-t-0 border-slate-200 bg-white/[0.98] shadow-2xl shadow-slate-200/60 backdrop-blur-xl dark:border-white/10 dark:bg-[#0f1726]/[0.97] dark:shadow-black/50">
           <div className="grid grid-cols-4 gap-0 p-8">
 
             {items.map((item, i) => (
-              <div
+              <Link
                 key={item.title}
-                className="flex flex-col pr-8"
-                style={{
-                  borderRight: i < items.length - 1 ? "1px solid #e2e8f0" : "none",
-                  paddingLeft: i > 0 ? "32px" : "0",
-                }}
+                href={item.href}
+                className={`group/col flex flex-col pr-8 ${i > 0 ? "pl-8" : ""} ${i < items.length - 1 ? "border-r border-slate-200 dark:border-white/10" : ""}`}
               >
-                <div
-                  className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl"
-                  style={{ background: "linear-gradient(135deg, rgba(252,3,176,0.10), rgba(4,124,249,0.10))", color: "#7c3aed" }}
-                >
+                <div className="mb-5 flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover/col:scale-105 bg-[linear-gradient(135deg,rgb(252_3_176/0.10),rgb(4_124_249/0.10))] dark:bg-[linear-gradient(135deg,rgb(252_3_176/0.18),rgb(4_124_249/0.18))] [&_svg]:!text-[#7c3aed] dark:[&_svg]:!text-[#a78bfa]">
                   {item.icon}
                 </div>
 
-                <h3 className="mb-2 text-lg font-black" style={{ color: "#0f172a" }}>
+                <h3 className="mb-2 text-lg font-black !text-slate-900 dark:!text-white">
                   {item.title}
                 </h3>
 
-                <p className="mb-5 text-sm leading-6" style={{ color: "#64748b" }}>
+                <p className="mb-5 text-sm leading-6 !text-slate-500 dark:!text-white/60">
                   {item.description}
                 </p>
 
-                <ul className="mb-6 space-y-2 flex-1">
+                <ul className="mb-6 flex-1 space-y-2">
                   {item.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm" style={{ color: "#475569" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <li key={f} className="flex items-center gap-2 text-sm !text-slate-600 dark:!text-white/75">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 !text-[#7c3aed] dark:!text-[#a78bfa]">
                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
                       </svg>
                       {f}
@@ -81,41 +74,26 @@ export default function MegaMenu() {
                   ))}
                 </ul>
 
-                <Link
-                  href={item.href}
-                  className="inline-flex items-center gap-2 self-start rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:text-white"
-                  style={{ background: "#f1f5f9", color: "#0f172a" }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget
-                    el.style.background = "linear-gradient(to right, #fc03b0, #047cf9)"
-                    el.style.color = "#ffffff"
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget
-                    el.style.background = "#f1f5f9"
-                    el.style.color = "#0f172a"
-                  }}
-                >
+                <span className="inline-flex items-center gap-2 self-start rounded-full bg-slate-100 px-4 py-2 text-sm font-bold !text-slate-900 transition-all duration-300 group-hover/col:bg-[linear-gradient(to_right,#fc03b0,#047cf9)] group-hover/col:!text-white group-hover/col:shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] group-focus-visible/col:bg-[linear-gradient(to_right,#fc03b0,#047cf9)] group-focus-visible/col:!text-white dark:bg-white/[0.07] dark:!text-white">
                   Scopri di più →
-                </Link>
-              </div>
+                </span>
+              </Link>
             ))}
 
             {/* COLONNA DESTRA — CTA */}
-            <div className="pl-8 flex flex-col justify-center" style={{ borderLeft: "1px solid #e2e8f0" }}>
-              <p className="mb-2 text-xs font-bold uppercase tracking-widest" style={{ color: "#7c3aed" }}>
+            <div className="flex flex-col justify-center border-l border-slate-200 pl-8 dark:border-white/10">
+              <p className="mb-2 text-xs font-bold uppercase tracking-widest !text-[#7c3aed] dark:!text-[#a78bfa]">
                 Hai un&apos;idea in mente?
               </p>
-              <h3 className="mb-3 text-2xl font-black leading-tight" style={{ color: "#0f172a" }}>
+              <h3 className="mb-3 text-2xl font-black leading-tight !text-slate-900 dark:!text-white">
                 Parliamone insieme
               </h3>
-              <p className="mb-6 text-sm leading-6" style={{ color: "#64748b" }}>
+              <p className="mb-6 text-sm leading-6 !text-slate-500 dark:!text-white/60">
                 Raccontaci il tuo progetto e scopriamo come realizzarlo al meglio.
               </p>
               <Link
                 href="/contatti"
-                className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-all duration-300 hover:shadow-lg hover:shadow-pink-200"
-                style={{ background: "linear-gradient(to right, #fc03b0, #047cf9)", color: "#ffffff" }}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gradient px-6 py-3 text-sm font-bold !text-white shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] transition-shadow duration-300 hover:shadow-[0_18px_44px_-12px_rgb(252_3_176/0.6)]"
               >
                 Contattaci ora →
               </Link>

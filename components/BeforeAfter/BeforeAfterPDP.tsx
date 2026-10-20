@@ -17,7 +17,7 @@ function PDPCard({ pair }: { pair: PDPPair }) {
 
       {/* Label card */}
       {pair.label && (
-        <p className="text-xs font-bold tracking-widest uppercase" style={{ color: "#94a3b8" }}>
+        <p className="text-xs font-bold tracking-widest uppercase" style={{ color: "#64748b" }}>
           {pair.label}
         </p>
       )}
@@ -88,11 +88,11 @@ function PDPCard({ pair }: { pair: PDPPair }) {
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-1.5">
           <div className="h-2 w-2 rounded-full bg-red-400 shrink-0" />
-          <p className="text-xs font-medium" style={{ color: "#94a3b8" }}>Non ottimizzata</p>
+          <p className="text-xs font-medium" style={{ color: "#64748b" }}>Non ottimizzata</p>
         </div>
         <div className="flex items-center gap-1.5">
           <div className="h-2 w-2 rounded-full shrink-0" style={{ background: "linear-gradient(to right, #fc03b0, #047cf9)" }} />
-          <p className="text-xs font-medium" style={{ color: "#94a3b8" }}>Ottimizzata</p>
+          <p className="text-xs font-medium" style={{ color: "#64748b" }}>Ottimizzata</p>
         </div>
       </div>
 

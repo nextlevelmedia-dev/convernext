@@ -12,6 +12,15 @@ import FaqSection from "@/components/FaqSection/FaqSection"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
+import { pageMetadata } from "@/lib/seo"
+
+export const metadata = pageMetadata({
+  title: "Siti web performanti che generano contatti",
+  description:
+    "Siti web su misura progettati per guidare ogni utente all’azione, migliorare l’esperienza e aumentare contatti e opportunità.",
+  path: "/siti-web",
+})
+
 const sitiWebSlides = [
   {
     imac: "/mockups/siti-web-imac-1.webp",
@@ -218,7 +227,7 @@ export default async function SitiWebPage() {
     <>
       <Header />
 
-      <main>
+      <div>
         {/* HERO */}
         <Hero
           eyebrow={data?.hero?.eyebrow}
@@ -309,7 +318,7 @@ export default async function SitiWebPage() {
 
         {/* CONTACT */}
         <ContactSection />
-      </main>
+      </div>
     </>
   )
 }

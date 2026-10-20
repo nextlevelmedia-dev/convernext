@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { PortableText } from "@portabletext/react"
 
@@ -20,21 +20,41 @@ interface TeamCardsProps {
 }
 
 function TeamCard({ card, large }: { card: Card; large?: boolean }) {
+  const mediaRef = useRef<HTMLDivElement>(null)
   const [animationData, setAnimationData] = useState<any>(null)
+  const [shouldLoad, setShouldLoad] = useState(false)
 
   useEffect(() => {
-    if (!card.lottieFile) return
+    const element = mediaRef.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: "200px" }
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!shouldLoad || !card.lottieFile) return
     let cancelled = false
     fetch(`/lotties/${card.lottieFile}`)
       .then((res) => res.json())
       .then((data) => { if (!cancelled) setAnimationData(data) })
       .catch(() => {})
     return () => { cancelled = true }
-  }, [card.lottieFile])
+  }, [shouldLoad, card.lottieFile])
 
   return (
     <div className={`team-card card-adaptive rounded-2xl p-8 ${large ? "team-card--large" : ""}`}>
-      <div className="mb-6 flex items-center justify-center">
+      <div ref={mediaRef} aria-hidden className="mb-6 flex items-center justify-center">
         {animationData ? (
           <Lottie
             animationData={animationData}

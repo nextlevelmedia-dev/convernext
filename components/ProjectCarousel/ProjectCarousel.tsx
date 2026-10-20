@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import './ProjectCarousel.css'
 
 export default function ProjectCarousel() {
@@ -141,81 +142,81 @@ export default function ProjectCarousel() {
 
   return (
     <section className="nlm-coverflow" ref={sectionRef}>
-      <button className="nlm-btn prev" aria-label="Previous">&#10094;</button>
+      <button className="nlm-btn prev" aria-label="Progetto precedente">&#10094;</button>
 
       <div className="nlm-track">
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T160336.097-2.webp" alt="Dance On" width="600" height="400" />
+          <Image src="https://next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T160336.097-2.webp" alt="Dance On" width={600} height={400} sizes="260px" />
           <h3>Dance On</h3><h4>SITO WEB - CUSTOM DEVELOPMENT - SEO</h4>
           <p>Sito web per scuola di danza e studio Pilates a Rho. Include presentazione corsi, team insegnanti e SEO locale.</p>
           <a href="https://www.spaziodanceon.it/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T160843.763-1.webp" alt="Need JPG" width="600" height="400" />
+          <Image src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T160843.763-1.webp" alt="Need JPG" width={600} height={400} sizes="260px" />
           <h3>Need Jpg</h3><h4>E-COMMERCE - CUSTOM DEVELOPMENT - ADV</h4>
           <p>Store online streetwear con UX studiata per la conversione e flusso d&apos;acquisto rapido.</p>
           <a href="https://needjpg.com/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T165821.929.webp" alt="Snakes Milano" width="600" height="400" />
+          <Image src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T165821.929.webp" alt="Snakes Milano" width={600} height={400} sizes="260px" />
           <h3>Snakes Milano</h3><h4>LANDING - CUSTOM DEVELOPMENT - DONAZIONI</h4>
           <p>Sito web per squadra di Powerchair Football con sistema di donazioni e struttura pensata per supportare il progetto sportivo.</p>
           <a href="https://www.snakesmilano.it/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T163434.994.webp" alt="Effemme Exclusive Lab" width="600" height="400" />
+          <Image src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T163434.994.webp" alt="Effemme Exclusive Lab" width={600} height={400} sizes="260px" />
           <h3>Effemme Exclusive Lab</h3><h4>E-COMMERCE - CUSTOM DEVELOPMENT - ADV</h4>
           <p>Store online streetwear con UX studiata per la conversione e flusso d&apos;acquisto rapido.</p>
           <a href="https://effemmeexclusivelab.com/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T164723.190.webp" alt="Barlafus Cafè" width="600" height="400" />
+          <Image src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T164723.190.webp" alt="Barlafus Cafè" width={600} height={400} sizes="260px" />
           <h3>Barlafus Cafè</h3><h4>SITO WEB - CUSTOM DEVELOPMENT</h4>
           <p>Sito web per bar con menu digitale, presentazione dell&apos;offerta e struttura ottimizzata per attrarre clienti locali.</p>
           <a href="https://www.barlafuscafe.it/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T123451.217-1.webp" alt="Vitera Group" width="600" height="400" />
+          <Image src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T123451.217-1.webp" alt="Vitera Group" width={600} height={400} sizes="260px" />
           <h3>Vitera Group</h3><h4>SITO WEB - CUSTOM DEVELOPMENT</h4>
           <p>Sito professionale per realizzatori di stand, con struttura SEO e presentazione servizi.</p>
           <a href="https://www.viteragroup.com/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T123338.051-1.webp" alt="Davide Fratta" width="600" height="400" />
+          <Image src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T123338.051-1.webp" alt="Davide Fratta" width={600} height={400} sizes="260px" />
           <h3>Davide Fratta</h3><h4>LANDING PAGE - CUSTOM DEVELOPMENT</h4>
           <p>Landing page elegante e professionale pensata per massimizzare i contatti.</p>
           <a href="https://www.davidefratta.it/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T155229.614-1.webp" alt="Samgroup Srl" width="600" height="400" />
+          <Image src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T155229.614-1.webp" alt="Samgroup Srl" width={600} height={400} sizes="260px" />
           <h3>Samgroup Srl</h3><h4>SITO WEB - PORTFOLIO</h4>
           <p>Sito professionale per geometra, layout pulito e struttura SEO.</p>
           <a href="https://www.samgroup.it/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T163727.009.webp" alt="Delta Antinfortunistica" width="600" height="400" />
+          <Image src="https://next-level-media.it/wp-content/uploads/2026/04/Progetto-senza-titolo-2026-04-27T163727.009.webp" alt="Delta Antinfortunistica" width={600} height={400} sizes="260px" />
           <h3>Delta Antinfortunistica</h3><h4>LANDING PAGE - CUSTOM DEVELOPMENT</h4>
           <p>Landing per promuovere catalogo di dpi antinfortunistici.</p>
           <a href="https://www.antinfortunisticadelta.it/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
 
         <div className="nlm-slide"><div className="nlm-card">
-          <img src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T155432.570-1.webp" alt="Animali Rho" width="600" height="400" />
+          <Image src="https://staging2.next-level-media.it/wp-content/uploads/2025/12/Progetto-senza-titolo-2025-12-05T155432.570-1.webp" alt="Animali Rho" width={600} height={400} sizes="260px" />
           <h3>Animali Rho</h3><h4>SITO WEB - DONAZIONI</h4>
           <p>Sito di raccolta fondi per canile con sistema donazioni e sensibilizzazione.</p>
           <a href="https://www.dimensioneanimalerho.org/" target="_blank" rel="noopener noreferrer" className="nlm-card-btn">Vedi il sito</a>
         </div></div>
       </div>
 
-      <button className="nlm-btn next" aria-label="Next">&#10095;</button>
+      <button className="nlm-btn next" aria-label="Progetto successivo">&#10095;</button>
     </section>
   )
 }

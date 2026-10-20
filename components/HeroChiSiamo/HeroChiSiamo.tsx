@@ -198,7 +198,7 @@ export default function HeroChiSiamo({
               </p>
 
               <p
-                className="text-[11px] text-slate-500"
+                className="text-[11px] text-slate-600"
                 style={{
                   fontFamily: "var(--font-lato), sans-serif",
                   fontWeight: 400,
@@ -250,7 +250,7 @@ export default function HeroChiSiamo({
                 </p>
 
                 <p
-                  className="mt-1 text-sm text-slate-500"
+                  className="mt-1 text-sm text-slate-600"
                   style={{
                     fontFamily: "var(--font-lato), sans-serif",
                     fontWeight: 400,

@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import dynamic from "next/dynamic"
 import { urlFor } from "../../sanity/lib/image"
-import { ValuePropVisual } from "../ValuePropVisuals/ValuePropVisuals"
 
 interface ValuePropItem {
   label?: string
@@ -25,6 +24,12 @@ interface ValuePropItem {
 interface ValuePropsProps {
   items?: ValuePropItem[]
 }
+
+const ValuePropVisual = dynamic(() =>
+  import("../ValuePropVisuals/ValuePropVisuals").then(
+    (mod) => mod.ValuePropVisual
+  )
+)
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -158,7 +163,7 @@ function MediaBlock({ item }: { item: ValuePropItem }) {
 
   if (item.mediaType === "lottie" && item.lottieFile) {
     return (
-      <div className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl">
+      <div aria-hidden className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-2xl">
         <LazyMount rootMargin="250px 0px">
           <LazyLottie file={item.lottieFile} />
         </LazyMount>
@@ -184,7 +189,7 @@ function MediaBlock({ item }: { item: ValuePropItem }) {
 
   return (
     <div className="flex aspect-video w-full items-center justify-center rounded-2xl bg-slate-100 dark:bg-neutral-900">
-      <p className="text-sm text-slate-400 dark:text-white/40">
+      <p className="text-sm text-slate-500 dark:text-white/40">
         Media
       </p>
     </div>
@@ -221,7 +226,7 @@ function ValuePropRow({
       >
         {item.label && (
           <p
-            className="mb-3 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-white/50"
+            className="mb-3 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600 dark:text-white/50"
             style={{
               fontFamily: "var(--font-lato), sans-serif",
             }}

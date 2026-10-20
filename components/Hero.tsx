@@ -1,4 +1,11 @@
 import type { ReactNode } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { urlFor } from "../sanity/lib/image"
+
+type CtaProofAvatar = {
+  photo?: Parameters<typeof urlFor>[0]
+}
 
 type SocialProofStat = {
   value?: string
@@ -17,6 +24,9 @@ type HeroProps = {
 
   trustPoints?: string[]
 
+  ctaProofText?: string
+  ctaProofAvatars?: CtaProofAvatar[]
+
   socialProofBadgeTitle?: string
   socialProofBadgeSubtitle?: string
   socialProofStats?: SocialProofStat[]
@@ -33,35 +43,49 @@ export default function Hero({
   subtitle,
   ctaText,
   trustPoints,
+  ctaProofText,
+  ctaProofAvatars,
   socialProofBadgeTitle,
   socialProofBadgeSubtitle,
   socialProofStats,
   rightContent,
 }: HeroProps) {
+  const hasCtaProof = Boolean(ctaProofText)
+
   const hasSocialProof =
     Boolean(socialProofBadgeTitle) ||
     Boolean(socialProofBadgeSubtitle) ||
     Boolean(socialProofStats?.length)
 
   return (
-    <>
+    // da desktop hero + banda occupano esattamente lo schermo
+    <div className="lg:flex lg:min-h-svh lg:flex-col">
       {/* =====================================================
           HERO
       ===================================================== */}
       <section
-        className="relative overflow-hidden bg-white px-6 pb-24 pt-40 text-black transition-colors duration-300 dark:bg-black dark:text-white"
+        className="relative overflow-hidden bg-white px-5 pb-24 pt-28 md:px-6 md:pt-40 lg:flex lg:flex-1 lg:items-center lg:pb-12 lg:pt-28 text-black transition-colors duration-300 dark:bg-black dark:text-white"
         style={{
           fontFamily: "var(--font-lato), sans-serif",
         }}
       >
         {/* GRID BACKGROUND */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#000000_1px,transparent_1px),linear-gradient(to_bottom,#000000_1px,transparent_1px)] bg-[size:48px_48px] opacity-[0.035] dark:bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] dark:opacity-[0.04]" />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(90deg,rgb(15_23_42/0.045)_1px,transparent_1px),linear-gradient(rgb(15_23_42/0.045)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:linear-gradient(to_bottom,black_40%,transparent)] dark:bg-[linear-gradient(90deg,rgb(255_255_255/0.04)_1px,transparent_1px),linear-gradient(rgb(255_255_255/0.04)_1px,transparent_1px)]"
+        />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-20 lg:grid-cols-2">
+        {/* GLOW BACKGROUND */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[radial-gradient(60%_60%_at_8%_0%,rgb(252_3_176/0.12),transparent_70%),radial-gradient(60%_60%_at_95%_10%,rgb(4_124_249/0.1),transparent_70%)] dark:bg-[radial-gradient(60%_60%_at_8%_0%,rgb(252_3_176/0.16),transparent_70%),radial-gradient(60%_60%_at_95%_10%,rgb(4_124_249/0.14),transparent_70%)]"
+        />
+
+        <div className="relative mx-auto grid w-full max-w-7xl items-center gap-20 lg:grid-cols-2">
           {/* LEFT */}
-          <div className="flex min-w-0 flex-col items-center text-center lg:items-start lg:text-left">
+          <div className="flex min-w-0 flex-col items-start text-left">
             {eyebrow && (
-              <div className="mb-6 inline-flex rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold ring-1 ring-slate-200 transition-colors dark:bg-white dark:ring-white/10">
+              <div className="mb-7 inline-flex rounded-full border md:mb-6 border-slate-200 bg-white/80 px-4 py-2 text-sm font-bold backdrop-blur transition-shadow hover:shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.12)] dark:border-white/10 dark:bg-[#0f1726]/80">
                 <a
                   href="#recensioni"
                   className="bg-brand-gradient bg-clip-text text-transparent"
@@ -72,7 +96,7 @@ export default function Hero({
             )}
 
             <h1
-              className="max-w-3xl text-4xl font-semibold leading-[1.15] tracking-[-0.025em] text-black md:text-5xl lg:text-left dark:text-white"
+              className="max-w-3xl text-[clamp(2.35rem,1.2rem+4.4vw,4.6rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-black md:text-5xl md:leading-[1.15] md:tracking-[-0.025em] dark:text-white"
               style={{
                 fontFamily: "var(--font-archivo), sans-serif",
                 fontWeight: 600,
@@ -97,7 +121,7 @@ export default function Hero({
 
             {subtitle && (
               <p
-                className="mt-6 max-w-2xl text-lg leading-8 text-black/65 dark:text-white/70"
+                className="mt-7 max-w-xl text-[clamp(1.05rem,0.98rem+0.3vw,1.2rem)] leading-[1.7] text-black/65 md:mt-6 md:max-w-2xl md:text-lg md:leading-8 dark:text-white/70"
                 style={{
                   fontFamily: "var(--font-lato), sans-serif",
                   fontWeight: 400,
@@ -107,23 +131,72 @@ export default function Hero({
               </p>
             )}
 
-            {ctaText && (
-              <div className="mt-10 flex justify-center lg:justify-start">
-                <a
-                  className="inline-flex cursor-pointer rounded-full bg-brand-gradient px-8 py-4 font-bold !text-white shadow-xl"
-                  style={{
-                    fontFamily: "var(--font-lato), sans-serif",
-                  }}
-                >
-                  {ctaText}
-                </a>
+            {(ctaText || hasCtaProof) && (
+              <div className="mt-9 flex flex-col items-start gap-6 md:mt-10 sm:flex-row sm:items-center">
+                {ctaText && (
+                  <Link
+                    href="/contatti"
+                    className="group/btn inline-flex h-14 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-brand-gradient px-8 text-base font-bold !text-white shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] transition-[transform,box-shadow] duration-300 hover:shadow-[0_18px_44px_-12px_rgb(252_3_176/0.6)] active:scale-[0.98]"
+                    style={{
+                      fontFamily: "var(--font-lato), sans-serif",
+                    }}
+                  >
+                    <span>{ctaText}</span>
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 16 16"
+                      className="size-4 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5"
+                    >
+                      <path
+                        d="M4.5 11.5l7-7M6 4.5h5.5V10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Link>
+                )}
+
+                {/* SOCIAL PROOF SOTTO CTA */}
+                {hasCtaProof && (
+                  <div className="flex items-center gap-4">
+                    {ctaProofAvatars && ctaProofAvatars.length > 0 && (
+                      <div className="flex shrink-0 -space-x-2.5">
+                        {ctaProofAvatars.slice(0, 4).map((avatar, index) =>
+                          avatar.photo ? (
+                            <Image
+                              key={index}
+                              src={urlFor(avatar.photo).width(80).height(80).url()}
+                              alt=""
+                              width={40}
+                              height={40}
+                              className="size-9 rounded-full border-2 border-white object-cover dark:border-black"
+                            />
+                          ) : null
+                        )}
+                      </div>
+                    )}
+
+                    <p className="text-sm leading-5 text-black/65 dark:text-white/70">
+                      <span
+                        className="block text-[#fac800]"
+                        aria-label="5 stelle su 5"
+                      >
+                        ★★★★★
+                      </span>
+                      {ctaProofText}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
             {/* TRUST POINTS */}
             {trustPoints && trustPoints.length > 0 && (
               <div
-                className="mt-8 flex max-w-full flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-bold text-black/55 sm:gap-x-6 sm:text-sm lg:justify-start dark:text-white/60"
+                className="mt-8 flex max-w-full flex-wrap items-center justify-start gap-x-4 gap-y-2 text-xs font-bold text-black/55 sm:gap-x-6 sm:text-sm dark:text-white/60"
                 style={{
                   fontFamily: "var(--font-lato), sans-serif",
                 }}
@@ -156,7 +229,7 @@ export default function Hero({
                     <span
                       className="ml-2 min-w-0 truncate text-xs font-medium"
                       style={{
-                        color: "#94a3b8",
+                        color: "#64748b",
                         fontFamily: "var(--font-lato), sans-serif",
                       }}
                     >
@@ -209,7 +282,7 @@ export default function Hero({
                     <div
                       className="mt-2 flex justify-between text-[10px]"
                       style={{
-                        color: "#94a3b8",
+                        color: "#64748b",
                         fontFamily: "var(--font-lato), sans-serif",
                       }}
                     >
@@ -311,7 +384,7 @@ export default function Hero({
                       <p
                         className="text-[10px]"
                         style={{
-                          color: "#94a3b8",
+                          color: "#64748b",
                           fontFamily: "var(--font-lato), sans-serif",
                         }}
                       >
@@ -347,7 +420,7 @@ export default function Hero({
                       <p
                         className="text-[10px]"
                         style={{
-                          color: "#94a3b8",
+                          color: "#64748b",
                           fontFamily: "var(--font-lato), sans-serif",
                         }}
                       >
@@ -367,12 +440,12 @@ export default function Hero({
       ===================================================== */}
       {hasSocialProof && (
         <div
-          className="hero-stats w-full overflow-hidden border-y border-slate-200 px-4 py-7 transition-colors sm:px-6 md:py-8 dark:border-white/10"
+          className="hero-stats w-full shrink-0 overflow-hidden border-y border-slate-200 px-4 py-7 transition-colors sm:px-6 md:py-5 dark:border-white/10"
           style={{
             fontFamily: "var(--font-lato), sans-serif",
           }}
         >
-          <div className="mx-auto flex w-full max-w-7xl min-w-0 flex-col-reverse items-center gap-7 md:flex-row md:gap-0">
+          <div className="mx-auto flex w-full max-w-7xl min-w-0 flex-col-reverse items-center justify-center gap-7 md:flex-row md:gap-0">
             {/* BADGE */}
             {(socialProofBadgeTitle || socialProofBadgeSubtitle) && (
               <div className="flex w-full min-w-0 items-center justify-center gap-3 border-t border-slate-200 pt-6 md:w-auto md:shrink-0 md:justify-start md:border-r md:border-t-0 md:pr-8 md:pt-0 dark:border-white/10">
@@ -444,7 +517,7 @@ export default function Hero({
                   )}
 
                   {socialProofBadgeSubtitle && (
-                    <p className="mt-0.5 break-words text-[10px] font-semibold leading-4 text-slate-500 sm:text-[11px] dark:text-white/50">
+                    <p className="mt-0.5 break-words text-[10px] font-semibold leading-4 text-slate-600 sm:text-[11px] dark:text-white/50">
                       {socialProofBadgeSubtitle}
                     </p>
                   )}
@@ -455,7 +528,7 @@ export default function Hero({
             {/* STATS */}
             {socialProofStats && socialProofStats.length > 0 && (
               <div
-                className={`grid w-full min-w-0 md:pl-8 ${
+                className={`grid w-full min-w-0 items-center md:pl-8 ${
                   socialProofStats.length >= 4
                     ? "grid-cols-2 md:grid-cols-4"
                     : socialProofStats.length === 3
@@ -499,7 +572,7 @@ md:border-slate-200
                     )}
 
                     {stat.label && (
-                      <p className="mx-auto mt-1.5 max-w-[150px] break-words text-xs font-medium leading-5 text-slate-500 sm:text-sm dark:text-white/50">
+                      <p className="mx-auto mt-1 max-w-[150px] break-words text-xs md:max-w-none font-medium leading-5 text-slate-600 sm:text-sm dark:text-white/50">
                         {stat.label}
                       </p>
                     )}
@@ -510,6 +583,6 @@ md:border-slate-200
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

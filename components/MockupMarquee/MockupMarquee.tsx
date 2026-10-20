@@ -24,34 +24,26 @@ function MarqueeRow({
   rowRef: React.RefObject<HTMLDivElement | null>
 }) {
   const trackRef = useRef<HTMLDivElement>(null)
-  const posRef = useRef(0)
-  const rafRef = useRef<number>(0)
 
+  // Animazione CSS (compositor) invece di requestAnimationFrame:
+  // stessa velocità di prima (0.4px/frame mobile, 0.7px/frame desktop a 60fps)
   useEffect(() => {
     const track = trackRef.current
     if (!track) return
 
-    const isMobile = window.innerWidth < 768
-    const speed = isMobile ? 0.4 : 0.7
-    const dir = direction === "left" ? -1 : 1
-
-    if (direction === "right") {
-      posRef.current = -track.scrollWidth / 2
-    }
-
-    const animate = () => {
-      posRef.current += speed * dir
+    const update = () => {
+      const isMobile = window.innerWidth < 768
+      const pxPerSecond = (isMobile ? 0.4 : 0.7) * 60
       const half = track.scrollWidth / 2
-
-      if (direction === "left" && posRef.current <= -half) posRef.current = 0
-      if (direction === "right" && posRef.current >= 0) posRef.current = -half
-
-      track.style.transform = `translateX(${posRef.current}px)`
-      rafRef.current = requestAnimationFrame(animate)
+      if (!half) return
+      track.style.animationDuration = `${half / pxPerSecond}s`
+      track.style.animationName = direction === "left" ? "mockup-marquee-left" : "mockup-marquee-right"
     }
 
-    rafRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(rafRef.current)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(track)
+    return () => observer.disconnect()
   }, [direction])
 
   useEffect(() => {
@@ -87,15 +79,16 @@ const startPoint = windowHeight * 1.1
       className="relative flex overflow-hidden w-full"
       style={{ opacity: 0, transform: "translateY(20px)", transition: "opacity 0.1s ease-out, transform 0.1s ease-out" }}
     >
-      <div ref={trackRef} style={{ display: "flex", width: "max-content", alignItems: "flex-start" }}>
+      <div ref={trackRef} style={{ display: "flex", width: "max-content", alignItems: "flex-start", animationTimingFunction: "linear", animationIterationCount: "infinite", willChange: "transform" }}>
         {[...items, ...items].map((item, i) => (
           <div
   key={i}
+  aria-hidden={i >= items.length || undefined}
   className="shrink-0 px-2 md:px-3 w-[calc(50vw-12px)] md:w-[calc(25vw-12px)]"
 >
             <Image
               src={urlFor(item.image).width(600).url()}
-              alt={item.alt}
+              alt={i >= items.length ? "" : item.alt || "Progetto realizzato"}
               width={600}
               height={0}
               sizes="(max-width: 768px) 50vw, 25vw"

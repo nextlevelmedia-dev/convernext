@@ -3,6 +3,15 @@ import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 import Image from "next/image"
 
+import { pageMetadata } from "@/lib/seo"
+
+export const metadata = pageMetadata({
+  title: "Progetti — Siti web, ecommerce e landing realizzati",
+  description:
+    "Una selezione dei nostri lavori più significativi: siti web, ecommerce e landing page realizzati su misura per imprenditori che volevano clienti, non solo visitatori.",
+  path: "/progetti",
+})
+
 const query = `{
   "page": *[_type == "page" && slug.current == "progetti"][0]{
     hero{
@@ -40,8 +49,10 @@ type Project = {
 
 function ProjectCard({
   project,
+  eager = false,
 }: {
   project: Project
+  eager?: boolean
 }) {
   const imageUrl = project.image?.asset?.url
   const Wrapper = project.href ? "a" : "div"
@@ -66,6 +77,9 @@ function ProjectCard({
               src={imageUrl}
               alt={project.title}
               fill
+              sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+              loading={eager ? "eager" : "lazy"}
+              fetchPriority={eager ? "high" : "auto"}
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </div>
@@ -73,7 +87,7 @@ function ProjectCard({
       )}
 
       <div className="p-6">
-        <h3
+        <h2
           className="mb-2 text-xl text-slate-950 dark:text-white"
           style={{
             fontFamily: "var(--font-archivo), sans-serif",
@@ -81,10 +95,10 @@ function ProjectCard({
           }}
         >
           {project.title}
-        </h3>
+        </h2>
 
         {project.description && (
-          <p className="text-sm font-semibold uppercase tracking-widest text-slate-400 dark:text-white/40">
+          <p className="text-sm font-semibold uppercase tracking-widest text-slate-500 dark:text-white/40">
             {project.description}
           </p>
         )}
@@ -104,7 +118,7 @@ export default async function ProgettiPage() {
     <>
       <Header />
 
-      <main className="pt-20">
+      <div className="pt-20">
         <section className="px-6 py-24">
           <div className="mx-auto max-w-7xl">
             <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-[400px_1fr]">
@@ -173,6 +187,7 @@ export default async function ProgettiPage() {
                   <ProjectCard
                     key={i}
                     project={project}
+                    eager={i < 2}
                   />
                 ))}
               </div>
@@ -182,7 +197,7 @@ export default async function ProgettiPage() {
         </section>
 
         <ContactSection />
-      </main>
+      </div>
     </>
   )
 }

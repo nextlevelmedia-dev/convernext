@@ -50,6 +50,7 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
       const temp = document.createElement('img')
       temp.src = src
       temp.className = 'screen-img temp-screen'
+      temp.alt = ''
 
       Object.assign(temp.style, {
         position: 'absolute',
@@ -132,14 +133,14 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
             alt="Tablet frame"
             width={430}
             height={580}
-            fetchPriority="high"
+            decoding="async"
           />
           <div className="screen">
             <img
               className="screen-img tablet-screen"
               src={firstSlide?.tablet}
               alt="Tablet screen"
-              fetchPriority="high"
+              decoding="async"
               width={800}
               height={600}
             />
@@ -153,14 +154,14 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
             alt="Mobile frame"
             width={280}
             height={560}
-            fetchPriority="high"
+            decoding="async"
           />
           <div className="screen">
             <img
               className="screen-img mobile-screen"
               src={firstSlide?.mobile}
               alt="Mobile screen"
-              fetchPriority="high"
+              decoding="async"
               width={390}
               height={844}
             />

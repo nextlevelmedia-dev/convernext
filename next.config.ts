@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.sanity.io",
       },
+      {
+        protocol: "https",
+        hostname: "next-level-media.it",
+      },
+      {
+        protocol: "https",
+        hostname: "staging2.next-level-media.it",
+      },
     ],
   },
 }

@@ -4,8 +4,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 
-import MegaMenu from "./MegaMenu"
+import dynamic from "next/dynamic"
 import ThemeToggle from "./ThemeToggle"
+
+const MegaMenu = dynamic(() => import("./MegaMenu"))
 
 export default function Header() {
   const [open, setOpen] = useState(false)
@@ -54,7 +56,7 @@ export default function Header() {
         className={`fixed inset-0 z-[70] bg-white dark:bg-[#111118] shadow-2xl md:hidden transition-transform duration-300 ease-in-out ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="flex h-20 items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700">
-          <Image src="/logo-convernext.webp" alt="Next Level Media" width={80} height={32} priority />
+          <Image src="/logo-convernext.webp" alt="Next Level Media" width={180} height={90} preload className="h-auto w-[104px]" />
           <button
             onClick={closeDrawer}
             aria-label="Chiudi menu"
@@ -70,7 +72,7 @@ export default function Header() {
 
           {/* Soluzioni e Servizi sempre aperto */}
           <div className="border-b border-slate-100 dark:border-slate-800 pb-3 mb-1">
-            <p className="py-3 text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+            <p className="py-3 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
               Soluzioni e Servizi
             </p>
             <div className="flex flex-col gap-1 pl-2">
@@ -132,11 +134,11 @@ export default function Header() {
         </div>
       </div>
 
-      <header className={`fixed left-0 top-0 z-50 w-full border-b border-slate-200/70 dark:border-slate-700 transition-colors duration-300 ${scrolled ? "bg-white dark:bg-black" : "bg-white dark:bg-black"}`}>
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <header className={`fixed left-0 top-0 z-50 w-full transition-[background-color,box-shadow,backdrop-filter] duration-300 ${scrolled || open ? "bg-white/80 shadow-[0_1px_0_#e2e8f0] backdrop-blur-xl dark:bg-black/80 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)]" : "bg-transparent"}`}>
+        <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 md:h-20 md:px-6">
 
           <Link href="/" className="flex items-center" aria-label="Home — Next Level Media">
-            <Image src="/logo-convernext.webp" alt="Next Level Media" width={90} height={36} priority />
+            <Image src="/logo-convernext.webp" alt="Next Level Media" width={180} height={90} preload className="h-auto w-[104px] md:w-[116px]" />
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm font-medium md:flex" aria-label="Navigazione principale">
@@ -174,17 +176,24 @@ export default function Header() {
             <ThemeToggle />
           </div>
 
-          {/* Hamburger senza bubble */}
-          <div className="flex items-center md:hidden">
+          {/* Mobile: CTA + hamburger */}
+          <div className="flex items-center gap-3 md:hidden">
+            <Link
+              href="/contatti"
+              className="cta-bubble inline-flex h-10 items-center justify-center rounded-full bg-brand-gradient px-4 text-sm font-bold shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)]"
+            >
+              Contattaci
+            </Link>
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Apri menu"
               aria-expanded={mobileOpen}
-              className="flex flex-col items-center justify-center gap-[5px] p-2"
+              className="grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white dark:border-white/10 dark:bg-neutral-950"
             >
-              <span className="block h-[2px] w-6 bg-slate-700 dark:bg-white rounded-full" />
-              <span className="block h-[2px] w-6 bg-slate-700 dark:bg-white rounded-full" />
-              <span className="block h-[2px] w-6 bg-slate-700 dark:bg-white rounded-full" />
+              <span aria-hidden className="relative block h-3 w-5">
+                <span className="absolute left-0 top-0 h-[1.5px] w-5 bg-slate-900 dark:bg-white" />
+                <span className="absolute bottom-0 left-0 h-[1.5px] w-5 bg-slate-900 dark:bg-white" />
+              </span>
             </button>
           </div>
 
