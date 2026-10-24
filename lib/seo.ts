@@ -6,7 +6,7 @@ export const site = {
   url: "https://convernext.com",
   description:
     "Studio digitale specializzato in realizzazione di siti web, sviluppo ecommerce Shopify e ottimizzazione delle conversioni (CRO). Trasformiamo il traffico in clienti con dati reali e UX strategica.",
-  email: "info@next-level-media.it",
+  email: "nextlevelmedia.creator@gmail.com",
   phone: "+39 3334187542",
   phoneDisplay: "+39 333 418 7542",
   hours: "Lun – Ven, 9:00 – 18:00",

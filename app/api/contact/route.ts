@@ -4,11 +4,15 @@ import { site } from "@/lib/seo"
  * Invio delle richieste dal form contatti tramite Resend (https://resend.com).
  *
  * Variabili d'ambiente:
- *   RESEND_API_KEY      obbligatoria, API key di Resend
- *   CONTACT_FROM_EMAIL  obbligatoria, mittente su un dominio verificato in Resend
- *                       (es. "Convernext <form@convernext.com>")
- *   CONTACT_TO_EMAIL    facoltativa, destinatario (default: email del sito)
+ *   RESEND_API_KEY      obbligatoria, API key di Resend (solo lato server)
+ *   CONTACT_FROM_EMAIL  mittente su un dominio verificato in Resend
+ *                       (default: "Convernext <contatti@convernext.com>")
+ *   CONTACT_TO_EMAIL    destinatario (default: email del sito)
  */
+
+const DEFAULT_FROM = `${site.name} <contatti@convernext.com>`
+// invii più rapidi di così dal caricamento del form sono quasi sempre bot
+const MIN_FILL_MS = 3000
 
 const SERVICES: Record<string, string> = {
   "ecommerce-shopify": "E-commerce Shopify",
@@ -27,6 +31,9 @@ const escapeHtml = (value: string) =>
 const field = (data: Record<string, unknown>, key: string) =>
   typeof data[key] === "string" ? (data[key] as string).trim() : ""
 
+// "contatti@convernext.com" -> "Convernext <contatti@convernext.com>"
+const withSenderName = (from: string) => (from.includes("<") ? from : `${site.name} <${from}>`)
+
 export async function POST(request: Request) {
   let data: Record<string, unknown>
   try {
@@ -35,8 +42,13 @@ export async function POST(request: Request) {
     return Response.json({ error: "Richiesta non valida." }, { status: 400 })
   }
 
-  // honeypot: campo nascosto che solo i bot compilano. Fingiamo il successo.
-  if (field(data, "website")) return Response.json({ ok: true })
+  // antispam: honeypot compilato o invio troppo rapido. Fingiamo il successo
+  // per non dare indizi al bot, ma non inviamo nulla.
+  const elapsed = typeof data.elapsed === "number" ? data.elapsed : 0
+  if (field(data, "website") || elapsed < MIN_FILL_MS) {
+    console.warn("[contact] invio scartato come spam", { elapsed })
+    return Response.json({ ok: true })
+  }
 
   const nome = field(data, "nome")
   const azienda = field(data, "azienda")
@@ -57,11 +69,11 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY
-  const from = process.env.CONTACT_FROM_EMAIL
-  const to = process.env.CONTACT_TO_EMAIL || site.email
+  const from = withSenderName(process.env.CONTACT_FROM_EMAIL?.trim() || DEFAULT_FROM)
+  const to = process.env.CONTACT_TO_EMAIL?.trim() || site.email
 
-  if (!apiKey || !from) {
-    console.error("[contact] RESEND_API_KEY o CONTACT_FROM_EMAIL non configurate")
+  if (!apiKey) {
+    console.error("[contact] RESEND_API_KEY non configurata")
     return Response.json({ error: "Servizio di invio non disponibile." }, { status: 503 })
   }
 
@@ -90,7 +102,7 @@ export async function POST(request: Request) {
       from,
       to: [to],
       reply_to: email,
-      subject: `Nuova richiesta: ${servizio} — ${nome}`,
+      subject: `Nuova richiesta: ${servizio} — ${nome.replace(/\s+/g, " ")}`,
       html,
       text,
     }),
@@ -100,6 +112,9 @@ export async function POST(request: Request) {
     console.error("[contact] invio fallito", res?.status, await res?.text().catch(() => ""))
     return Response.json({ error: "Invio non riuscito." }, { status: 502 })
   }
+
+  const { id } = await res.json().catch(() => ({}))
+  console.info("[contact] richiesta inviata", { id, to })
 
   return Response.json({ ok: true })
 }

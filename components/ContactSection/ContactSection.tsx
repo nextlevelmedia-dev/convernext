@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ChangeEvent, type FormEvent } from "react"
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react"
 import ContactOrb from "../ContactOrb/ContactOrb"
 import { site } from "@/lib/seo"
 
@@ -59,6 +59,11 @@ export default function ContactSection() {
   })
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  // momento in cui il form è diventato interattivo: il server scarta invii troppo rapidi
+  const mountedAt = useRef(0)
+  useEffect(() => {
+    mountedAt.current = Date.now()
+  }, [])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -73,7 +78,7 @@ export default function ContactSection() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, elapsed: Date.now() - mountedAt.current }),
       })
       const body = await res.json().catch(() => ({}))
 
