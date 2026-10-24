@@ -64,27 +64,6 @@ const query = `*[_type == "page" && slug.current == "ottimizzazione-conversioni"
     impactText
   },
 
-  beforeAfter{
-    pairs[]{
-      label,
-      uplift,
-
-      beforeImage{
-        asset->{
-          _id,
-          url
-        }
-      },
-
-      afterImage{
-        asset->{
-          _id,
-          url
-        }
-      }
-    }
-  },
-
   reviews{
     titleHighlight,
     titleNormal,
@@ -248,7 +227,7 @@ export default async function OttimizzazioneConversioniPage() {
         />
 
         {/* BEFORE / AFTER */}
-        <BeforeAfterPDP pairs={page?.beforeAfter?.pairs} />
+        <BeforeAfterPDP />
 
         {/* REVIEWS */}
         <ReviewsSection
@@ -283,6 +262,7 @@ export default async function OttimizzazioneConversioniPage() {
 
         {/* FINAL RECAP */}
         <FinalRecap
+          visual="cro"
           eyebrow={page?.finalRecap?.eyebrow}
           titleHighlight={page?.finalRecap?.titleHighlight}
           titleNormal={page?.finalRecap?.titleNormal}

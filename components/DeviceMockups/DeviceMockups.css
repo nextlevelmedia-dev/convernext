@@ -70,10 +70,11 @@
   z-index: 3;
 }
 
+/* top allineato al fondo dell'iPhone (bordo inferiore dei device a filo) */
 .device-mockup.tablet {
   width: 430px;
   left: 80px;
-  top: 230px;
+  top: 238px;
   z-index: 4;
 }
 
@@ -101,6 +102,53 @@
   filter: blur(20px);
   z-index: 1;
   pointer-events: none;
+}
+
+/* =========================
+   INGRESSO: prima l'iMac, poi tablet e smartphone.
+   Solo CSS (parte al primo paint, senza aspettare JS). L'iMac non parte
+   trasparente: si muove solo, così non ritarda l'LCP.
+========================= */
+
+.device-mockup.imac {
+  animation: mockup-imac-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.device-mockup.tablet {
+  animation: mockup-tablet-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+.device-mockup.mobile {
+  animation: mockup-mobile-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+
+.mockup-shadow {
+  animation: mockup-fade-in 0.9s ease-out both;
+}
+
+@keyframes mockup-imac-in {
+  from { transform: translateY(32px) scale(0.96); }
+}
+
+@keyframes mockup-tablet-in {
+  from { opacity: 0; transform: translate(-48px, 24px); }
+}
+
+@keyframes mockup-mobile-in {
+  from { opacity: 0; transform: translate(48px, 24px); }
+}
+
+@keyframes mockup-fade-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .device-mockup.imac,
+  .device-mockup.tablet,
+  .device-mockup.mobile,
+  .mockup-shadow {
+    animation: none;
+  }
 }
 
 #mockup-slider,
@@ -137,7 +185,7 @@
   .device-mockup.tablet {
     width: 70%;
     left: 2%;
-    top: 35%;
+    top: 36%;
   }
 
   .device-mockup.mobile {
@@ -158,4 +206,25 @@
   .mockup-stage {
     transform: translate(-50%, -50%) scale(0.48);
   }
+}
+/* =========================
+   SWIPE / TRASCINAMENTO
+   Solo i device ricevono il gesto; lo scroll verticale resta libero.
+========================= */
+
+.mockup-row.is-swipeable .device-mockup {
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.mockup-row.is-swipeable .device-mockup:active {
+  cursor: grabbing;
+}
+
+.mockup-row.is-swipeable .device-mockup img {
+  -webkit-user-drag: none;
 }

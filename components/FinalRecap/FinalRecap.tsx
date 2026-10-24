@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import dynamic from "next/dynamic"
 import { urlFor } from "../../sanity/lib/image"
+import RecapImage, { type RecapVariant } from "./RecapImage"
 
 const Lottie = dynamic(() => import("lottie-react"), {
   ssr: false,
@@ -23,6 +24,8 @@ interface FinalRecapProps {
   videoWebm?: string
   videoMp4?: string
   lottieFile?: string
+  // se presente mostra l'immagine di recap del servizio al posto del media di Sanity
+  visual?: RecapVariant
 }
 
 function MediaBlock({
@@ -131,6 +134,7 @@ export default function FinalRecap({
   videoWebm,
   videoMp4,
   lottieFile,
+  visual,
 }: FinalRecapProps) {
   if (!titleHighlight && !titleNormal) return null
 
@@ -240,17 +244,19 @@ export default function FinalRecap({
 
           <div
             className="w-full md:w-1/2"
-            style={{
-              minHeight: "380px",
-            }}
+            style={visual ? undefined : { minHeight: "380px" }}
           >
-            <MediaBlock
-              mediaType={mediaType}
-              image={image}
-              videoWebm={videoWebm}
-              videoMp4={videoMp4}
-              lottieFile={lottieFile}
-            />
+            {visual ? (
+              <RecapImage variant={visual} />
+            ) : (
+              <MediaBlock
+                mediaType={mediaType}
+                image={image}
+                videoWebm={videoWebm}
+                videoMp4={videoMp4}
+                lottieFile={lottieFile}
+              />
+            )}
           </div>
         </div>
       </div>

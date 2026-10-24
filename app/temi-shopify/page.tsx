@@ -340,6 +340,7 @@ export default async function TemiShopifyPage() {
 
         {/* FINAL RECAP */}
         <FinalRecap
+          visual="temi-shopify"
           eyebrow={page?.finalRecap?.eyebrow}
           titleHighlight={page?.finalRecap?.titleHighlight}
           titleNormal={page?.finalRecap?.titleNormal}

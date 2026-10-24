@@ -84,7 +84,7 @@ export default function Hero({
 
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
           {/* LEFT */}
-          <div className="flex min-w-0 flex-col items-start text-left">
+          <div className="hero-in flex min-w-0 flex-col items-start text-left">
             {eyebrow && (
               <div className="mb-7 inline-flex rounded-full border md:mb-6 border-slate-200 bg-white/80 px-4 py-2 text-sm font-bold backdrop-blur transition-shadow hover:shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.12)] dark:border-white/10 dark:bg-[#0f1726]/80">
                 <a

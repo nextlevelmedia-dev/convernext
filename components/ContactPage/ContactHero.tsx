@@ -46,7 +46,7 @@ export default function ContactHero() {
       />
 
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16">
-        <div className="flex min-w-0 flex-col items-start">
+        <div className="hero-in flex min-w-0 flex-col items-start">
           <div className="mb-7 inline-flex rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-bold backdrop-blur md:mb-6 dark:border-white/10 dark:bg-[#0f1726]/80">
             <span className="bg-brand-gradient bg-clip-text text-transparent">Contatti</span>
           </div>

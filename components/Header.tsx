@@ -2,14 +2,19 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
+import { useState, useEffect, useRef, type CSSProperties } from "react"
 
 import dynamic from "next/dynamic"
 import ThemeToggle from "./ThemeToggle"
+import { services } from "./MegaMenu"
+import { site } from "@/lib/seo"
 
 const MegaMenu = dynamic(() => import("./MegaMenu"))
 
 export default function Header() {
+  const pathname = usePathname()
+  const closeRef = useRef<HTMLButtonElement>(null)
   const [open, setOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -34,7 +39,24 @@ export default function Header() {
     }
   }, [mobileOpen])
 
+  // chiusura con Esc e focus sul pulsante di chiusura all'apertura
+  useEffect(() => {
+    if (!mobileOpen) return
+    closeRef.current?.focus({ preventScroll: true })
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileOpen(false)
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [mobileOpen])
+
   const closeDrawer = () => setMobileOpen(false)
+
+  // ingresso in sequenza degli elementi del menu mobile
+  const stagger = `transition-[opacity,translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+    mobileOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+  }`
+  const staggerDelay = (i: number): CSSProperties => ({
+    transitionDelay: mobileOpen ? `${220 + i * 45}ms` : "0ms",
+  })
 
   return (
     <>
@@ -45,102 +67,133 @@ export default function Header() {
         />
       )}
 
-      {/* Mobile overlay */}
+      {/* Mobile menu: si apre con un cerchio che parte dal pulsante del menu */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/50 md:hidden transition-opacity duration-300 ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-        onClick={closeDrawer}
-      />
-
-      {/* Mobile drawer — full screen */}
-      <div
-        className={`fixed inset-0 z-[70] bg-white dark:bg-[#111118] shadow-2xl md:hidden transition-transform duration-300 ease-in-out ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
+        id="mobile-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        inert={!mobileOpen}
+        className={`fixed inset-0 z-[70] flex flex-col overflow-hidden bg-white transition-[clip-path] duration-[650ms] ease-[cubic-bezier(0.76,0,0.24,1)] motion-reduce:transition-none md:hidden dark:bg-[#0a0a10] ${
+          mobileOpen ? "[clip-path:circle(150%_at_calc(100%-42px)_36px)]" : "[clip-path:circle(0px_at_calc(100%-42px)_36px)]"
+        }`}
       >
-        <div className="flex h-20 items-center justify-between px-6 border-b border-slate-200 dark:border-slate-700">
-          <Image src="/logo-convernext.svg" alt="Convernext" width={1010} height={106} preload className="ml-[2px] h-auto w-[98px]" />
+        {/* aloni del brand */}
+        <div aria-hidden className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-[#fc03b0]/15 blur-3xl dark:bg-[#fc03b0]/20" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-24 -left-24 size-72 rounded-full bg-[#047cf9]/15 blur-3xl dark:bg-[#047cf9]/20" />
+
+        <div className="relative flex h-[72px] shrink-0 items-center justify-between px-5">
+          <Link href="/" onClick={closeDrawer} aria-label="Convernext — Home">
+            <Image src="/logo-convernext.svg" alt="Convernext" width={1010} height={106} className="ml-[2px] h-auto w-[98px]" />
+          </Link>
           <button
+            ref={closeRef}
             onClick={closeDrawer}
             aria-label="Chiudi menu"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 dark:border-slate-700"
+            className={`grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white text-slate-900 transition-transform duration-500 dark:border-white/10 dark:bg-white/[0.06] dark:text-white ${mobileOpen ? "rotate-0" : "-rotate-90"}`}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 6 6 18M6 6l12 12"/>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <div className="flex flex-col px-6 py-8 gap-1 overflow-y-auto h-[calc(100%-80px)]">
-
-          {/* Soluzioni e Servizi sempre aperto */}
-          <div className="border-b border-slate-100 dark:border-slate-800 pb-3 mb-1">
-            <p className="py-3 text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-              Soluzioni e Servizi
-            </p>
-            <div className="flex flex-col gap-1 pl-2">
-              <Link
-                href="/ecommerce"
-                onClick={closeDrawer}
-                className="flex items-center gap-3 py-2.5 text-base font-medium text-slate-700 dark:text-white/80"
-              >
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#fc03b0] to-[#047cf9]">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
-                  </svg>
-                </span>
-                E-commerce Shopify
-              </Link>
-              <Link
-                href="/temi-shopify"
-                onClick={closeDrawer}
-                className="flex items-center gap-3 py-2.5 text-base font-medium text-slate-700 dark:text-white/80"
-              >
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#fc03b0] to-[#047cf9]">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
-                  </svg>
-                </span>
-                Temi Shopify su misura
-              </Link>
-              <Link
-                href="/ottimizzazione-conversioni"
-                onClick={closeDrawer}
-                className="flex items-center gap-3 py-2.5 text-base font-medium text-slate-700 dark:text-white/80"
-              >
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#fc03b0] to-[#047cf9]">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
-                  </svg>
-                </span>
-                Ottimizzazione Conversioni
-              </Link>
-              <Link
-                href="/siti-web"
-                onClick={closeDrawer}
-                className="flex items-center gap-3 py-2.5 text-base font-medium text-slate-700 dark:text-white/80"
-              >
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#fc03b0] to-[#047cf9]">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                  </svg>
-                </span>
-                Siti Web Performanti
-              </Link>
+        <nav aria-label="Navigazione mobile" className="relative flex-1 overflow-y-auto px-5 pb-6">
+          <div
+            className={stagger}
+            style={staggerDelay(0)}
+          >
+            <div className="mb-3 mt-2 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/50">
+              <div aria-hidden className="h-px w-6 bg-brand-gradient" />
+              Servizi
             </div>
           </div>
 
-          <Link href="/progetti" onClick={closeDrawer} className="flex items-center py-3 text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800">
-            Progetti
-          </Link>
-          <Link href="/chi-siamo" onClick={closeDrawer} className="flex items-center py-3 text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800">
-            Chi Siamo
-          </Link>
-
-          <div className="mt-8">
-            <Link href="/contatti" onClick={closeDrawer} className="flex w-full items-center justify-center rounded-full bg-brand-gradient px-8 py-4 text-base font-bold text-white shadow-lg">
-              Contattaci →
-            </Link>
+          <div className="grid grid-cols-2 gap-2.5">
+            {services.map((item, i) => {
+              const active = pathname === item.href
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeDrawer}
+                  aria-current={active ? "page" : undefined}
+                  className={`${stagger} flex min-h-[118px] flex-col justify-between rounded-2xl border p-3.5 ${
+                    active
+                      ? "border-transparent bg-[linear-gradient(135deg,rgb(252_3_176/0.10),rgb(4_124_249/0.10))] ring-1 ring-[#7c3aed]/40"
+                      : "border-slate-200 bg-white/70 active:bg-slate-50 dark:border-white/10 dark:bg-white/[0.04]"
+                  }`}
+                  style={staggerDelay(i + 1)}
+                >
+                  <div className="grid size-9 place-items-center rounded-xl bg-brand-gradient text-white shadow-[0_8px_20px_-8px_rgb(124_58_237/0.7)] [&_svg]:size-[18px]">
+                    {item.icon}
+                  </div>
+                  <div className="mt-3 text-[15px] font-semibold leading-tight !text-slate-950 dark:!text-white">
+                    {item.title}
+                  </div>
+                </Link>
+              )
+            })}
           </div>
 
-          <div className="mt-4 flex justify-center">
+          <div className="mt-6 border-t border-slate-200 dark:border-white/10">
+            {[
+              { href: "/progetti", label: "Progetti" },
+              { href: "/chi-siamo", label: "Chi siamo" },
+              { href: "/contatti", label: "Contatti" },
+            ].map((item, i) => {
+              const active = pathname === item.href
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeDrawer}
+                  aria-current={active ? "page" : undefined}
+                  className={`${stagger} group flex items-center gap-4 border-b border-slate-200 py-4 dark:border-white/10`}
+                  style={staggerDelay(i + 5)}
+                >
+                  <div className="w-6 font-mono text-xs text-slate-400 dark:text-white/35">0{i + 1}</div>
+                  <div
+                    className={`flex-1 text-[28px] leading-none tracking-tight ${active ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
+                    style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
+                  >
+                    {item.label}
+                  </div>
+                  <div aria-hidden className="grid size-9 place-items-center rounded-full border border-slate-200 !text-slate-900 transition-transform group-active:translate-x-1 dark:border-white/10 dark:!text-white">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M7 17 17 7M8 7h9v9" />
+                    </svg>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </nav>
+
+        <div
+          className={`${stagger} relative shrink-0 border-t border-slate-200 bg-white/80 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur-xl dark:border-white/10 dark:bg-[#0a0a10]/80`}
+          style={staggerDelay(8)}
+        >
+          <Link
+            href="/contatti"
+            onClick={closeDrawer}
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-gradient px-6 py-4 text-base font-bold !text-white shadow-[0_14px_34px_-12px_rgb(124_58_237/0.7)]"
+          >
+            Richiedi una consulenza
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </Link>
+
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <div className="flex min-w-0 flex-col text-[13px] leading-5">
+              <a href={`mailto:${site.email}`} className="truncate font-semibold !text-slate-900 dark:!text-white">
+                {site.email}
+              </a>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="!text-slate-500 dark:!text-white/60">
+                {site.phoneDisplay}
+              </a>
+            </div>
             <ThemeToggle />
           </div>
         </div>
@@ -199,6 +252,7 @@ export default function Header() {
               onClick={() => setMobileOpen(true)}
               aria-label="Apri menu"
               aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
               className="grid h-11 w-11 place-items-center rounded-full border border-slate-200 bg-white dark:border-white/10 dark:bg-neutral-950"
             >
               <span aria-hidden className="relative block h-3 w-5">

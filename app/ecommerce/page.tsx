@@ -324,6 +324,7 @@ export default async function EcommercePage() {
 
         {/* FINAL RECAP */}
         <FinalRecap
+          visual="ecommerce"
           eyebrow={page?.finalRecap?.eyebrow}
           titleHighlight={page?.finalRecap?.titleHighlight}
           titleNormal={page?.finalRecap?.titleNormal}

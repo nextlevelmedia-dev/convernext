@@ -137,7 +137,7 @@ export default async function ProgettiPage() {
                   LEFT CONTENT
               ========================= */}
 
-              <div className="lg:sticky lg:top-32">
+              <div className="hero-in lg:sticky lg:top-32">
                 <h1
                   className="mb-6 text-4xl leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-5xl"
                   style={{

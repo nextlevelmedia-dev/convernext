@@ -1,0 +1,607 @@
+/* =========================
+   CRO HERO VISUAL
+   Tutte le misure in em: la composizione scala con la larghezza
+   della colonna (1em = 16px a 600px di larghezza).
+========================= */
+
+.cro-visual {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+}
+
+.cro-stage {
+  position: relative;
+  font-size: 2.667cqw;
+  padding: 3.4em 0.6em 3.6em;
+  color: #0f172a;
+  font-family: var(--font-lato), sans-serif;
+  line-height: 1.3;
+}
+
+.cro-stage b,
+.cro-stage small,
+.cro-stage em {
+  font-style: normal;
+}
+
+/* intestazione */
+
+.cro-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6em;
+  margin-bottom: 1.3em;
+  padding: 0.55em 0.9em;
+  border-radius: 999px;
+  font-size: 0.82em;
+  font-weight: 700;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  box-shadow: 0 10px 30px -18px rgb(15 23 42 / 0.35);
+}
+
+.dark .cro-head {
+  background: rgb(255 255 255 / 0.05);
+  border-color: rgb(255 255 255 / 0.12);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.cro-head-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.cro-head-split {
+  font-weight: 600;
+  color: #64748b;
+}
+
+.dark .cro-head-split {
+  color: rgb(255 255 255 / 0.6);
+}
+
+.cro-live {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0.25em rgb(34 197 94 / 0.2);
+  animation: cro-pulse 2s ease-in-out infinite;
+}
+
+/* varianti */
+
+.cro-variants {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25em;
+  align-items: start;
+}
+
+.cro-var {
+  position: relative;
+  background: #ffffff;
+  border-radius: 1.4em;
+  padding: 0.85em;
+  box-shadow:
+    0 30px 60px -24px rgb(15 23 42 / 0.45),
+    0 0 0 1px rgb(15 23 42 / 0.06);
+}
+
+.cro-var--b {
+  translate: 0 -0.6em;
+  border: 0.12em solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #fc03b0, #047cf9) border-box;
+  box-shadow:
+    0 30px 70px -22px rgb(124 58 237 / 0.55),
+    0 0 0 1px rgb(15 23 42 / 0.04);
+}
+
+.cro-var-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  margin: 0.1em 0.2em 0.7em;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cro-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 0.45em;
+  font-weight: 800;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.cro-tag--b {
+  background: linear-gradient(135deg, #fc03b0, #047cf9);
+  color: #ffffff;
+}
+
+.cro-win {
+  margin-left: auto;
+  padding: 0.25em 0.6em;
+  border-radius: 999px;
+  font-size: 0.82em;
+  font-weight: 800;
+  background: #fdf2f8;
+  color: #db0a99;
+}
+
+/* pagina prodotto */
+
+.cro-pdp {
+  border-radius: 1em;
+  background: #f8fafc;
+  padding: 0.75em;
+  font-size: 0.8em;
+}
+
+.cro-pdp-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.6em;
+}
+
+.cro-pdp-nav i {
+  display: block;
+  height: 0.5em;
+  border-radius: 0.25em;
+  background: #e2e8f0;
+}
+
+.cro-pdp-nav i:first-child {
+  width: 3.5em;
+}
+
+.cro-pdp-nav i:last-child {
+  width: 1.2em;
+}
+
+.cro-pdp-img {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-radius: 0.8em;
+  overflow: hidden;
+}
+
+.cro-pdp-img--plain {
+  height: 7.5em;
+  background: #eef0f4;
+  padding-bottom: 0.8em;
+}
+
+.cro-pdp-img--plain .cro-bottle {
+  scale: 0.75;
+  transform-origin: bottom center;
+  filter: grayscale(0.6);
+}
+
+.cro-pdp-img--rich {
+  height: 8.6em;
+  padding-bottom: 0.9em;
+  background:
+    radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.9), transparent 45%),
+    linear-gradient(150deg, #fff7ed, #ffedd5 45%, #fde68a);
+}
+
+.cro-badge {
+  position: absolute;
+  top: 0.6em;
+  left: 0.6em;
+  padding: 0.25em 0.6em;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 0.85em;
+  font-weight: 800;
+  color: #db0a99;
+}
+
+/* miniature della galleria (variante B) */
+.cro-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35em;
+  margin-top: 0.45em;
+}
+
+.cro-thumbs i {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.6em;
+  border-radius: 0.5em;
+  border: 0.12em solid transparent;
+  background: linear-gradient(150deg, #fff7ed, #fde68a);
+  font-style: normal;
+  font-size: 1em;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* flacone in miniatura */
+.cro-thumbs i::before {
+  content: "";
+  width: 0.75em;
+  height: 1.3em;
+  border-radius: 0.25em 0.25em 0.2em 0.2em;
+  background: linear-gradient(160deg, #fdba74, #f97316);
+  box-shadow: 0 -0.35em 0 -0.12em #1e1b4b;
+}
+
+.cro-thumbs i.on {
+  border-color: #0f172a;
+}
+
+.cro-thumbs .cro-thumb--dark {
+  background: linear-gradient(150deg, #431407, #9a3412);
+}
+
+.cro-thumbs .cro-thumb--scene {
+  background: linear-gradient(180deg, #f1ece4 0 60%, #c8a27c 60%);
+}
+
+.cro-thumbs .cro-thumb--more::before {
+  position: absolute;
+  z-index: -2;
+}
+
+.cro-thumbs .cro-thumb--more::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0.4em;
+  z-index: -1;
+  background: rgb(15 23 42 / 0.5);
+}
+
+.cro-thumbs .cro-thumb--more {
+  isolation: isolate;
+}
+
+.cro-bottle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cro-bottle-cap {
+  width: 1.3em;
+  height: 1.7em;
+  border-radius: 0.35em 0.35em 0.1em 0.1em;
+  background: #1e1b4b;
+}
+
+.cro-bottle-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6em;
+  height: 5.6em;
+  border-radius: 0.9em 0.9em 0.7em 0.7em;
+  background: linear-gradient(160deg, #fdba74, #f97316);
+  box-shadow: 0 1em 1.6em -0.8em rgb(124 45 18 / 0.45);
+}
+
+.cro-bottle-body::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  top: 10%;
+  width: 14%;
+  height: 70%;
+  border-radius: 1em;
+  background: rgb(255 255 255 / 0.45);
+}
+
+.cro-bottle-body span,
+.cro-bottle-body div {
+  font-size: 0.6em;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: rgb(255 255 255 / 0.9);
+}
+
+.cro-pdp-title {
+  margin-top: 0.7em;
+  font-size: 1.05em;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cro-pdp-price {
+  margin-top: 0.2em;
+  font-weight: 700;
+  color: #334155;
+}
+
+.cro-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  margin-top: 0.7em;
+}
+
+.cro-lines i {
+  display: block;
+  height: 0.45em;
+  border-radius: 0.25em;
+  background: #e2e8f0;
+}
+
+.cro-pdp-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8em;
+  margin-top: 0.75em;
+  padding: 0.3em 0.7em;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5em;
+  font-weight: 700;
+  color: #475569;
+}
+
+.cro-pdp-qty i {
+  font-style: normal;
+  color: #94a3b8;
+}
+
+.cro-btn {
+  margin-top: 0.75em;
+  padding: 0.75em 0.5em;
+  border-radius: 0.6em;
+  text-align: center;
+  font-weight: 800;
+}
+
+.cro-btn--plain {
+  background: #cbd5e1;
+  color: #475569;
+}
+
+.cro-btn--grad {
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fc03b0, #047cf9);
+  color: #ffffff;
+  box-shadow: 0 0.8em 1.6em -0.8em rgb(252 3 176 / 0.6);
+}
+
+/* elementi migliorati nella variante B */
+
+.cro-hl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3em;
+  margin: 0.35em -0.3em 0;
+  padding: 0.25em 0.3em;
+  border-radius: 0.45em;
+  font-weight: 700;
+  color: #0f172a;
+  background: rgb(252 3 176 / 0.06);
+  box-shadow: 0 0 0 0.1em rgb(252 3 176 / 0.35);
+}
+
+.cro-hl em {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.cro-stars {
+  color: #f59e0b;
+  letter-spacing: 0.05em;
+}
+
+.cro-chip {
+  padding: 0.15em 0.45em;
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 0.92em;
+  font-weight: 700;
+  color: #15803d;
+  white-space: nowrap;
+}
+
+.cro-pay {
+  display: flex;
+  justify-content: center;
+  gap: 0.35em;
+  margin-top: 0.6em;
+}
+
+.cro-pay > * {
+  padding: 0.15em 0.4em;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.3em;
+  background: #ffffff;
+  font-size: 0.82em;
+  font-weight: 800;
+  color: #334155;
+}
+
+/* risultati */
+
+.cro-result {
+  margin: 0.85em 0.2em 0.1em;
+}
+
+.cro-result-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.cro-result-row b {
+  font-size: 1.6em;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.cro-grad-text {
+  background: linear-gradient(90deg, #fc03b0, #047cf9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.cro-bar {
+  height: 0.5em;
+  margin-top: 0.4em;
+  border-radius: 999px;
+  background: #eef1f6;
+  overflow: hidden;
+}
+
+.cro-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.cro-bar-a {
+  width: 38%;
+  background: #94a3b8;
+  animation: cro-grow 1s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+}
+
+.cro-bar-b {
+  width: 62%;
+  background: linear-gradient(90deg, #fc03b0, #047cf9);
+  animation: cro-grow 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.95s both;
+}
+
+/* card fluttuanti */
+
+.cro-float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.75em 1em;
+  border-radius: 1em;
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow:
+    0 24px 50px -18px rgb(15 23 42 / 0.5),
+    0 0 0 1px rgb(15 23 42 / 0.05);
+}
+
+.cro-float b {
+  display: block;
+  font-size: 0.9em;
+  font-weight: 800;
+}
+
+.cro-float small {
+  display: block;
+  font-size: 0.75em;
+  color: #64748b;
+}
+
+.cro-float--top {
+  top: 0;
+  right: 0;
+  translate: 0 -0.4em;
+}
+
+.cro-float--bottom {
+  bottom: 0;
+  left: 0;
+}
+
+.cro-float-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.1em;
+  height: 2.1em;
+  border-radius: 50%;
+  font-weight: 900;
+}
+
+.cro-float-icon--ok {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.cro-float-icon--grad {
+  background: linear-gradient(135deg, #fc03b0, #047cf9);
+  color: #ffffff;
+}
+
+/* =========================
+   INGRESSO
+========================= */
+
+.cro-in {
+  animation: cro-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cro-in-left {
+  animation: cro-in-left 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cro-in-right {
+  animation: cro-in-right 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cro-pop {
+  animation: cro-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes cro-in {
+  from { opacity: 0; transform: translateY(0.8em); }
+}
+
+@keyframes cro-in-left {
+  from { opacity: 0; transform: translateX(-1.8em); }
+}
+
+@keyframes cro-in-right {
+  from { opacity: 0; transform: translateX(1.8em); }
+}
+
+@keyframes cro-pop {
+  from { opacity: 0; transform: scale(0.85); }
+}
+
+@keyframes cro-grow {
+  from { width: 0; }
+}
+
+@keyframes cro-pulse {
+  50% { box-shadow: 0 0 0 0.4em rgb(34 197 94 / 0.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cro-in,
+  .cro-in-left,
+  .cro-in-right,
+  .cro-pop,
+  .cro-bar i,
+  .cro-live {
+    animation: none;
+  }
+}

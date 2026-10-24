@@ -312,6 +312,7 @@ export default async function SitiWebPage() {
 
         {/* FINAL RECAP */}
         <FinalRecap
+          visual="siti-web"
           eyebrow={data?.finalRecap?.eyebrow}
           titleHighlight={data?.finalRecap?.titleHighlight}
           titleNormal={data?.finalRecap?.titleNormal}

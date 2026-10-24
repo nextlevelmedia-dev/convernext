@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import './DeviceMockups.css'
 
 type MockupSlide = {
@@ -31,26 +31,36 @@ const defaultSlides: MockupSlide[] = [
   },
 ]
 
+// distanza minima (px) per considerare il gesto uno swipe
+const SWIPE_THRESHOLD = 40
+const SLIDE_MS = 550
+const AUTOPLAY_MS = 2800
+
 export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsProps) {
   const safeSlides = useMemo(() => slides.filter(Boolean), [slides])
   const firstSlide = safeSlides[0]
+  const rootRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!safeSlides.length) return
+    const root = rootRef.current
+    if (!root || safeSlides.length < 2) return
 
-    const imac = document.querySelector<HTMLImageElement>('.imac-screen')
-    const tablet = document.querySelector<HTMLImageElement>('.tablet-screen')
-    const mobile = document.querySelector<HTMLImageElement>('.mobile-screen')
+    const imac = root.querySelector<HTMLImageElement>('.imac-screen')
+    const tablet = root.querySelector<HTMLImageElement>('.tablet-screen')
+    const mobile = root.querySelector<HTMLImageElement>('.mobile-screen')
 
     if (!imac || !tablet || !mobile) return
 
-    let index = 1
+    let index = 0
+    let busy = false
 
-    const createTemp = (el: HTMLImageElement, src: string) => {
+    // dir 1: la nuova slide entra da destra, -1: da sinistra
+    const createTemp = (el: HTMLImageElement, src: string, dir: 1 | -1) => {
       const temp = document.createElement('img')
       temp.src = src
       temp.className = 'screen-img temp-screen'
       temp.alt = ''
+      temp.draggable = false
 
       Object.assign(temp.style, {
         position: 'absolute',
@@ -60,54 +70,93 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
         height: '100%',
         objectFit: 'cover',
         zIndex: '3',
-        transform: 'translateX(100%)',
-        transition: 'transform .55s cubic-bezier(.4,0,.2,1)',
+        transform: `translateX(${dir * 100}%)`,
+        transition: `transform ${SLIDE_MS}ms cubic-bezier(.4,0,.2,1)`,
       })
 
       el.closest('.screen')?.appendChild(temp)
       return temp
     }
 
-    const changeSlide = () => {
+    const goTo = (dir: 1 | -1) => {
+      if (busy) return
+      busy = true
+
+      index = (index + dir + safeSlides.length) % safeSlides.length
       const slide = safeSlides[index]
 
-      const tempImac = createTemp(imac, slide.imac)
-      const tempTablet = createTemp(tablet, slide.tablet)
-      const tempMobile = createTemp(mobile, slide.mobile)
+      const temps = [
+        createTemp(imac, slide.imac, dir),
+        createTemp(tablet, slide.tablet, dir),
+        createTemp(mobile, slide.mobile, dir),
+      ]
 
-      void tempImac.offsetWidth
-
-      tempImac.style.transform = 'translateX(0)'
-      tempTablet.style.transform = 'translateX(0)'
-      tempMobile.style.transform = 'translateX(0)'
+      void temps[0].offsetWidth
+      temps.forEach((t) => (t.style.transform = 'translateX(0)'))
 
       setTimeout(() => {
         imac.src = slide.imac
         tablet.src = slide.tablet
         mobile.src = slide.mobile
-
-        tempImac.remove()
-        tempTablet.remove()
-        tempMobile.remove()
-      }, 550)
-
-      index = (index + 1) % safeSlides.length
+        temps.forEach((t) => t.remove())
+        busy = false
+      }, SLIDE_MS)
     }
 
-    if (safeSlides.length > 1) {
-      const interval = setInterval(changeSlide, 2800)
-      return () => clearInterval(interval)
+    let interval = setInterval(() => goTo(1), AUTOPLAY_MS)
+    const restartAutoplay = () => {
+      clearInterval(interval)
+      interval = setInterval(() => goTo(1), AUTOPLAY_MS)
+    }
+
+    // swipe da touch e trascinamento col mouse sui device
+    let startX = 0
+    let startY = 0
+    let pointerId: number | null = null
+
+    const onDown = (e: PointerEvent) => {
+      if (!(e.target as Element).closest('.device-mockup')) return
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      pointerId = e.pointerId
+      startX = e.clientX
+      startY = e.clientY
+    }
+
+    const onUp = (e: PointerEvent) => {
+      if (e.pointerId !== pointerId) return
+      pointerId = null
+      const dx = e.clientX - startX
+      const dy = e.clientY - startY
+      if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+      goTo(dx < 0 ? 1 : -1)
+      restartAutoplay()
+    }
+
+    const onCancel = () => {
+      pointerId = null
+    }
+
+    root.addEventListener('pointerdown', onDown)
+    window.addEventListener('pointerup', onUp)
+    window.addEventListener('pointercancel', onCancel)
+
+    return () => {
+      clearInterval(interval)
+      root.removeEventListener('pointerdown', onDown)
+      window.removeEventListener('pointerup', onUp)
+      window.removeEventListener('pointercancel', onCancel)
     }
   }, [safeSlides])
 
   return (
-    <div className="mockup-row">
+    <div ref={rootRef} className={`mockup-row${safeSlides.length > 1 ? ' is-swipeable' : ''}`}>
       <div className="mockup-stage">
         <div className="mockup-shadow" />
 
         <div className="device-mockup imac">
           <img
             className="frame"
+            draggable={false}
             src="/frame-imac.webp"
             alt="iMac frame"
             width={620}
@@ -117,6 +166,7 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
           <div className="screen">
             <img
               className="screen-img imac-screen"
+              draggable={false}
               src={firstSlide?.imac}
               alt="iMac screen"
               fetchPriority="high"
@@ -129,6 +179,7 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
         <div className="device-mockup tablet">
           <img
             className="frame"
+            draggable={false}
             src="/frame-tablet.webp"
             alt="Tablet frame"
             width={430}
@@ -138,6 +189,7 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
           <div className="screen">
             <img
               className="screen-img tablet-screen"
+              draggable={false}
               src={firstSlide?.tablet}
               alt="Tablet screen"
               decoding="async"
@@ -150,6 +202,7 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
         <div className="device-mockup mobile">
           <img
             className="frame"
+            draggable={false}
             src="/frame-mobile.webp"
             alt="Mobile frame"
             width={280}
@@ -159,6 +212,7 @@ export default function DeviceMockups({ slides = defaultSlides }: DeviceMockupsP
           <div className="screen">
             <img
               className="screen-img mobile-screen"
+              draggable={false}
               src={firstSlide?.mobile}
               alt="Mobile screen"
               decoding="async"

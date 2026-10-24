@@ -3,6 +3,7 @@ import { Archivo, Lato, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Footer from "../components/Footer/Footer"
 import ScrollToTop from "../components/ScrollToTop"
+import ScrollReveal from "../components/ScrollReveal"
 import JsonLd from "../components/JsonLd"
 import { jsonLdGraph, organizationId, site, websiteId } from "../lib/seo"
 
@@ -116,6 +117,8 @@ export default function RootLayout({
         <div className="h-[100vh]" />
 
         <Footer />
+
+        <ScrollReveal />
       </body>
     </html>
   )

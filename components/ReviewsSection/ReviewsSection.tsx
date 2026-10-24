@@ -1,5 +1,36 @@
 import Image from "next/image"
 import { urlFor } from "../../sanity/lib/image"
+import { client } from "../../sanity/lib/client"
+import { companyLogoFor } from "./CompanyLogos"
+
+// recensioni della home: servono a completare le pagine che ne hanno poche
+const POOL_QUERY = `*[_type == "page" && slug.current == "home"][0].reviews.items[]{
+  stars,
+  reviewTitle,
+  reviewText,
+  authorName,
+  authorRole,
+  authorPhoto{ asset->{ _id, url } },
+  companyLogo{ asset->{ _id, url } }
+}`
+
+const MAX_REVIEWS = 6
+
+const reviewKey = (r: Review) =>
+  `${r.authorName ?? ""}|${r.reviewTitle ?? ""}`.trim().toLowerCase().replace(/\s+/g, " ")
+
+/** Recensioni della pagina senza ripetizioni, completate con quelle della home. */
+function uniqueReviews(...lists: (Review[] | null | undefined)[]) {
+  const seen = new Set<string>()
+  const out: Review[] = []
+  for (const r of lists.flatMap((l) => l ?? [])) {
+    const key = reviewKey(r)
+    if (!r?.authorName || seen.has(key)) continue
+    seen.add(key)
+    out.push(r)
+  }
+  return out.slice(0, MAX_REVIEWS)
+}
 
 interface Review {
   stars: number
@@ -111,7 +142,8 @@ function ReviewCard({ review }: { review: Review }) {
           </div>
         </div>
 
-        {review.companyLogo && (
+        {companyLogoFor(review.authorName) ??
+          (review.companyLogo && (
           <Image
             src={urlFor(review.companyLogo).width(120).height(60).url()}
             alt="logo"
@@ -119,7 +151,7 @@ function ReviewCard({ review }: { review: Review }) {
             height={35}
             style={{ height: "28px", width: "auto", objectFit: "contain", flexShrink: 0 }}
           />
-        )}
+        ))}
       </div>
     </div>
   )
@@ -140,7 +172,7 @@ const ctaStyle = {
   cursor: "pointer",
 }
 
-export default function ReviewsSection({
+export default async function ReviewsSection({
   titleHighlight,
   titleNormal,
   items,
@@ -149,11 +181,13 @@ export default function ReviewsSection({
   socialProofText,
   socialProofAvatars,
 }: ReviewsSectionProps) {
-  if (!items?.length) return null
+  const pool = await client.fetch<Review[] | null>(POOL_QUERY).catch(() => null)
+  const reviews = uniqueReviews(items, pool)
+  if (!reviews.length) return null
 
-  const col1 = items.filter((_, i) => i % 3 === 0)
-  const col2 = items.filter((_, i) => i % 3 === 1)
-  const col3 = items.filter((_, i) => i % 3 === 2)
+  const col1 = reviews.filter((_, i) => i % 3 === 0)
+  const col2 = reviews.filter((_, i) => i % 3 === 1)
+  const col3 = reviews.filter((_, i) => i % 3 === 2)
 
   return (
     <section id="recensioni" style={{ padding: "96px 0" }}>
