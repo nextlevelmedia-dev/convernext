@@ -14,14 +14,27 @@ import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
 import { MOCKUP_SLIDES_PROJECTION, resolveMockupSlides } from "@/lib/mockupSlides"
-import { pageMetadata } from "@/lib/seo"
+import JsonLd from "@/components/JsonLd"
+import { breadcrumbJsonLd, jsonLdGraph, pageMetadata, serviceJsonLd } from "@/lib/seo"
+
+const description =
+  "Temi Shopify custom con sezioni immersive, costruiti sul tuo brand e pensati per vendere. Li gestisci in autonomia dall’editor di Shopify, con i nostri tutorial."
 
 export const metadata = pageMetadata({
-  title: "Temi Shopify su misura, custom e immersivi",
-  description:
-    "Temi Shopify custom con sezioni immersive, costruiti sul tuo brand e pensati per vendere. Li gestisci in autonomia dall’editor di Shopify, con i nostri tutorial.",
+  title: "Temi Shopify su misura e personalizzati",
+  description,
   path: "/temi-shopify",
 })
+
+const jsonLd = jsonLdGraph(
+  breadcrumbJsonLd([{ name: "Temi Shopify", path: "/temi-shopify" }]),
+  serviceJsonLd({
+    name: "Temi Shopify su misura",
+    serviceType: "Sviluppo temi Shopify",
+    description,
+    path: "/temi-shopify",
+  })
+)
 
 // usate solo se in Sanity non ci sono slide complete
 const themeSlides = [
@@ -251,6 +264,7 @@ export default async function TemiShopifyPage() {
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <Header />
 
       <div>

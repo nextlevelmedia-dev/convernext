@@ -9,14 +9,21 @@ import TeamIntro from "@/components/TeamIntro/TeamIntro"
 import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
-import { pageMetadata } from "@/lib/seo"
+import JsonLd from "@/components/JsonLd"
+import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
+
+const description =
+  "Convernext è uno studio digitale indipendente specializzato in siti web, ecommerce Shopify e conversioni: un referente diretto e gli specialisti giusti."
 
 export const metadata = pageMetadata({
   title: "Chi siamo — Studio digitale indipendente",
-  description:
-    "Next è uno studio digitale indipendente specializzato in siti web, ecommerce e conversione. Un referente diretto e, quando serve, gli specialisti giusti per il tuo progetto.",
+  description,
   path: "/chi-siamo",
 })
+
+const jsonLd = jsonLdGraph(
+  breadcrumbJsonLd([{ name: "Chi siamo", path: "/chi-siamo" }])
+)
 
 const query = `*[_type == "page" && slug.current == "chi-siamo"][0]{
   hero{
@@ -93,6 +100,7 @@ export default async function ChiSiamoPage() {
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <Header />
 
       <div>

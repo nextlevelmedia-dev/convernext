@@ -13,10 +13,12 @@ import { client } from "../sanity/lib/client"
 
 import { pageMetadata } from "@/lib/seo"
 
+const description =
+  "Studio digitale in provincia di Cremona: siti web, ecommerce Shopify e ottimizzazione delle conversioni (CRO) per trasformare il traffico in clienti."
+
 export const metadata = pageMetadata({
-  title: "Convernext — Siti web, ecommerce e CRO che generano clienti",
-  description:
-    "Hai traffico ma poche vendite? Ottimizziamo la tua presenza digitale con dati reali e UX strategica per aumentare lead e conversioni: siti web, ecommerce Shopify e CRO.",
+  title: "Convernext — Siti web, ecommerce Shopify e CRO",
+  description,
   path: "/",
   absoluteTitle: true,
 })

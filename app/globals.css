@@ -325,6 +325,21 @@ header a.cta-bubble *,
   margin: 0;
 }
 
+.footer-inner a {
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.footer-inner a:hover,
+.footer-inner a:focus-visible {
+  color: #ffffff;
+}
+
+/* l'email è lunga: su mobile (2 colonne) va a capo invece di uscire */
+.footer-inner address a {
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 768px) {
   .footer-inner {
     grid-template-columns: 1fr 1fr;

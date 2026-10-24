@@ -4,14 +4,21 @@ import TrustPoints from "@/components/TrustPoints/TrustPoints"
 import { client } from "@/sanity/lib/client"
 import Image from "next/image"
 
-import { pageMetadata } from "@/lib/seo"
+import JsonLd from "@/components/JsonLd"
+import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
+
+const description =
+  "Una selezione dei nostri lavori: siti web, ecommerce e landing page realizzati su misura per imprenditori che volevano clienti, non solo visitatori."
 
 export const metadata = pageMetadata({
-  title: "Progetti — Siti web, ecommerce e landing realizzati",
-  description:
-    "Una selezione dei nostri lavori più significativi: siti web, ecommerce e landing page realizzati su misura per imprenditori che volevano clienti, non solo visitatori.",
+  title: "Progetti: siti web ed ecommerce realizzati",
+  description,
   path: "/progetti",
 })
+
+const jsonLd = jsonLdGraph(
+  breadcrumbJsonLd([{ name: "Progetti", path: "/progetti" }])
+)
 
 const query = `{
   "page": *[_type == "page" && slug.current == "progetti"][0]{
@@ -118,6 +125,7 @@ export default async function ProgettiPage() {
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <Header />
 
       <div className="pt-20">
@@ -161,9 +169,12 @@ export default async function ProgettiPage() {
                     </p>
 
                     <div className="w-1/6 shrink-0">
-                      <img
-                        src="PixelWaveLogo3-61fa153c.webp"
+                      <Image
+                        src="/PixelWaveLogo3-61fa153c.webp"
                         alt="Pixel Wave"
+                        width={200}
+                        height={104}
+                        sizes="80px"
                         className="h-auto w-full object-contain"
                       />
                     </div>

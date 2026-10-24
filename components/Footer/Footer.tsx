@@ -1,3 +1,6 @@
+import Link from "next/link"
+import { site } from "@/lib/seo"
+
 export default function Footer() {
   return (
     <footer className="footer-sticky">
@@ -62,13 +65,19 @@ export default function Footer() {
             Contatti aziendali
           </h2>
 
-          <p>
-            Via Risorgimento, 61
-            <br />
-            Pescarolo ed Uniti, CR
-          </p>
+          <address style={{ fontStyle: "normal" }}>
+            <p>
+              {site.address.street}
+              <br />
+              {site.address.locality}, {site.address.region}
+            </p>
 
-          <p>+39 3334187542</p>
+            <p>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
+              <br />
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+          </address>
         </div>
 
         {/* =========================
@@ -86,9 +95,10 @@ export default function Footer() {
           </h2>
 
           <ul>
-            <li>Siti web</li>
-            <li>Ecommerce</li>
-            <li>Temi Shopify</li>
+            <li><Link href="/siti-web">Siti web</Link></li>
+            <li><Link href="/ecommerce">Ecommerce Shopify</Link></li>
+            <li><Link href="/temi-shopify">Temi Shopify</Link></li>
+            <li><Link href="/ottimizzazione-conversioni">Ottimizzazione conversioni</Link></li>
             <li>Advertising</li>
           </ul>
         </div>
@@ -104,14 +114,14 @@ export default function Footer() {
               fontWeight: 600,
             }}
           >
-            About Next
+            About Convernext
           </h2>
 
           <ul>
-            <li>Chi siamo</li>
-            <li>Progetti</li>
+            <li><Link href="/chi-siamo">Chi siamo</Link></li>
+            <li><Link href="/progetti">Progetti</Link></li>
             <li>Blog</li>
-            <li>Contatti</li>
+            <li><Link href="/contatti">Contatti</Link></li>
           </ul>
         </div>
 

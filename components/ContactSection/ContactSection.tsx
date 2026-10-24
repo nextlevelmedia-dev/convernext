@@ -2,6 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import ContactOrb from "../ContactOrb/ContactOrb"
+import { site } from "@/lib/seo"
 
 const STEPS = [
   {
@@ -24,16 +25,21 @@ const STEPS = [
 const INFO = [
   {
     icon: "M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2Z",
-    text: "info@next-level-media.it",
-    href: "mailto:info@next-level-media.it",
+    text: site.email,
+    href: `mailto:${site.email}`,
+  },
+  {
+    icon: "M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z",
+    text: site.phoneDisplay,
+    href: `tel:${site.phone.replace(/\s/g, "")}`,
   },
   {
     icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z",
-    text: "Milano, Italia",
+    text: `${site.address.locality} (${site.address.region})`,
   },
   {
     icon: "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Zm0 5v5l4 2",
-    text: "Lun – Ven, 9:00 – 18:00",
+    text: site.hours,
   },
 ]
 
@@ -49,8 +55,10 @@ export default function ContactSection() {
     telefono: "",
     messaggio: "",
     servizio: "",
+    website: "", // honeypot anti-spam, nascosto agli utenti
   })
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -59,8 +67,25 @@ export default function ContactSection() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setStatus("loading")
-    await new Promise((r) => setTimeout(r, 1000))
-    setStatus("success")
+    setErrorMessage("")
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      const body = await res.json().catch(() => ({}))
+
+      if (!res.ok) {
+        setErrorMessage(res.status === 422 && body.error ? body.error : "")
+        setStatus("error")
+        return
+      }
+      setStatus("success")
+    } catch {
+      setStatus("error")
+    }
   }
 
   return (
@@ -156,17 +181,23 @@ export default function ContactSection() {
         {/* DESTRA — form */}
         <div className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_1px_2px_rgb(15_23_42/0.04),0_24px_60px_-24px_rgb(15_23_42/0.18)] sm:p-10 dark:border-white/10 dark:bg-[#0f1726] dark:shadow-[0_1px_2px_rgb(0_0_0/0.3),0_24px_60px_-24px_rgb(0_0_0/0.6)]">
           {status === "success" ? (
-            <div className="flex h-full flex-col items-center justify-center gap-4 py-16 text-center">
+            <div role="status" className="flex h-full flex-col items-center justify-center gap-4 py-16 text-center">
               <span className="grid size-14 place-items-center rounded-full bg-brand-gradient">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
                   <path d="M5 12l4 4 10-10" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
-              <h3 className="text-xl font-black text-slate-950 dark:text-white">Messaggio inviato!</h3>
+              <p className="text-xl font-black text-slate-950 dark:text-white">Messaggio inviato!</p>
               <p className="text-[15px] text-black/60 dark:text-white/65">Ti ricontatteremo entro 24 ore.</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6" aria-label="Richiedi una consulenza">
+              {/* honeypot: fuori schermo e fuori dal tab order, lo compilano solo i bot */}
+              <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+                <label htmlFor="contact-website">Lascia vuoto questo campo</label>
+                <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" value={formData.website} onChange={handleChange} />
+              </div>
+
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="flex flex-col gap-6">
                   <div>
@@ -223,6 +254,18 @@ export default function ContactSection() {
               >
                 {status === "loading" ? "Invio in corso..." : "Invia richiesta"}
               </button>
+
+              {/* role="alert" viene annunciato all'inserimento; nessun wrapper per non aggiungere gap */}
+              {status === "error" && (
+                <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-400/30 dark:bg-red-500/10 dark:text-red-200">
+                  {errorMessage || "Non siamo riusciti a inviare il messaggio."}{" "}
+                  Riprova oppure scrivici a{" "}
+                  <a href={`mailto:${site.email}`} className="font-bold underline">
+                    {site.email}
+                  </a>
+                  .
+                </p>
+              )}
 
               <p className="-mt-2 text-center text-sm text-slate-500 dark:text-white/55">
                 Senza impegno — risposta entro 24 ore

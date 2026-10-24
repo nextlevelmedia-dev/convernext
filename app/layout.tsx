@@ -3,7 +3,8 @@ import { Archivo, Lato, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Footer from "../components/Footer/Footer"
 import ScrollToTop from "../components/ScrollToTop"
-import { site } from "../lib/seo"
+import JsonLd from "../components/JsonLd"
+import { jsonLdGraph, organizationId, site, websiteId } from "../lib/seo"
 
 const lato = Lato({
   variable: "--font-lato",
@@ -26,20 +27,19 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Convernext — Siti web, ecommerce e CRO che generano clienti",
+    default: "Convernext — Siti web, ecommerce Shopify e CRO",
     template: "%s | Convernext",
   },
   description: site.description,
   applicationName: site.name,
-  alternates: { canonical: "/" },
+  // il canonical è definito da ogni pagina: qui non va, altrimenti
+  // le route senza metadata propri (es. 404) erediterebbero "/"
   openGraph: {
     type: "website",
     locale: "it_IT",
     siteName: site.name,
-    url: "/",
   },
   twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
 }
 
 export const viewport: Viewport = {
@@ -52,25 +52,43 @@ export const viewport: Viewport = {
 // l'utente ha scelto light. Gira prima del paint, quindi niente flash.
 const themeScript = `try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}`
 
-const orgJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: site.name,
-  alternateName: "Next Level Media",
-  url: site.url,
-  logo: `${site.url}/logo-convernext.webp`,
-  email: site.email,
-  telephone: site.phone,
-  description: site.description,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: site.address.street,
-    addressLocality: site.address.locality,
-    addressRegion: site.address.region,
-    addressCountry: site.address.country,
+const siteJsonLd = jsonLdGraph(
+  {
+    "@type": "ProfessionalService",
+    "@id": organizationId,
+    name: site.name,
+    alternateName: "Next Level Media",
+    url: site.url,
+    logo: `${site.url}/icon-512.png`,
+    image: `${site.url}/opengraph-image.jpg`,
+    email: site.email,
+    telephone: site.phone,
+    description: site.description,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: site.address.street,
+      postalCode: site.address.postalCode,
+      addressLocality: site.address.locality,
+      addressRegion: site.address.region,
+      addressCountry: site.address.country,
+    },
+    areaServed: { "@type": "Country", name: "Italia" },
+    knowsAbout: [
+      "Realizzazione siti web",
+      "Sviluppo ecommerce Shopify",
+      "Temi Shopify personalizzati",
+      "Ottimizzazione delle conversioni (CRO)",
+    ],
   },
-  areaServed: "IT",
-}
+  {
+    "@type": "WebSite",
+    "@id": websiteId,
+    url: site.url,
+    name: site.name,
+    inLanguage: "it-IT",
+    publisher: { "@id": organizationId },
+  }
+)
 
 export default function RootLayout({
   children,
@@ -87,10 +105,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-full bg-black">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
-        />
+        <JsonLd data={siteJsonLd} />
 
         <ScrollToTop />
 

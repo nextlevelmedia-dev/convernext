@@ -13,14 +13,27 @@ import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
 import { MOCKUP_SLIDES_PROJECTION, resolveMockupSlides } from "@/lib/mockupSlides"
-import { pageMetadata } from "@/lib/seo"
+import JsonLd from "@/components/JsonLd"
+import { breadcrumbJsonLd, jsonLdGraph, pageMetadata, serviceJsonLd } from "@/lib/seo"
+
+const description =
+  "Sviluppo di ecommerce Shopify progettati per vendere: setup, design personalizzato e integrazioni per aumentare conversioni e valore degli ordini."
 
 export const metadata = pageMetadata({
-  title: "Ecommerce Shopify progettati per convertire",
-  description:
-    "Ecommerce Shopify su misura, progettati per guidare all’acquisto, migliorare l’esperienza utente e aumentare conversioni e valore degli ordini.",
+  title: "Sviluppo ecommerce Shopify su misura",
+  description,
   path: "/ecommerce",
 })
+
+const jsonLd = jsonLdGraph(
+  breadcrumbJsonLd([{ name: "Ecommerce Shopify", path: "/ecommerce" }]),
+  serviceJsonLd({
+    name: "Sviluppo ecommerce Shopify",
+    serviceType: "Sviluppo ecommerce",
+    description,
+    path: "/ecommerce",
+  })
+)
 
 // usate solo se in Sanity non ci sono slide complete
 const ecommerceSlides = [
@@ -241,6 +254,7 @@ export default async function EcommercePage() {
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <Header />
 
       <div>

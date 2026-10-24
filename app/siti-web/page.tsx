@@ -13,14 +13,27 @@ import ContactSection from "@/components/ContactSection/ContactSection"
 import { client } from "@/sanity/lib/client"
 
 import { MOCKUP_SLIDES_PROJECTION, resolveMockupSlides } from "@/lib/mockupSlides"
-import { pageMetadata } from "@/lib/seo"
+import JsonLd from "@/components/JsonLd"
+import { breadcrumbJsonLd, jsonLdGraph, pageMetadata, serviceJsonLd } from "@/lib/seo"
+
+const description =
+  "Realizzazione di siti web su misura, veloci e responsive, progettati per guidare ogni utente all’azione e aumentare contatti e opportunità per la tua attività."
 
 export const metadata = pageMetadata({
-  title: "Siti web performanti che generano contatti",
-  description:
-    "Siti web su misura progettati per guidare ogni utente all’azione, migliorare l’esperienza e aumentare contatti e opportunità.",
+  title: "Realizzazione siti web che generano contatti",
+  description,
   path: "/siti-web",
 })
+
+const jsonLd = jsonLdGraph(
+  breadcrumbJsonLd([{ name: "Siti web", path: "/siti-web" }]),
+  serviceJsonLd({
+    name: "Realizzazione siti web",
+    serviceType: "Realizzazione siti web",
+    description,
+    path: "/siti-web",
+  })
+)
 
 // usate solo se in Sanity non ci sono slide complete
 const sitiWebSlides = [
@@ -229,6 +242,7 @@ export default async function SitiWebPage() {
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <Header />
 
       <div>

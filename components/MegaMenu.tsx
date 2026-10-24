@@ -1,6 +1,7 @@
 import Link from "next/link"
 
-const items = [
+// usati anche nella pagina Contatti per i link ai servizi
+export const services = [
   {
     title: "E-commerce Shopify",
     href: "/ecommerce",
@@ -56,11 +57,11 @@ export default function MegaMenu() {
         <div className="rounded-b-3xl border border-t-0 border-slate-200 bg-white/[0.98] shadow-2xl shadow-slate-200/60 backdrop-blur-xl dark:border-white/10 dark:bg-[#0f1726]/[0.97] dark:shadow-black/50">
           <div className="grid grid-cols-[repeat(4,minmax(0,1fr))_minmax(0,0.95fr)] gap-0 p-8">
 
-            {items.map((item, i) => (
+            {services.map((item, i) => (
               <Link
                 key={item.title}
                 href={item.href}
-                className={`group/col flex flex-col pr-6 ${i > 0 ? "pl-6" : ""} ${i < items.length - 1 ? "border-r border-slate-200 dark:border-white/10" : ""}`}
+                className={`group/col flex flex-col pr-6 ${i > 0 ? "pl-6" : ""} ${i < services.length - 1 ? "border-r border-slate-200 dark:border-white/10" : ""}`}
               >
                 <div className="mb-5 flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover/col:scale-105 bg-[linear-gradient(135deg,rgb(252_3_176/0.10),rgb(4_124_249/0.10))] dark:bg-[linear-gradient(135deg,rgb(252_3_176/0.18),rgb(4_124_249/0.18))] [&_svg]:!text-[#7c3aed] dark:[&_svg]:!text-[#a78bfa]">
                   {item.icon}
