@@ -231,6 +231,7 @@ export default async function OttimizzazioneConversioniPage() {
 
         {/* REVIEWS */}
         <ReviewsSection
+          service="ottimizzazione-conversioni"
           titleHighlight={page?.reviews?.titleHighlight}
           titleNormal={page?.reviews?.titleNormal}
           items={page?.reviews?.items}

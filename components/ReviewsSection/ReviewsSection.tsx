@@ -16,6 +16,21 @@ const POOL_QUERY = `*[_type == "page" && slug.current == "home"][0].reviews.item
 
 const MAX_REVIEWS = 6
 
+/*
+ * Pagine servizio: 3 recensioni pertinenti al servizio (le prime della lista
+ * disponibili). Home e Contatti mostrano tutte e 6.
+ */
+const SERVICE_REVIEWS = {
+  ecommerce: ["Luca Frassi", "Fabio Manco", "Alessia Conti"],
+  "temi-shopify": ["Luca Frassi", "Fabio Manco", "Chiara Moretti"],
+  "ottimizzazione-conversioni": ["Fabio Manco", "Alessia Conti", "Marco Rinaldi"],
+  "siti-web": ["Marco Rinaldi", "Chiara Moretti", "Luca Ferrero"],
+} as const
+
+export type ReviewService = keyof typeof SERVICE_REVIEWS
+
+const SERVICE_LIMIT = 3
+
 const reviewKey = (r: Review) =>
   `${r.authorName ?? ""}|${r.reviewTitle ?? ""}`.trim().toLowerCase().replace(/\s+/g, " ")
 
@@ -29,7 +44,15 @@ function uniqueReviews(...lists: (Review[] | null | undefined)[]) {
     seen.add(key)
     out.push(r)
   }
-  return out.slice(0, MAX_REVIEWS)
+  return out
+}
+
+/** Le recensioni del servizio nell'ordine indicato, completate se ne manca qualcuna. */
+function pickForService(reviews: Review[], service: ReviewService) {
+  const byName = (name: string) => reviews.find((r) => r.authorName?.trim() === name)
+  const picked = SERVICE_REVIEWS[service].map(byName).filter((r): r is Review => Boolean(r))
+  const rest = reviews.filter((r) => !picked.includes(r))
+  return [...picked, ...rest].slice(0, SERVICE_LIMIT)
 }
 
 interface Review {
@@ -54,6 +77,7 @@ interface ReviewsSectionProps {
   ctaHref?: string
   socialProofText?: string
   socialProofAvatars?: Avatar[]
+  service?: ReviewService
 }
 
 function StarRating({ stars }: { stars: number }) {
@@ -180,9 +204,11 @@ export default async function ReviewsSection({
   ctaHref,
   socialProofText,
   socialProofAvatars,
+  service,
 }: ReviewsSectionProps) {
   const pool = await client.fetch<Review[] | null>(POOL_QUERY).catch(() => null)
-  const reviews = uniqueReviews(items, pool)
+  const all = uniqueReviews(items, pool)
+  const reviews = service ? pickForService(all, service) : all.slice(0, MAX_REVIEWS)
   if (!reviews.length) return null
 
   const col1 = reviews.filter((_, i) => i % 3 === 0)

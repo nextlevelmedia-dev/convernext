@@ -293,6 +293,7 @@ export default async function EcommercePage() {
 
         {/* REVIEWS */}
         <ReviewsSection
+          service="ecommerce"
           titleHighlight={page?.reviews?.titleHighlight}
           titleNormal={page?.reviews?.titleNormal}
           items={page?.reviews?.items}

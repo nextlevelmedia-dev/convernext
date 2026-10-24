@@ -281,6 +281,7 @@ export default async function SitiWebPage() {
 
         {/* REVIEWS */}
         <ReviewsSection
+          service="siti-web"
           titleHighlight={data?.reviews?.titleHighlight}
           titleNormal={data?.reviews?.titleNormal}
           items={data?.reviews?.items}

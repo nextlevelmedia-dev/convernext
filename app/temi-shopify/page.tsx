@@ -309,6 +309,7 @@ export default async function TemiShopifyPage() {
 
         {/* REVIEWS */}
         <ReviewsSection
+          service="temi-shopify"
           titleHighlight={page?.reviews?.titleHighlight}
           titleNormal={page?.reviews?.titleNormal}
           items={page?.reviews?.items}
