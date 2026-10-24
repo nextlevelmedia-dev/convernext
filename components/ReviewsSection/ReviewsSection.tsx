@@ -24,7 +24,7 @@ const SERVICE_REVIEWS = {
   ecommerce: ["Luca Frassi", "Fabio Manco", "Alessia Conti"],
   "temi-shopify": ["Luca Frassi", "Fabio Manco", "Chiara Moretti"],
   "ottimizzazione-conversioni": ["Fabio Manco", "Alessia Conti", "Marco Rinaldi"],
-  "siti-web": ["Marco Rinaldi", "Chiara Moretti", "Luca Ferrero"],
+  "siti-web": ["Marco Rinaldi", "Chiara Moretti", "Luca Ferraro"],
 } as const
 
 export type ReviewService = keyof typeof SERVICE_REVIEWS

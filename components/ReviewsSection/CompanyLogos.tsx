@@ -71,6 +71,9 @@ const LOGOS: Record<string, ReactNode> = {
   ),
 }
 
+// nome corretto in Sanity da "Luca Ferrero" a "Luca Ferraro"
+LOGOS["Luca Ferraro"] = LOGOS["Luca Ferrero"]
+
 export function companyLogoFor(authorName?: string) {
   return authorName ? LOGOS[authorName.trim()] : undefined
 }
