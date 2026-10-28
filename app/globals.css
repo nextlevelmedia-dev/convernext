@@ -301,7 +301,8 @@ header a.cta-bubble *,
   /* padding alto ridotto per non tagliare il logo */
   padding: 40px 40px 50px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* la prima colonna si allarga quanto l'email, così non va a capo */
+  grid-template-columns: minmax(max-content, 1fr) repeat(3, 1fr);
   column-gap: 90px;
   row-gap: 0;
   color: rgba(255, 255, 255, 0.75);
@@ -351,7 +352,31 @@ header a.cta-bubble *,
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 768px) {
+/* tablet e laptop piccoli: colonne più vicine e titoli più compatti */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .footer-inner {
+    column-gap: 40px;
+  }
+
+  .footer-inner h2,
+  .footer-inner h3 {
+    font-size: 22px;
+  }
+
+  .footer-inner p,
+  .footer-inner li {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  /* su mobile il contenuto è più alto dello schermo: footer nel flusso, non fisso */
+  .footer-sticky {
+    position: relative;
+    min-height: 0;
+    display: block;
+  }
+
   .footer-inner {
     grid-template-columns: 1fr 1fr;
     column-gap: 24px;

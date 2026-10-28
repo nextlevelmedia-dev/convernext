@@ -62,7 +62,7 @@ export default function Footer() {
             </p>
 
             <p>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phoneDisplay}</a>
               <br />
               <a href={`mailto:${site.email}`}>{site.email}</a>
             </p>

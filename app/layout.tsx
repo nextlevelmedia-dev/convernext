@@ -114,7 +114,8 @@ export default function RootLayout({
           {children}
         </main>
 
-        <div className="h-[100vh]" />
+        {/* spazio per il footer a rivelazione: solo da desktop, su mobile il footer scorre */}
+        <div className="hidden h-[100vh] md:block" />
 
         <Footer />
 

@@ -142,7 +142,7 @@ export default function FinalRecap({
 
   return (
     <section
-      className="bg-[#f7f7f7] px-6 py-24 text-slate-950 transition-colors duration-300 dark:bg-black dark:text-white"
+      className="overflow-x-clip bg-[#f7f7f7] px-6 py-24 text-slate-950 transition-colors duration-300 dark:bg-black dark:text-white"
       style={{
         fontFamily: "var(--font-lato), sans-serif",
       }}
