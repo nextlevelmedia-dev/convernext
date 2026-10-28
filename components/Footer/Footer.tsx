@@ -4,7 +4,18 @@ import { site } from "@/lib/seo"
 export default function Footer() {
   return (
     <footer className="footer-sticky">
-      <div className="footer-inner">
+      <div
+        className="footer-inner"
+        style={{
+          columnGap: "90px",
+          rowGap: "0px",
+
+          /* Riduciamo il padding verticale del footer
+             per evitare che il logo venga tagliato sopra */
+          paddingTop: "40px",
+          paddingBottom: "50px",
+        }}
+      >
         {/* =========================
             LOGO FULL VIEWPORT
         ========================= */}
@@ -44,7 +55,7 @@ export default function Footer() {
             COLONNA 1
         ========================= */}
 
-        <div className="footer-contacts">
+        <div>
           <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
@@ -62,7 +73,7 @@ export default function Footer() {
             </p>
 
             <p>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phoneDisplay}</a>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`}>{site.phone}</a>
               <br />
               <a href={`mailto:${site.email}`}>{site.email}</a>
             </p>
@@ -118,7 +129,7 @@ export default function Footer() {
             COLONNA 4
         ========================= */}
 
-        <div className="footer-social">
+        <div>
           <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
@@ -133,10 +144,6 @@ export default function Footer() {
             <li>Facebook</li>
             <li>Linkedin</li>
           </ul>
-        </div>
-
-        <div className="footer-bottom">
-          © {new Date().getFullYear()} {site.name}. Tutti i diritti riservati.
         </div>
       </div>
     </footer>
