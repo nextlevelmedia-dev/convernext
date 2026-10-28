@@ -35,7 +35,7 @@ export function ProjectCard({ project }: { project: Project }) {
     ref.current?.style.setProperty("--ry", "0deg")
   }
 
-  const domain = host(project.url)
+  const domain = project.displayUrl ?? host(project.url)
 
   return (
     <article className="group h-full [perspective:1200px]">

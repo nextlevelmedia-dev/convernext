@@ -4,18 +4,7 @@ import { site } from "@/lib/seo"
 export default function Footer() {
   return (
     <footer className="footer-sticky">
-      <div
-        className="footer-inner"
-        style={{
-          columnGap: "90px",
-          rowGap: "0px",
-
-          /* Riduciamo il padding verticale del footer
-             per evitare che il logo venga tagliato sopra */
-          paddingTop: "40px",
-          paddingBottom: "50px",
-        }}
-      >
+      <div className="footer-inner">
         {/* =========================
             LOGO FULL VIEWPORT
         ========================= */}
@@ -55,7 +44,7 @@ export default function Footer() {
             COLONNA 1
         ========================= */}
 
-        <div>
+        <div className="footer-contacts">
           <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
@@ -129,7 +118,7 @@ export default function Footer() {
             COLONNA 4
         ========================= */}
 
-        <div>
+        <div className="footer-social">
           <h2
             style={{
               fontFamily: "var(--font-archivo), sans-serif",
@@ -144,6 +133,10 @@ export default function Footer() {
             <li>Facebook</li>
             <li>Linkedin</li>
           </ul>
+        </div>
+
+        <div className="footer-bottom">
+          © {new Date().getFullYear()} {site.name}. Tutti i diritti riservati.
         </div>
       </div>
     </footer>

@@ -298,11 +298,22 @@ header a.cta-bubble *,
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 120px 40px 60px;
+  /* padding alto ridotto per non tagliare il logo */
+  padding: 40px 40px 50px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 60px;
+  column-gap: 90px;
+  row-gap: 0;
   color: rgba(255, 255, 255, 0.75);
+}
+
+.footer-bottom {
+  grid-column: 1 / -1;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .footer-inner h2,
@@ -343,17 +354,49 @@ header a.cta-bubble *,
 @media (max-width: 768px) {
   .footer-inner {
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    padding: 100px 24px 40px;
+    column-gap: 24px;
+    row-gap: 36px;
+    padding: 24px 24px calc(28px + env(safe-area-inset-bottom));
   }
 
+  /* titoli come etichette: piccoli, maiuscoli, discreti */
+  .footer-inner h2,
   .footer-inner h3 {
-    font-size: 22px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
   }
 
   .footer-inner p,
   .footer-inner li {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.85;
+  }
+
+  /* contatti e social a tutta larghezza */
+  .footer-contacts,
+  .footer-social {
+    grid-column: 1 / -1;
+  }
+
+  .footer-contacts address {
+    display: grid;
+    gap: 10px;
+  }
+
+  .footer-social ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+
+  .footer-bottom {
+    margin-top: 0;
+    padding-top: 20px;
+    font-size: 13px;
   }
 }
 

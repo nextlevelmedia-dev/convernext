@@ -3,6 +3,9 @@ import { HorizontalScroll } from "./HorizontalScroll"
 import { MobileProjectList } from "./MobileProjectList"
 import { featuredProjects } from "./projects"
 
+// solo i progetti che hanno già un'anteprima
+const visibleProjects = featuredProjects.filter((p) => p.preview)
+
 type FeaturedProjectsProps = {
   title?: string
   highlight?: string
@@ -27,7 +30,7 @@ export default function FeaturedProjects({
       />
 
       <HorizontalScroll
-        items={featuredProjects}
+        items={visibleProjects}
         intro={
           <div className="relative mx-auto flex w-full max-w-7xl flex-col items-start justify-between gap-6 px-5 md:flex-row md:items-end md:px-8 xl:px-10">
             <div className="max-w-3xl">
@@ -67,7 +70,7 @@ export default function FeaturedProjects({
             </Link>
           </div>
         }
-        mobile={<MobileProjectList items={featuredProjects.slice(0, 8)} />}
+        mobile={<MobileProjectList items={visibleProjects.slice(0, 8)} />}
       />
     </section>
   )

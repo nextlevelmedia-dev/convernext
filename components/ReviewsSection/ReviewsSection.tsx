@@ -21,10 +21,10 @@ const MAX_REVIEWS = 6
  * disponibili). Home e Contatti mostrano tutte e 6.
  */
 const SERVICE_REVIEWS = {
-  ecommerce: ["Luca Frassi", "Fabio Manco", "Alessia Conti"],
-  "temi-shopify": ["Luca Frassi", "Fabio Manco", "Chiara Moretti"],
-  "ottimizzazione-conversioni": ["Fabio Manco", "Alessia Conti", "Marco Rinaldi"],
-  "siti-web": ["Marco Rinaldi", "Chiara Moretti", "Luca Ferraro"],
+  ecommerce: ["Luca Frassi", "Fabio Manco", "Dott.ssa Calcagni"],
+  "temi-shopify": ["Luca Frassi", "Fabio Manco", "Stefano Doninelli"],
+  "ottimizzazione-conversioni": ["Fabio Manco", "Alessia Conti", "Davide Rizzi"],
+  "siti-web": ["Davide Rizzi", "Stefano Doninelli", "Martina Iezzi"],
 } as const
 
 export type ReviewService = keyof typeof SERVICE_REVIEWS
@@ -78,6 +78,8 @@ interface ReviewsSectionProps {
   socialProofText?: string
   socialProofAvatars?: Avatar[]
   service?: ReviewService
+  // quante recensioni mostrare su mobile, dove le colonne si impilano
+  mobileLimit?: number
 }
 
 function StarRating({ stars }: { stars: number }) {
@@ -99,9 +101,9 @@ function StarRating({ stars }: { stars: number }) {
   )
 }
 
-function ReviewCard({ review }: { review: Review }) {
+function ReviewCard({ review, hideOnMobile }: { review: Review; hideOnMobile?: boolean }) {
   return (
-    <div className="review-card card-adaptive rounded-2xl p-5 mb-3">
+    <div className={`review-card card-adaptive rounded-2xl p-5 mb-3${hideOnMobile ? " max-md:hidden" : ""}`}>
       <StarRating stars={review.stars} />
 
       {review.reviewTitle && (
@@ -205,6 +207,7 @@ export default async function ReviewsSection({
   socialProofText,
   socialProofAvatars,
   service,
+  mobileLimit,
 }: ReviewsSectionProps) {
   const pool = await client.fetch<Review[] | null>(POOL_QUERY).catch(() => null)
   const all = uniqueReviews(items, pool)
@@ -214,6 +217,10 @@ export default async function ReviewsSection({
   const col1 = reviews.filter((_, i) => i % 3 === 0)
   const col2 = reviews.filter((_, i) => i % 3 === 1)
   const col3 = reviews.filter((_, i) => i % 3 === 2)
+
+  // su mobile l'ordine è colonna 1, poi 2, poi 3: si nascondono le ultime
+  const hiddenOnMobile = new Set(mobileLimit ? [...col1, ...col2, ...col3].slice(mobileLimit) : [])
+  const card = (r: Review, i: number) => <ReviewCard key={i} review={r} hideOnMobile={hiddenOnMobile.has(r)} />
 
   return (
     <section id="recensioni" style={{ padding: "96px 0" }}>
@@ -250,9 +257,9 @@ export default async function ReviewsSection({
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
-          <div>{col1.map((r, i) => <ReviewCard key={i} review={r} />)}</div>
-          <div>{col2.map((r, i) => <ReviewCard key={i} review={r} />)}</div>
-          <div>{col3.map((r, i) => <ReviewCard key={i} review={r} />)}</div>
+          <div>{col1.map(card)}</div>
+          <div>{col2.map(card)}</div>
+          <div>{col3.map(card)}</div>
         </div>
 
         {(ctaText || socialProofText) && (

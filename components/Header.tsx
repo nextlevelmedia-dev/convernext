@@ -168,12 +168,12 @@ export default function Header() {
               )
             })}
           </div>
-        </nav>
 
-        <div
-          className={`${stagger} relative shrink-0 border-t border-slate-200 bg-white/80 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 backdrop-blur-xl dark:border-white/10 dark:bg-[#0a0a10]/80`}
-          style={staggerDelay(8)}
-        >
+          {/* CTA e contatti: nel flusso del menu, non fissati in basso */}
+          <div
+            className={`${stagger} mt-8 pb-[max(1.25rem,env(safe-area-inset-bottom))]`}
+            style={staggerDelay(8)}
+          >
           <Link
             href="/contatti"
             onClick={closeDrawer}
@@ -196,7 +196,8 @@ export default function Header() {
             </div>
             <ThemeToggle />
           </div>
-        </div>
+          </div>
+        </nav>
       </div>
 
       <header className={`fixed left-0 top-0 z-50 w-full transition-[background-color,box-shadow,backdrop-filter] duration-300 ${scrolled || open ? "bg-white/80 shadow-[0_1px_0_#e2e8f0] backdrop-blur-xl dark:bg-black/80 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)]" : "bg-transparent"}`}>

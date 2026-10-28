@@ -72,16 +72,6 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
 
     trustPoints,
 
-    ctaProofText,
-    ctaProofAvatars[]{
-      photo{
-        asset->{
-          _id,
-          url
-        }
-      }
-    },
-
     socialProofBadgeTitle,
     socialProofBadgeSubtitle,
 
@@ -259,6 +249,7 @@ export default async function Home() {
 
         {/* RECENSIONI */}
         <ReviewsSection
+          mobileLimit={5}
           titleHighlight={page?.reviews?.titleHighlight}
           titleNormal={page?.reviews?.titleNormal}
           items={page?.reviews?.items}

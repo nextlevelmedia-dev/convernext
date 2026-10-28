@@ -1197,7 +1197,8 @@ defineField({
 
                 defineField({
                   name: "authorRole",
-                  title: "Ruolo / Azienda",
+                  title: "Nome del sito",
+                  description: "Mostrato sotto il nome, es. \"Need Jpg\"",
                   type: "string",
                 }),
 

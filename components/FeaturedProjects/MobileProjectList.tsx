@@ -75,13 +75,16 @@ function MobileProjectCard({ project }: { project: Project }) {
         />
 
         {project.url && (
-          <span
+          // div e non span: in dark mode il CSS globale forza il bianco sugli span
+          <div
             aria-hidden
             className="absolute right-4 top-4 grid size-10 place-items-center overflow-hidden rounded-full bg-white/90 text-slate-950 backdrop-blur transition-[color,box-shadow] duration-300 group-hover:text-white group-hover:shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] group-active:text-white group-active:shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)]"
           >
-            <span className="absolute inset-0 bg-brand-gradient opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-active:opacity-100" />
-            <span className="relative">↗</span>
-          </span>
+            <div className="absolute inset-0 bg-brand-gradient opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-active:opacity-100" />
+            <svg viewBox="0 0 16 16" className="relative size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4.5 11.5l7-7M6 4.5h5.5V10" />
+            </svg>
+          </div>
         )}
 
         <div className="absolute inset-x-0 bottom-0 p-5">
