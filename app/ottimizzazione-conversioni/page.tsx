@@ -15,6 +15,9 @@ import { client } from "@/sanity/lib/client"
 import JsonLd from "@/components/JsonLd"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata, serviceJsonLd } from "@/lib/seo"
 
+// contenuti da Sanity: la pagina si rigenera al massimo ogni 5 minuti
+export const revalidate = 300
+
 const description =
   "Ottimizziamo copy, UX, CTA e funnel con heatmap, session recording e A/B test per trasformare più visitatori in clienti, senza aumentare il budget ads."
 

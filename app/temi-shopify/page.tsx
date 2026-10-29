@@ -17,6 +17,9 @@ import { MOCKUP_SLIDES_PROJECTION, resolveMockupSlides } from "@/lib/mockupSlide
 import JsonLd from "@/components/JsonLd"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata, serviceJsonLd } from "@/lib/seo"
 
+// contenuti da Sanity: la pagina si rigenera al massimo ogni 5 minuti
+export const revalidate = 300
+
 const description =
   "Temi Shopify custom con sezioni immersive, costruiti sul tuo brand e pensati per vendere. Li gestisci in autonomia dall’editor di Shopify, con i nostri tutorial."
 

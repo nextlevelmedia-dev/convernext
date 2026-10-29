@@ -7,6 +7,9 @@ import Image from "next/image"
 import JsonLd from "@/components/JsonLd"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
 
+// contenuti da Sanity: la pagina si rigenera al massimo ogni 5 minuti
+export const revalidate = 300
+
 const description =
   "Una selezione dei nostri lavori: siti web, ecommerce e landing page realizzati su misura per imprenditori che volevano clienti, non solo visitatori."
 

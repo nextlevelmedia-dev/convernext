@@ -8,6 +8,9 @@ import { client } from "@/sanity/lib/client"
 
 import { breadcrumbJsonLd, jsonLdGraph, organizationId, pageMetadata, site } from "@/lib/seo"
 
+// contenuti da Sanity: la pagina si rigenera al massimo ogni 5 minuti
+export const revalidate = 300
+
 const description =
   "Hai un progetto di sito web, ecommerce Shopify o ottimizzazione delle conversioni? Raccontacelo: Convernext ti risponde entro 24 ore, senza impegno."
 

@@ -12,6 +12,9 @@ import { client } from "@/sanity/lib/client"
 import JsonLd from "@/components/JsonLd"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
 
+// contenuti da Sanity: la pagina si rigenera al massimo ogni 5 minuti
+export const revalidate = 300
+
 const description =
   "Convernext è uno studio digitale indipendente specializzato in siti web, ecommerce Shopify e conversioni: un referente diretto e gli specialisti giusti."
 

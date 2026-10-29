@@ -13,6 +13,9 @@ import { client } from "../sanity/lib/client"
 
 import { pageMetadata } from "@/lib/seo"
 
+// contenuti da Sanity: la pagina si rigenera al massimo ogni 5 minuti
+export const revalidate = 300
+
 const description =
   "Studio digitale in provincia di Cremona: siti web, ecommerce Shopify e ottimizzazione delle conversioni (CRO) per trasformare il traffico in clienti."
 
