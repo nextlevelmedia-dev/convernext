@@ -36,7 +36,6 @@ type HeroProps = {
 }
 
 export default function Hero({
-  eyebrow,
   title,
   titleTwo,
   highlightOne,
@@ -85,16 +84,16 @@ export default function Hero({
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
           {/* LEFT */}
           <div className="hero-in flex min-w-0 flex-col items-start text-left">
-            {eyebrow && (
-              <div className="mb-7 inline-flex rounded-full border md:mb-6 border-slate-200 bg-white/80 px-4 py-2 text-sm font-bold backdrop-blur transition-shadow hover:shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.12)] dark:border-white/10 dark:bg-[#0f1726]/80">
-                <a
-                  href="#recensioni"
-                  className="bg-brand-gradient bg-clip-text text-transparent"
-                >
-                  {eyebrow}
-                </a>
+            <a
+              href="#recensioni"
+              aria-label="Valutati 5 su 5 dai nostri clienti, vai alle recensioni"
+              className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-slate-300/80 bg-white/80 py-2 pl-3.5 pr-4 backdrop-blur transition-[box-shadow,border-color] hover:border-slate-400/80 hover:shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.14)] md:mb-6 md:gap-3 md:py-2.5 md:pl-4 md:pr-5 dark:border-white/15 dark:bg-[#0f1726]/80 dark:hover:border-white/25"
+            >
+              <RatingStars />
+              <div className="whitespace-nowrap text-[13px] font-bold tracking-[-0.01em] text-slate-900 md:text-[15px] dark:text-white">
+                Valutati 5/5 dai clienti
               </div>
-            )}
+            </a>
 
             <h1
               className="max-w-3xl text-[clamp(2.35rem,1.2rem+4.4vw,4.6rem)] font-semibold leading-[1.04] tracking-[-0.035em] text-black md:text-5xl md:leading-[1.15] md:tracking-[-0.025em] dark:text-white"
@@ -569,5 +568,30 @@ md:border-slate-200
         </div>
       )}
     </div>
+  )
+}
+// 5 stelle con il gradient del brand, uno unico che attraversa tutte le stelle
+function RatingStars() {
+  const star =
+    "M8 .9l2.1 4.5 4.9.6-3.6 3.4.9 4.9L8 11.9l-4.3 2.4.9-4.9L1 6l4.9-.6z"
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 88 16"
+      className="h-[15px] w-auto shrink-0 md:h-[18px]"
+    >
+      <defs>
+        <linearGradient id="hero-stars-fill" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stopColor="#fc03b0" />
+          <stop offset="1" stopColor="#047cf9" />
+        </linearGradient>
+        <mask id="hero-stars-mask">
+          {[0, 18, 36, 54, 72].map((x) => (
+            <path key={x} d={star} transform={`translate(${x} 0)`} fill="#fff" />
+          ))}
+        </mask>
+      </defs>
+      <rect width="88" height="16" fill="url(#hero-stars-fill)" mask="url(#hero-stars-mask)" />
+    </svg>
   )
 }
