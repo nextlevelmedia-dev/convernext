@@ -3,6 +3,7 @@ import TeamOrbit from "./TeamOrbit"
 import TrustPoints from "../TrustPoints/TrustPoints"
 
 type AboutHeroProps = {
+  // arriva da Sanity ma non viene più mostrato
   eyebrow?: string
   title?: string
   highlightOne?: string
@@ -20,7 +21,6 @@ type AboutHeroProps = {
 }
 
 export default function AboutHero({
-  eyebrow,
   title,
   highlightOne,
   titleTwo,
@@ -36,7 +36,7 @@ export default function AboutHero({
   specialistSkills = [],
 }: AboutHeroProps) {
   return (
-    <section className="relative overflow-hidden px-5 pb-20 pt-28 md:px-8 md:pt-40 lg:pb-28 xl:px-10">
+    <section className="relative overflow-hidden px-5 pb-20 pt-28 md:px-8 md:pt-40 lg:flex lg:min-h-svh lg:items-center lg:py-24 xl:px-10">
       {/* stessa griglia e alone della hero in home */}
       <div
         aria-hidden
@@ -49,12 +49,6 @@ export default function AboutHero({
 
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
         <div className="hero-in flex min-w-0 flex-col items-start">
-          {eyebrow && (
-            <div className="mb-7 inline-flex rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-bold backdrop-blur md:mb-6 dark:border-white/10 dark:bg-[#0f1726]/80">
-              <span className="bg-brand-gradient bg-clip-text text-transparent">{eyebrow}</span>
-            </div>
-          )}
-
           <h1
             className="max-w-3xl text-[clamp(2.35rem,1.2rem+4.4vw,4.6rem)] leading-[1.04] tracking-[-0.035em] text-slate-950 md:text-5xl md:leading-[1.15] md:tracking-[-0.025em] dark:text-white"
             style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}

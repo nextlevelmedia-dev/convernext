@@ -40,6 +40,16 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/davide-rizzi.webp",
   },
   {
+    slug: "villa-san-carlo",
+    name: "Villa San Carlo",
+    tags: ["Sito web", "Eventi", "SEO locale"],
+    description:
+      "Sito per una villa che ospita cerimonie, matrimoni e soggiorni, con la presentazione degli spazi e le richieste di disponibilità.",
+    url: "https://villa-san-carlo-next.vercel.app/",
+    displayUrl: "villa-san-carlo.it",
+    preview: "/media/work/villa-san-carlo.webp",
+  },
+  {
     slug: "need-jpg",
     name: "Need Jpg",
     tags: ["E-commerce", "Custom development", "ADV"],

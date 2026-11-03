@@ -5,9 +5,11 @@ import { client } from "@/sanity/lib/client"
 import Image from "next/image"
 
 import JsonLd from "@/components/JsonLd"
+import { ProjectsGrid } from "@/components/FeaturedProjects/ProjectsGrid"
+import { featuredProjects } from "@/components/FeaturedProjects/projects"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
 
-// contenuti da Sanity: la pagina si rigenera al massimo ogni 5 minuti
+// testo della hero da Sanity: la pagina si rigenera al massimo ogni 5 minuti
 export const revalidate = 300
 
 const description =
@@ -34,96 +36,16 @@ const query = `{
       ctaHref,
       trustPoints
     }
-  },
-  "projects": *[_type == "project"] | order(order asc) {
-    title,
-    description,
-    href,
-    image{
-      asset->{
-        _id,
-        url
-      }
-    }
   }
 }`
 
-type Project = {
-  title: string
-  description?: string
-  href?: string
-  image?: {
-    asset: {
-      url: string
-    }
-  }
-}
-
-function ProjectCard({
-  project,
-  eager = false,
-}: {
-  project: Project
-  eager?: boolean
-}) {
-  const imageUrl = project.image?.asset?.url
-  const Wrapper = project.href ? "a" : "div"
-
-  return (
-    <Wrapper
-      {...(
-        project.href
-          ? {
-              href: project.href,
-              target: "_blank",
-              rel: "noopener noreferrer",
-            }
-          : {}
-      )}
-      className="card-adaptive group block rounded-2xl"
-    >
-      {imageUrl && (
-        <div className="p-3 pb-0">
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl">
-            <Image
-              src={imageUrl}
-              alt={project.title}
-              fill
-              sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
-              loading={eager ? "eager" : "lazy"}
-              fetchPriority={eager ? "high" : "auto"}
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="p-6">
-        <h2
-          className="mb-2 text-xl text-slate-950 dark:text-white"
-          style={{
-            fontFamily: "var(--font-archivo), sans-serif",
-            fontWeight: 600,
-          }}
-        >
-          {project.title}
-        </h2>
-
-        {project.description && (
-          <p className="text-sm font-semibold uppercase tracking-widest text-slate-500 dark:text-white/40">
-            {project.description}
-          </p>
-        )}
-      </div>
-    </Wrapper>
-  )
-}
+// solo i progetti che hanno già un'anteprima
+const projects = featuredProjects.filter((p) => p.preview)
 
 export default async function ProgettiPage() {
   const data = await client.fetch(query)
 
   const hero = data?.page?.hero
-  const projects: Project[] = data?.projects ?? []
   const ctaHref = hero?.ctaHref || "#contatti"
 
   return (
@@ -132,58 +54,33 @@ export default async function ProgettiPage() {
       <Header />
 
       <div className="pt-20">
-        <section className="px-6 py-24">
+        <section className="px-5 pb-24 pt-16 md:px-8 md:pt-24 xl:px-10">
           <div className="mx-auto max-w-7xl">
-            <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[400px_1fr] lg:gap-16">
+            {/* HERO */}
+            <div className="hero-in border-b border-slate-200 pb-12 dark:border-white/10">
+              <h1
+                className="text-4xl leading-[1.15] tracking-tight text-slate-950 md:text-6xl dark:text-white"
+                style={{
+                  fontFamily: "var(--font-archivo), sans-serif",
+                  fontWeight: 600,
+                }}
+              >
+                {hero?.title}{" "}
+                {hero?.highlightOne && (
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">
+                    {hero.highlightOne}
+                  </span>
+                )}{" "}
+                {hero?.titleTwo}
+              </h1>
 
-              {/* =========================
-                  LEFT CONTENT
-              ========================= */}
+              {hero?.subtitle && (
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-black/65 dark:text-white/70">
+                  {hero.subtitle}
+                </p>
+              )}
 
-              <div className="hero-in lg:sticky lg:top-32">
-                <h1
-                  className="mb-6 text-4xl leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-5xl"
-                  style={{
-                    fontFamily: "var(--font-archivo), sans-serif",
-                    fontWeight: 600,
-                  }}
-                >
-                  {hero?.title}{" "}
-
-                  {hero?.highlightOne && (
-                    <span className="bg-brand-gradient bg-clip-text text-transparent">
-                      {hero.highlightOne}
-                    </span>
-                  )}{" "}
-
-                  {hero?.titleTwo}
-                </h1>
-
-                {hero?.subtitle && (
-                  <p className="mb-8 text-lg font-semibold leading-8 text-slate-800 dark:text-white/70">
-                    {hero.subtitle}
-                  </p>
-                )}
-
-                <div className="mb-8 border-t border-slate-200 pt-8 dark:border-white/10">
-                  <div className="flex items-center gap-4">
-                    <p className="w-5/6 text-sm leading-6 text-slate-500 dark:text-white/50">
-                      Alcuni di questi progetti sono stati realizzati per conto di Pixel Wave.
-                    </p>
-
-                    <div className="w-1/6 shrink-0">
-                      <Image
-                        src="/PixelWaveLogo3-61fa153c.webp"
-                        alt="Pixel Wave"
-                        width={200}
-                        height={104}
-                        sizes="80px"
-                        className="h-auto w-full object-contain"
-                      />
-                    </div>
-                  </div>
-                </div>
-
+              <div className="mt-8">
                 {hero?.ctaText && (
                   <a
                     href={ctaHref}
@@ -192,24 +89,25 @@ export default async function ProgettiPage() {
                     {hero.ctaText}
                   </a>
                 )}
-
                 <TrustPoints points={hero?.trustPoints} className="mt-6" />
               </div>
+            </div>
 
-              {/* =========================
-                  PROJECT GRID
-              ========================= */}
+            {/* PROGETTI */}
+            <div className="mt-8">
+              <ProjectsGrid projects={projects} />
+            </div>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {projects.map((project, i) => (
-                  <ProjectCard
-                    key={i}
-                    project={project}
-                    eager={i < 2}
-                  />
-                ))}
-              </div>
-
+            <div className="mt-20 flex items-center gap-4 text-sm text-slate-500 dark:text-white/50">
+              <Image
+                src="/PixelWaveLogo3-61fa153c.webp"
+                alt="Pixel Wave"
+                width={200}
+                height={104}
+                sizes="64px"
+                className="h-auto w-16 object-contain dark:invert"
+              />
+              <p>Alcuni di questi progetti sono stati realizzati per conto di Pixel Wave.</p>
             </div>
           </div>
         </section>

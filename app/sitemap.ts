@@ -20,19 +20,17 @@ const routes: Route[] = [
   { path: "/siti-web", priority: 0.9, slug: "siti-web" },
   { path: "/ottimizzazione-conversioni", priority: 0.9, slug: "ottimizzazione-conversioni" },
   { path: "/temi-shopify", priority: 0.9, slug: "temi-shopify" },
-  { path: "/progetti", priority: 0.8, slug: "progetti" },
+  { path: "/progetti", priority: 0.8, slug: "progetti", updated: "2026-11-03" },
   { path: "/chi-siamo", priority: 0.7, slug: "chi-siamo" },
   { path: "/contatti", priority: 0.8, updated: "2026-10-24" },
 ]
 
 const query = `{
-  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt },
-  "projectsUpdatedAt": *[_type == "project"] | order(_updatedAt desc)[0]._updatedAt
+  "pages": *[_type == "page" && defined(slug.current)]{ "slug": slug.current, _updatedAt }
 }`
 
 type SanityDates = {
   pages: { slug: string; _updatedAt: string }[]
-  projectsUpdatedAt?: string
 }
 
 const latest = (...dates: (string | undefined)[]) =>
@@ -45,10 +43,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return routes.map((route) => {
     const sanityDate = route.slug ? pageDates.get(route.slug) : undefined
-    // /progetti cambia anche quando si aggiunge o modifica un progetto
+    // /progetti: i progetti sono nel codice, la hero in Sanity
     const lastModified =
       route.path === "/progetti"
-        ? latest(sanityDate, data?.projectsUpdatedAt)
+        ? latest(sanityDate, route.updated)
         : (sanityDate ?? route.updated)
 
     return {
