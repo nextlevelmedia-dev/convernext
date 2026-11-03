@@ -37,8 +37,15 @@ export function ProjectCard({ project }: { project: Project }) {
 
   const domain = project.displayUrl ?? host(project.url)
 
+  // con l'URL tutta la card è il link al sito, non solo "Vedi il sito"
+  const Wrapper = project.url ? "a" : "div"
+  const linkProps = project.url
+    ? { href: project.url, target: "_blank", rel: "noopener noreferrer" }
+    : {}
+
   return (
     <article className="group h-full [perspective:1200px]">
+      <Wrapper {...linkProps} className="block h-full rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#047cf9]">
       <div
         ref={ref}
         onPointerMove={onMove}
@@ -94,19 +101,15 @@ export function ProjectCard({ project }: { project: Project }) {
           )}
 
           {project.url && (
-            <a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1.5 font-bold text-slate-950 transition-colors hover:text-[#047cf9] dark:text-white"
-            >
+            <p className="mt-4 inline-flex items-center gap-1.5 font-bold text-slate-950 transition-colors group-hover:text-[#047cf9] dark:text-white">
               Vedi il sito
-              <span aria-hidden>↗</span>
+              <span aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
               <span className="sr-only">(si apre in una nuova scheda)</span>
-            </a>
+            </p>
           )}
         </div>
       </div>
+      </Wrapper>
     </article>
   )
 }

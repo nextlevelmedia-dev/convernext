@@ -51,7 +51,7 @@ export function MobileProjectList({ items }: { items: Project[] }) {
         href="/progetti"
         className="mt-10 flex h-14 w-full items-center justify-center gap-2 rounded-full bg-brand-gradient px-8 text-base font-bold !text-white shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] transition-transform duration-300 active:scale-[0.98]"
       >
-        Vedi altri progetti
+        Vedi tutti i progetti
         <span aria-hidden>→</span>
       </Link>
     </div>
