@@ -8,7 +8,6 @@ import { useState, useEffect, useRef, type CSSProperties } from "react"
 import dynamic from "next/dynamic"
 import ThemeToggle from "./ThemeToggle"
 import { services } from "./MegaMenu"
-import { site } from "@/lib/seo"
 
 const MegaMenu = dynamic(() => import("./MegaMenu"))
 
@@ -86,6 +85,8 @@ export default function Header() {
           <Link href="/" onClick={closeDrawer} aria-label="Convernext — Home">
             <Image src="/logo-convernext.svg" alt="Convernext" width={1010} height={106} className="ml-[2px] h-auto w-[98px]" />
           </Link>
+          <div className="flex items-center gap-3">
+          <ThemeToggle />
           <button
             ref={closeRef}
             onClick={closeDrawer}
@@ -96,6 +97,7 @@ export default function Header() {
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </button>
+          </div>
         </div>
 
         <nav aria-label="Navigazione mobile" className="relative flex-1 overflow-y-auto px-5 pb-6">
@@ -119,10 +121,10 @@ export default function Header() {
                     href={item.href}
                     onClick={closeDrawer}
                     aria-current={active ? "page" : undefined}
-                    className="group flex items-center justify-between gap-3 border-b border-slate-200 py-3 dark:border-white/10"
+                    className="group flex items-center justify-between gap-3 border-b border-slate-200 py-2.5 dark:border-white/10"
                   >
                     <div
-                      className={`text-[17px] leading-tight ${active ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
+                      className={`text-[24px] leading-tight tracking-tight ${active ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
                       style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
                     >
                       {item.title}
@@ -140,11 +142,11 @@ export default function Header() {
                 href="/esperienze-immersive"
                 onClick={closeDrawer}
                 aria-current={pathname === "/esperienze-immersive" ? "page" : undefined}
-                className="group flex items-center justify-between gap-3 border-b border-slate-200 py-3 dark:border-white/10"
+                className="group flex items-center justify-between gap-3 border-b border-slate-200 py-2.5 dark:border-white/10"
               >
                 <div className="flex min-w-0 items-center gap-2.5">
                   <div
-                    className={`text-[17px] leading-tight ${pathname === "/esperienze-immersive" ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
+                    className={`text-[24px] leading-tight tracking-tight ${pathname === "/esperienze-immersive" ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
                     style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
                   >
                     Esperienze immersive
@@ -213,17 +215,6 @@ export default function Header() {
             </svg>
           </Link>
 
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <div className="flex min-w-0 flex-col text-[13px] leading-5">
-              <a href={`mailto:${site.email}`} className="truncate font-semibold !text-slate-900 dark:!text-white">
-                {site.email}
-              </a>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="!text-slate-500 dark:!text-white/60">
-                {site.phoneDisplay}
-              </a>
-            </div>
-            <ThemeToggle />
-          </div>
           </div>
         </nav>
       </div>
