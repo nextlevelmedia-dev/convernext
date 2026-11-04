@@ -144,7 +144,7 @@ export default function Header() {
               >
                 <div className="flex min-w-0 items-center gap-2.5">
                   <div
-                    className="bg-brand-gradient bg-clip-text text-[17px] leading-tight !text-transparent"
+                    className={`text-[17px] leading-tight ${pathname === "/esperienze-immersive" ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
                     style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
                   >
                     Esperienze immersive
