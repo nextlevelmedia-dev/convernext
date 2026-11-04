@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, type CSSProperties } from "react"
 
 import dynamic from "next/dynamic"
 import ThemeToggle from "./ThemeToggle"
-import { ImmersiveFeature, services } from "./MegaMenu"
+import { services } from "./MegaMenu"
 import { site } from "@/lib/seo"
 
 const MegaMenu = dynamic(() => import("./MegaMenu"))
@@ -103,43 +103,71 @@ export default function Header() {
             className={stagger}
             style={staggerDelay(0)}
           >
-            <div className="mb-3 mt-2 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/50">
+            <div className="mb-1 mt-1 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/50">
               <div aria-hidden className="h-px w-6 bg-brand-gradient" />
               Servizi
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2.5">
+          {/* servizi: lista compatta, senza icone, così tutto il menu sta in uno schermo */}
+          <ul className="border-t border-slate-200 dark:border-white/10">
             {services.map((item, i) => {
               const active = pathname === item.href
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={closeDrawer}
-                  aria-current={active ? "page" : undefined}
-                  className={`${stagger} flex min-h-[118px] flex-col justify-between rounded-2xl border p-3.5 ${
-                    active
-                      ? "border-transparent bg-[linear-gradient(135deg,rgb(252_3_176/0.10),rgb(4_124_249/0.10))] ring-1 ring-[#7c3aed]/40"
-                      : "border-slate-200 bg-white/70 active:bg-slate-50 dark:border-white/10 dark:bg-white/[0.04]"
-                  }`}
-                  style={staggerDelay(i + 1)}
-                >
-                  <div className="grid size-9 place-items-center rounded-xl bg-brand-gradient text-white shadow-[0_8px_20px_-8px_rgb(124_58_237/0.7)] [&_svg]:size-[18px]">
-                    {item.icon}
-                  </div>
-                  <div className="mt-3 text-[15px] font-semibold leading-tight !text-slate-950 dark:!text-white">
-                    {item.title}
-                  </div>
-                </Link>
+                <li key={item.href} className={stagger} style={staggerDelay(i + 1)}>
+                  <Link
+                    href={item.href}
+                    onClick={closeDrawer}
+                    aria-current={active ? "page" : undefined}
+                    className="group flex items-center justify-between gap-3 border-b border-slate-200 py-3 dark:border-white/10"
+                  >
+                    <div
+                      className={`text-[17px] leading-tight ${active ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
+                      style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
+                    >
+                      {item.title}
+                    </div>
+                    <svg aria-hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 !text-slate-400 transition-transform group-active:translate-x-1 dark:!text-white/40">
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </Link>
+                </li>
               )
             })}
-            <div className={`${stagger} col-span-2`} style={staggerDelay(services.length + 1)}>
-              <ImmersiveFeature compact onClick={closeDrawer} />
+            {/* esperienze immersive: riga in evidenza */}
+            <li className={stagger} style={staggerDelay(services.length + 1)}>
+              <Link
+                href="/esperienze-immersive"
+                onClick={closeDrawer}
+                aria-current={pathname === "/esperienze-immersive" ? "page" : undefined}
+                className="group flex items-center justify-between gap-3 border-b border-slate-200 py-3 dark:border-white/10"
+              >
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <div
+                    className="bg-brand-gradient bg-clip-text text-[17px] leading-tight !text-transparent"
+                    style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
+                  >
+                    Esperienze immersive
+                  </div>
+                  <div className="shrink-0 rounded-full bg-brand-gradient px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider !text-white">
+                    Novità
+                  </div>
+                </div>
+                <svg aria-hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 !text-slate-400 transition-transform group-active:translate-x-1 dark:!text-white/40">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Link>
+            </li>
+          </ul>
+
+          {/* pagine */}
+          <div className={`${stagger} mt-6`} style={staggerDelay(services.length + 2)}>
+            <div className="mb-1 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/50">
+              <div aria-hidden className="h-px w-6 bg-brand-gradient" />
+              Convernext
             </div>
           </div>
-
-          <div className="mt-6 border-t border-slate-200 dark:border-white/10">
+          <div>
             {[
               { href: "/progetti", label: "Progetti" },
               { href: "/chi-siamo", label: "Chi siamo" },
@@ -152,21 +180,18 @@ export default function Header() {
                   href={item.href}
                   onClick={closeDrawer}
                   aria-current={active ? "page" : undefined}
-                  className={`${stagger} group flex items-center gap-4 border-b border-slate-200 py-4 dark:border-white/10`}
-                  style={staggerDelay(i + 5)}
+                  className={`${stagger} group flex items-center justify-between gap-4 border-b border-slate-200 py-2.5 dark:border-white/10`}
+                  style={staggerDelay(i + services.length + 3)}
                 >
-                  <div className="w-6 font-mono text-xs text-slate-400 dark:text-white/35">0{i + 1}</div>
                   <div
-                    className={`flex-1 text-[28px] leading-none tracking-tight ${active ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
+                    className={`text-[24px] leading-tight tracking-tight ${active ? "bg-brand-gradient bg-clip-text !text-transparent" : "!text-slate-950 dark:!text-white"}`}
                     style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
                   >
                     {item.label}
                   </div>
-                  <div aria-hidden className="grid size-9 place-items-center rounded-full border border-slate-200 !text-slate-900 transition-transform group-active:translate-x-1 dark:border-white/10 dark:!text-white">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M7 17 17 7M8 7h9v9" />
-                    </svg>
-                  </div>
+                  <svg aria-hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 !text-slate-400 transition-transform group-active:translate-x-1 dark:!text-white/40">
+                    <path d="M7 17 17 7M8 7h9v9" />
+                  </svg>
                 </Link>
               )
             })}
@@ -174,13 +199,13 @@ export default function Header() {
 
           {/* CTA e contatti: nel flusso del menu, non fissati in basso */}
           <div
-            className={`${stagger} mt-8 pb-[max(1.25rem,env(safe-area-inset-bottom))]`}
-            style={staggerDelay(8)}
+            className={`${stagger} mt-6 pb-[max(1.25rem,env(safe-area-inset-bottom))]`}
+            style={staggerDelay(services.length + 6)}
           >
           <Link
             href="/contatti"
             onClick={closeDrawer}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-gradient px-6 py-4 text-base font-bold !text-white shadow-[0_14px_34px_-12px_rgb(124_58_237/0.7)]"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-gradient px-6 py-3.5 text-base font-bold !text-white shadow-[0_14px_34px_-12px_rgb(124_58_237/0.7)]"
           >
             Richiedi una consulenza
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
