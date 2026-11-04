@@ -99,6 +99,7 @@ export default function Footer() {
             <li><Link href="/ecommerce">Ecommerce Shopify</Link></li>
             <li><Link href="/temi-shopify">Temi Shopify</Link></li>
             <li><Link href="/ottimizzazione-conversioni">Ottimizzazione conversioni</Link></li>
+            <li><Link href="/esperienze-immersive">Esperienze immersive 3D</Link></li>
             <li>Advertising</li>
           </ul>
         </div>

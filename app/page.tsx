@@ -50,7 +50,7 @@ const fallbackServices = [
   },
   {
     label: "Web Performance",
-    title: "Siti Web Performanti",
+    title: "Siti Web su Misura",
     text: "Ottieni più lead e clienti con pagine ottimizzate per guidare ogni utente all'azione.",
     cta: "Ottimizza il tuo sito web",
     href: "/siti-web",

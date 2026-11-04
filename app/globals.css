@@ -645,3 +645,17 @@ body {
     animation: none;
   }
 }
+
+/* =========================
+   LANDING ESPERIENZE IMMERSIVE
+========================= */
+
+@keyframes immersive-hint {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+@keyframes immersive-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(0, -14px, 0) rotate(2deg); }
+}

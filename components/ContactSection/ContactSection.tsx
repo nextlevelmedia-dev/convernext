@@ -237,7 +237,7 @@ export default function ContactSection() {
                     <option value="">Seleziona un servizio</option>
                     <option value="ecommerce-shopify">E-commerce Shopify</option>
                     <option value="ottimizzazione-conversioni">Ottimizzazione Conversioni</option>
-                    <option value="siti-web">Siti Web Performanti</option>
+                    <option value="siti-web">Siti Web su Misura</option>
                     <option value="temi-shopify">Temi Shopify</option>
                     <option value="altro">Altro</option>
                   </select>

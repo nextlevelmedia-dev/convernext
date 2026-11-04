@@ -36,7 +36,7 @@ export const services = [
     ),
   },
   {
-    title: "Siti Web Performanti",
+    title: "Siti Web su Misura",
     href: "/siti-web",
     description: "Siti veloci, moderni e ottimizzati per offrire la migliore esperienza.",
     features: ["Design moderno e responsive", "SEO & Performance", "Sicurezza e affidabilità", "Manutenzione e supporto"],

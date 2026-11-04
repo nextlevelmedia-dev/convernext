@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Archivo, Lato, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Footer from "../components/Footer/Footer"
+import SiteFooter from "../components/SiteFooter"
 import ScrollToTop from "../components/ScrollToTop"
 import ScrollReveal from "../components/ScrollReveal"
 import JsonLd from "../components/JsonLd"
@@ -114,9 +115,11 @@ export default function RootLayout({
           {children}
         </main>
 
-        <div className="h-[100vh]" />
-
-        <Footer />
+        {/* spazio per il footer sticky + footer (le landing con footer proprio li saltano) */}
+        <SiteFooter>
+          <div className="h-[100vh]" />
+          <Footer />
+        </SiteFooter>
 
         <ScrollReveal />
       </body>

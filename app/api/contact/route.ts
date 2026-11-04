@@ -18,7 +18,7 @@ const SERVICES: Record<string, string> = {
   "ecommerce-shopify": "E-commerce Shopify",
   "temi-shopify": "Temi Shopify",
   "ottimizzazione-conversioni": "Ottimizzazione Conversioni",
-  "siti-web": "Siti Web Performanti",
+  "siti-web": "Siti Web su Misura",
   altro: "Altro",
 }
 

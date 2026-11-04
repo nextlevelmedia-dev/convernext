@@ -23,6 +23,7 @@ const routes: Route[] = [
   { path: "/progetti", priority: 0.8, slug: "progetti", updated: "2026-11-03" },
   { path: "/chi-siamo", priority: 0.7, slug: "chi-siamo" },
   { path: "/contatti", priority: 0.8, updated: "2026-10-24" },
+  { path: "/esperienze-immersive", priority: 0.8, updated: "2026-11-04" },
 ]
 
 const query = `{
