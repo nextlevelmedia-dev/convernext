@@ -9,6 +9,7 @@ export const site = {
   email: "nextlevelmedia.creator@gmail.com",
   phone: "+39 3334187542",
   phoneDisplay: "+39 333 418 7542",
+  vatId: "01831470198",
   hours: "Lun – Ven, 9:00 – 18:00",
   address: {
     street: "Via Risorgimento, 61",

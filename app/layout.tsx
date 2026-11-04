@@ -65,6 +65,7 @@ const siteJsonLd = jsonLdGraph(
     image: `${site.url}/opengraph-image.jpg`,
     email: site.email,
     telephone: site.phone,
+    vatID: `IT${site.vatId}`,
     description: site.description,
     address: {
       "@type": "PostalAddress",

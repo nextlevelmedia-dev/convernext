@@ -77,6 +77,8 @@ export default function Footer() {
               <br />
               <a href={`mailto:${site.email}`}>{site.email}</a>
             </p>
+
+            <p>P.IVA {site.vatId}</p>
           </address>
         </div>
 

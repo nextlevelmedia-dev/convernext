@@ -131,7 +131,7 @@ export default function ImmersiveFooter() {
 
         <div className="mx-auto mt-16 flex max-w-7xl flex-col gap-4 border-t border-white/10 pt-6 text-sm md:flex-row md:items-center md:justify-between">
           <p className="!text-white/40">
-            © {new Date().getFullYear()} {site.name} · {site.address.street}, {site.address.locality} ({site.address.region})
+            © {new Date().getFullYear()} {site.name} · {site.address.street}, {site.address.locality} ({site.address.region}) · P.IVA {site.vatId}
           </p>
           <a href="#immersive-hero" className="!text-white/55 transition-colors hover:!text-white">
             Torna all&apos;inizio ↑
