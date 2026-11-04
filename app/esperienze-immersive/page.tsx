@@ -6,6 +6,7 @@ import DemoGrid from "@/components/Immersive/DemoGrid"
 import MedusaCompanion from "@/components/Immersive/MedusaCompanion"
 import StickyCta from "@/components/Immersive/StickyCta"
 import ImmersiveFooter from "@/components/Immersive/ImmersiveFooter"
+import MarineSnow from "@/components/Immersive/MarineSnow"
 import { WhatsAppButton } from "@/components/Immersive/whatsapp"
 import JsonLd from "@/components/JsonLd"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
@@ -219,6 +220,7 @@ export default function EsperienzeImmersivePage() {
 
       <ImmersiveFooter />
 
+      <MarineSnow />
       <MedusaCompanion />
       <StickyCta />
     </div>

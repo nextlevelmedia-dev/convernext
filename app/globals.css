@@ -655,6 +655,11 @@ body {
   100% { transform: translateY(200%); }
 }
 
+@keyframes immersive-ray {
+  0%, 100% { transform: rotate(var(--r)) scaleX(1); opacity: var(--o, 1); }
+  50% { transform: rotate(calc(var(--r) + 6deg)) scaleX(1.25); opacity: calc(var(--o, 1) * 0.55); }
+}
+
 @keyframes immersive-float {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
   50% { transform: translate3d(0, -14px, 0) rotate(2deg); }

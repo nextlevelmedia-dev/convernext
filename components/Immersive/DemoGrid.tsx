@@ -219,7 +219,7 @@ export default function DemoGrid() {
           <ul
             ref={grid}
             aria-label="Demo realizzate"
-            className="mx-auto grid max-w-5xl grid-cols-1 gap-x-10 gap-y-10 px-5 pb-[20svh] pt-[36svh] will-change-transform md:grid-cols-2 md:gap-y-14 md:px-8"
+            className="mx-auto grid max-w-7xl grid-cols-1 gap-x-10 gap-y-10 px-5 pb-[20svh] pt-[36svh] will-change-transform md:grid-cols-2 md:gap-y-14 md:px-8 xl:px-10"
           >
             {visible.map((d) => (
               <li key={d.slug} data-card className="origin-center will-change-transform [transform-style:preserve-3d]">
@@ -234,7 +234,7 @@ export default function DemoGrid() {
                       src={d.image}
                       alt={`Anteprima della demo ${d.name}`}
                       fill
-                      sizes="(min-width: 768px) 560px, 90vw"
+                      sizes="(min-width: 768px) 620px, 90vw"
                       className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                     />
                   </div>

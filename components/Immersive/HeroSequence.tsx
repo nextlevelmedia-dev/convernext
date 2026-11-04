@@ -24,6 +24,9 @@ const SETS = {
 const IDLE_SECONDS = 2.6
 const IDLE_SLOWDOWN = 1.35 // un po' più lento del video, più ipnotico
 const IDLE_UNTIL = 0.01 // sotto questa soglia di scroll si è ancora "fermi"
+// a fine scroll il CN resta vivo: loop sulle ultime battute del video
+const END_FROM = 0.8 // da qui il video è finito
+const END_SECONDS = 2.4
 
 const BG = "#05040a"
 
@@ -69,6 +72,8 @@ export default function HeroSequence() {
     let raf = 0
     let idleRaf = 0
     let idleStart = performance.now()
+    let endStart = 0
+    let inEnd = false
     // fotogramma da cui parte lo scroll: quello dove si trovava il loop
     let base = 0
 
@@ -82,8 +87,21 @@ export default function HeroSequence() {
       return Math.round(e * (n - 1))
     }
 
+    // loop sulle ultime battute: parte dall'ultimo fotogramma, torna indietro e riparte
+    const endFrame = (now: number) => {
+      const n = Math.round(set.fps * END_SECONDS)
+      const period = ((n - 1) / set.fps) * 1000 * IDLE_SLOWDOWN
+      const t = ((now - endStart) / period) % 2
+      const k = t < 1 ? t : 2 - t
+      const e = 0.5 - Math.cos(k * Math.PI) / 2
+      return set.count - 1 - Math.round(e * (n - 1))
+    }
+
+    // anima da sola quando si è fermi all'inizio o a fine scroll (hero ancora in vista)
     const idleTick = () => {
-      if (progress() >= IDLE_UNTIL) {
+      const p = progress()
+      const atEnd = p >= END_FROM && sec.getBoundingClientRect().bottom > 0
+      if (p >= IDLE_UNTIL && !atEnd) {
         idleRaf = 0
         return
       }
@@ -146,9 +164,18 @@ export default function HeroSequence() {
         target = idleFrame(performance.now())
         base = target
         if (!idleRaf) idleRaf = requestAnimationFrame(idleTick)
+      } else if (p >= END_FROM) {
+        // video finito: il CN continua a muoversi piano
+        if (!inEnd) {
+          inEnd = true
+          endStart = performance.now()
+        }
+        target = endFrame(performance.now())
+        if (!idleRaf) idleRaf = requestAnimationFrame(idleTick)
       } else {
-        // il video scorre dal fotogramma del loop fino all'80% dello scroll, poi resta sul CN
-        target = Math.round(base + ramp(p, IDLE_UNTIL, 0.8) * (set.count - 1 - base))
+        // il video scorre dal fotogramma del loop fino alla fine
+        inEnd = false
+        target = Math.round(base + ramp(p, IDLE_UNTIL, END_FROM) * (set.count - 1 - base))
       }
       const idx = nearest(target)
       // nella scena finale il CN sale e si rimpicciolisce, per lasciare spazio a titolo e CTA

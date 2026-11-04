@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { site } from "@/lib/seo"
 import { WhatsAppButton, whatsappUrl } from "./whatsapp"
+import OceanBackdrop from "./OceanBackdrop"
 
 /*
  * Footer della landing: chiude la storia come i titoli di coda.
@@ -40,11 +41,8 @@ export default function ImmersiveFooter() {
     <footer id="contatto" data-medusa="hide" className="relative overflow-hidden">
       {/* CTA finale sul monogramma */}
       <div className="relative flex min-h-svh items-end px-5 pb-20 pt-40 md:items-center md:px-8 md:py-32 xl:px-10">
-        <div aria-hidden data-no-reveal className="absolute inset-0">
-          <Image src="/immersive/poster-end.webp" alt="" fill sizes="100vw" className="hidden object-cover md:block" />
-          <div className="absolute inset-x-0 top-0 h-[58%] md:hidden">
-            <Image src="/immersive/poster-end-m.webp" alt="" fill sizes="100vw" className="object-cover" />
-          </div>
+        <div aria-hidden className="absolute inset-0">
+          <OceanBackdrop />
           {/* il CN si spegne verso il basso, nel buio dei titoli di coda */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#05040a] via-[#05040a]/55 to-[#05040a]/10 md:via-[#05040a]/20 md:to-transparent" />
         </div>
