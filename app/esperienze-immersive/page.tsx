@@ -7,6 +7,7 @@ import MedusaCompanion from "@/components/Immersive/MedusaCompanion"
 import StickyCta from "@/components/Immersive/StickyCta"
 import ImmersiveFooter from "@/components/Immersive/ImmersiveFooter"
 import MarineSnow from "@/components/Immersive/MarineSnow"
+import ConversionAnatomy from "@/components/Immersive/ConversionAnatomy"
 import { WhatsAppButton } from "@/components/Immersive/whatsapp"
 import JsonLd from "@/components/JsonLd"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
@@ -51,14 +52,34 @@ const forms = [
   },
 ]
 
+// cosa è "wow" e cosa lavora per vendere
+const balance = [
+  {
+    title: "Momenti memorabili",
+    items: ["Una hero che si ricorda", "Il prodotto in 3D o in movimento", "Una transizione firma del brand"],
+  },
+  {
+    title: "Sezioni che vendono",
+    items: [
+      "Promessa chiara e CTA in vista",
+      "Recensioni e prove concrete",
+      "Prodotti o servizi, con prezzi",
+      "Garanzie, spedizioni e resi",
+      "FAQ che tolgono i dubbi",
+      "Contatto o acquisto in un tocco",
+    ],
+  },
+]
+
+// ciò che non si vede ma fa vendere
 const proof = [
   {
     title: "Veloce anche da smartphone",
-    text: "La pagina si mostra subito e l'esperienza si carica a strati: niente schermate di attesa.",
+    text: "La pagina si mostra subito e l'esperienza si carica a strati: niente schermate di attesa che fanno scappare.",
   },
   {
-    title: "Pensata per vendere",
-    text: "L'effetto attira l'attenzione, poi la guida verso il contatto o l'acquisto. Le CTA restano sempre in vista.",
+    title: "Misurata, non indovinata",
+    text: "Pixel, analytics e A/B test: sappiamo cosa porta contatti e vendite, e lo miglioriamo con i dati.",
   },
   {
     title: "Trovabile su Google",
@@ -66,7 +87,7 @@ const proof = [
   },
   {
     title: "Per tutti",
-    text: "Chi preferisce meno movimento vede una versione calma, con gli stessi contenuti.",
+    text: "Chi preferisce meno movimento vede una versione calma, con gli stessi contenuti e le stesse CTA.",
   },
 ]
 
@@ -163,7 +184,7 @@ export default function EsperienzeImmersivePage() {
 
       <DemoGrid />
 
-      {/* performance */}
+      {/* performance e conversioni */}
       <section data-medusa="right" className="relative px-5 py-28 md:px-8 md:py-40 xl:px-10">
         <div className="mx-auto max-w-7xl">
           <Eyebrow>Non solo effetto</Eyebrow>
@@ -175,16 +196,59 @@ export default function EsperienzeImmersivePage() {
             <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">Performance concrete.</em>
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-8 !text-white/65">
-            Un sito spettacolare che non si carica o non converte è solo un video costoso. Progettiamo l&apos;impatto
-            visivo insieme a velocità, usabilità e obiettivi di vendita.
+            Un sito spettacolare che non vende è solo un video costoso. Nasciamo dall&apos;ottimizzazione delle
+            conversioni: l&apos;esperienza fa ricordare il brand, ma ogni pagina ha le sezioni che trasformano un
+            visitatore in cliente.
           </p>
 
-          <div className="mt-16 grid overflow-hidden rounded-[28px] border border-white/10 md:mt-20 md:grid-cols-2">
+          {/* equilibrio: pochi momenti wow, tutte le sezioni che vendono */}
+          <div className="mt-16 grid overflow-hidden rounded-[28px] border border-white/10 md:mt-20 md:grid-cols-[1.1fr_1fr_1fr]">
+            <div className="border-b border-white/10 p-8 md:border-b-0 md:border-r md:p-10">
+              <h3 className="text-[clamp(1.7rem,2.6vw,2.4rem)] leading-[1.08] tracking-[-0.02em] !text-white" style={archivo}>
+                Wow dove serve.{" "}
+                <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">Chiarezza ovunque.</em>
+              </h3>
+              <p className="mt-4 text-base leading-7 !text-white/60">
+                Non trasformiamo ogni sezione in un effetto speciale. Scegliamo due o tre momenti che fanno ricordare il
+                brand; tutto il resto è costruito per far scegliere, comprare o contattarti.
+              </p>
+            </div>
+            {balance.map((col, i) => (
+              <div
+                key={col.title}
+                className={`p-8 md:p-10 ${i === 0 ? "border-b border-white/10 md:border-b-0 md:border-r" : ""}`}
+              >
+                <p className="text-[11px] uppercase tracking-[0.3em] !text-white/45 md:text-xs" style={archivo}>
+                  {col.title}
+                </p>
+                <ul className="mt-5 space-y-3">
+                  {col.items.map((it) => (
+                    <li key={it} className="flex items-start gap-3 text-base leading-7 !text-white/80">
+                      <i
+                        aria-hidden
+                        className={`mt-[11px] size-1.5 shrink-0 rounded-full not-italic ${
+                          i === 0 ? "bg-brand-gradient" : "bg-white/50"
+                        }`}
+                      />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <ConversionAnatomy />
+
+          <h3 className="mt-24 text-2xl tracking-[-0.02em] !text-white md:mt-32 md:text-3xl" style={archivo}>
+            E quello che non si vede
+          </h3>
+          <div className="mt-8 grid overflow-hidden rounded-[28px] border border-white/10 md:mt-10 md:grid-cols-2">
             {proof.map((p) => (
               <div key={p.title} className="border-white/10 p-8 [&:not(:last-child)]:border-b md:p-12 md:[&:nth-child(odd)]:border-r md:[&:nth-child(-n+2)]:border-b md:[&:nth-child(n+3)]:border-b-0">
-                <h3 className="text-2xl tracking-[-0.02em] !text-white md:text-3xl" style={archivo}>
+                <h4 className="text-2xl tracking-[-0.02em] !text-white md:text-3xl" style={archivo}>
                   {p.title}
-                </h3>
+                </h4>
                 <p className="mt-3 max-w-md text-base leading-7 !text-white/60">{p.text}</p>
               </div>
             ))}

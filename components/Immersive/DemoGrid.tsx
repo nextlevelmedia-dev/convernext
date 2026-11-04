@@ -25,6 +25,9 @@ type FilterId = (typeof FILTERS)[number]["id"]
 
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v))
 
+// i filtri servono solo se le demo sono di almeno due tipi diversi
+const showFilters = new Set(demos.map((d) => d.kind)).size > 1
+
 export default function DemoGrid() {
   const [filter, setFilter] = useState<FilterId>("tutti")
   const [height, setHeight] = useState<number>()
@@ -190,9 +193,11 @@ export default function DemoGrid() {
             Le nostre <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">esperienze</em>
           </h2>
 
+          {showFilters && (
           <div role="group" aria-label="Filtra le demo" className="pointer-events-auto mt-5 inline-flex gap-1 rounded-full border border-white/10 bg-white/[0.04] p-1 backdrop-blur md:mt-6">
             {FILTERS.map((f) => {
               const count = f.id === "tutti" ? demos.length : demos.filter((d) => d.kind === f.id).length
+              if (!count) return null
               const active = f.id === filter
               return (
                 <button
@@ -209,6 +214,7 @@ export default function DemoGrid() {
               )
             })}
           </div>
+          )}
         </div>
 
         {/* finestra in cui scorre la griglia */}
@@ -224,7 +230,7 @@ export default function DemoGrid() {
             {visible.map((d) => (
               <li key={d.slug} data-card className="origin-center will-change-transform [transform-style:preserve-3d]">
                 <a
-                  href={d.url}
+                  href={d.url || undefined}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group block"
