@@ -14,7 +14,7 @@ export const demos: Demo[] = [
     name: "Aurelle",
     kind: "E-commerce",
     description: "Una maison di gioielli in cui si entra: anelli su misura, da vedere in 3D prima di sceglierli.",
-    url: "", // TODO: link online di Aurelle
+    url: "https://aurelle-jewelry-two.vercel.app",
     image: "/immersive/demo/aurelle.webp",
   },
   {
@@ -22,7 +22,7 @@ export const demos: Demo[] = [
     name: "Orvek",
     kind: "E-commerce",
     description: "Sneaker autenticate esposte come in una boutique: ogni paio ha la sua mensola.",
-    url: "", // TODO: link online di Orvek
+    url: "https://sneaker-store-sooty.vercel.app",
     image: "/immersive/demo/orvek.webp",
   },
   {
