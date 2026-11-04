@@ -1,7 +1,5 @@
-import Image from "next/image"
-import Link from "next/link"
-import { site } from "@/lib/seo"
-import { WhatsAppButton, whatsappUrl } from "./whatsapp"
+import FooterContent from "@/components/Footer/FooterContent"
+import { WhatsAppButton } from "./whatsapp"
 import OceanBackdrop from "./OceanBackdrop"
 
 /*
@@ -11,30 +9,6 @@ import OceanBackdrop from "./OceanBackdrop"
  */
 
 const archivo = { fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 } as const
-
-const services = [
-  { href: "/siti-web", label: "Siti web su misura" },
-  { href: "/ecommerce", label: "E-commerce Shopify" },
-  { href: "/temi-shopify", label: "Temi Shopify" },
-  { href: "/ottimizzazione-conversioni", label: "Ottimizzazione conversioni" },
-]
-
-const company = [
-  { href: "/", label: "Home" },
-  { href: "/progetti", label: "Progetti" },
-  { href: "/chi-siamo", label: "Chi siamo" },
-  { href: "/contatti", label: "Contatti" },
-]
-
-function Title({ children }: { children: React.ReactNode }) {
-  return (
-    <h3 className="mb-5 text-[11px] uppercase tracking-[0.3em] !text-white/45 md:text-xs" style={archivo}>
-      {children}
-    </h3>
-  )
-}
-
-const linkClass = "!text-white/75 transition-colors hover:!text-white"
 
 export default function ImmersiveFooter() {
   return (
@@ -68,75 +42,9 @@ export default function ImmersiveFooter() {
         </div>
       </div>
 
-      {/* contatti e link essenziali */}
-      <div className="relative border-t border-white/10 px-5 pb-10 pt-16 md:px-8 md:pt-20 xl:px-10">
-        <div className="mx-auto grid max-w-7xl gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr] md:gap-10">
-          <div>
-            <Link href="/" aria-label="Convernext, vai alla home">
-              <Image src="/logo-convernext.svg" alt="Convernext" width={1010} height={106} className="h-auto w-[150px]" />
-            </Link>
-            <p className="mt-5 max-w-xs text-base leading-7 !text-white/55">
-              Siti ed e-commerce immersivi per brand che vogliono farsi ricordare.
-            </p>
-          </div>
-
-          <div>
-            <Title>Contatti</Title>
-            <ul className="space-y-3 text-base">
-              <li>
-                <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                  WhatsApp
-                </a>
-              </li>
-              <li>
-                <a href={`tel:${site.phone.replace(/\s/g, "")}`} className={linkClass}>
-                  {site.phoneDisplay}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${site.email}`} className={`${linkClass} break-all`}>
-                  {site.email}
-                </a>
-              </li>
-              <li className="!text-white/45">{site.hours}</li>
-            </ul>
-          </div>
-
-          <div>
-            <Title>Servizi</Title>
-            <ul className="space-y-3 text-base">
-              {services.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className={linkClass}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <Title>Convernext</Title>
-            <ul className="space-y-3 text-base">
-              {company.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className={linkClass}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mx-auto mt-16 flex max-w-7xl flex-col gap-4 border-t border-white/10 pt-6 text-sm md:flex-row md:items-center md:justify-between">
-          <p className="!text-white/40">
-            © {new Date().getFullYear()} {site.name} · {site.address.street}, {site.address.locality} ({site.address.region}) · P.IVA {site.vatId}
-          </p>
-          <a href="#immersive-hero" className="!text-white/55 transition-colors hover:!text-white">
-            Torna all&apos;inizio ↑
-          </a>
-        </div>
+      {/* stesso footer di tutto il sito */}
+      <div className="border-t border-white/10">
+        <FooterContent />
       </div>
     </footer>
   )

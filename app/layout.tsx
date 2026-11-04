@@ -116,9 +116,8 @@ export default function RootLayout({
           {children}
         </main>
 
-        {/* spazio per il footer sticky + footer (le landing con footer proprio li saltano) */}
+        {/* footer del sito (le landing con footer proprio lo saltano) */}
         <SiteFooter>
-          <div className="h-[100vh]" />
           <Footer />
         </SiteFooter>
 

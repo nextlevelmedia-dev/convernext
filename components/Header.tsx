@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, type CSSProperties } from "react"
 
 import dynamic from "next/dynamic"
 import ThemeToggle from "./ThemeToggle"
-import { services } from "./MegaMenu"
+import { ImmersiveFeature, services } from "./MegaMenu"
 import { site } from "@/lib/seo"
 
 const MegaMenu = dynamic(() => import("./MegaMenu"))
@@ -134,6 +134,9 @@ export default function Header() {
                 </Link>
               )
             })}
+            <div className={`${stagger} col-span-2`} style={staggerDelay(services.length + 1)}>
+              <ImmersiveFeature compact onClick={closeDrawer} />
+            </div>
           </div>
 
           <div className="mt-6 border-t border-slate-200 dark:border-white/10">

@@ -1,4 +1,53 @@
+import Image from "next/image"
 import Link from "next/link"
+
+/**
+ * Esperienze immersive, in evidenza accanto ai servizi (mega menu e menu mobile):
+ * card scura con il CN della landing, così si distingue dai quattro servizi.
+ */
+export function ImmersiveFeature({ compact = false, onClick }: { compact?: boolean; onClick?: () => void }) {
+  return (
+    <Link
+      href="/esperienze-immersive"
+      onClick={onClick}
+      className={`group/im relative flex h-full flex-col justify-end overflow-hidden rounded-2xl bg-[#05040a] ${
+        compact ? "min-h-[150px] p-4 pr-[45%]" : "min-h-[330px] p-5"
+      }`}
+    >
+      {/* il CN intero, in alto (contain: non esce mai dai bordi della card) */}
+      <div className={`absolute inset-x-0 top-0 ${compact ? "bottom-0 left-auto w-1/2" : "h-[62%]"}`}>
+        <Image
+          src="/immersive/poster-end-m.webp"
+          alt=""
+          fill
+          sizes={compact ? "45vw" : "280px"}
+          className="object-contain object-center transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/im:scale-105"
+        />
+      </div>
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#05040a] via-[#05040a]/70 to-transparent" />
+
+      <div className="relative">
+        <p className="mb-2 inline-flex rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest !text-white backdrop-blur">
+          Novità
+        </p>
+        <h3
+          className={`leading-tight !text-white ${compact ? "text-[17px]" : "text-xl"}`}
+          style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
+        >
+          Esperienze immersive
+        </h3>
+        <p className={`mt-1.5 leading-6 !text-white/70 ${compact ? "text-[13px]" : "text-sm"}`}>
+          Siti ed e-commerce in 3D che lasciano il segno.
+        </p>
+        {!compact && (
+          <span className="mt-4 inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-brand-gradient px-4 py-2 text-sm font-bold !text-white shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)]">
+            Scopri di più →
+          </span>
+        )}
+      </div>
+    </Link>
+  )
+}
 
 // usati anche nella pagina Contatti per i link ai servizi
 export const services = [
@@ -14,7 +63,7 @@ export const services = [
     ),
   },
   {
-    title: "Temi Shopify su misura",
+    title: "Temi Shopify",
     href: "/temi-shopify",
     description: "Temi custom e immersivi che gestisci in autonomia, con i nostri tutorial.",
     features: ["Sezioni custom e immersive", "Modifiche dall'editor", "Tutorial su misura", "Online Store 2.0"],
@@ -67,7 +116,10 @@ export default function MegaMenu() {
                   {item.icon}
                 </div>
 
-                <h3 className="mb-2 text-lg font-black !text-slate-900 dark:!text-white">
+                <h3
+                  className="mb-2 text-lg !text-slate-900 dark:!text-white"
+                  style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
+                >
                   {item.title}
                 </h3>
 
@@ -92,23 +144,9 @@ export default function MegaMenu() {
               </Link>
             ))}
 
-            {/* COLONNA DESTRA — CTA */}
-            <div className="flex flex-col justify-center border-l border-slate-200 pl-6 dark:border-white/10">
-              <p className="mb-2 text-xs font-bold uppercase tracking-widest !text-[#7c3aed] dark:!text-[#a78bfa]">
-                Hai un&apos;idea in mente?
-              </p>
-              <h3 className="mb-3 text-2xl font-black leading-tight !text-slate-900 dark:!text-white">
-                Parliamone insieme
-              </h3>
-              <p className="mb-6 text-sm leading-6 !text-slate-500 dark:!text-white/60">
-                Raccontaci il tuo progetto e scopriamo come realizzarlo al meglio.
-              </p>
-              <Link
-                href="/contatti"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gradient px-6 py-3 text-sm font-bold !text-white shadow-[0_12px_32px_-10px_rgb(124_58_237/0.55)] transition-shadow duration-300 hover:shadow-[0_18px_44px_-12px_rgb(252_3_176/0.6)]"
-              >
-                Contattaci ora →
-              </Link>
+            {/* COLONNA DESTRA — servizio in evidenza: esperienze immersive */}
+            <div className="border-l border-slate-200 pl-6 dark:border-white/10">
+              <ImmersiveFeature />
             </div>
 
           </div>
