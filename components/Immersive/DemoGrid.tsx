@@ -185,7 +185,7 @@ export default function DemoGrid() {
       style={{ height: height ? `${height}px` : "300svh" }}
     >
       <div className="sticky top-0 h-svh overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-[#05040a] via-[#05040a]/80 to-transparent px-5 pb-16 pt-24 text-center md:px-8 md:pt-28 xl:px-10">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 px-5 pb-16 pt-24 text-center md:px-8 md:pt-28 xl:px-10">
           <h2
             className="text-[clamp(2.4rem,5vw,4.6rem)] leading-[1.02] tracking-[-0.035em] !text-white"
             style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
@@ -220,7 +220,7 @@ export default function DemoGrid() {
         {/* finestra in cui scorre la griglia */}
         <div
           ref={stage}
-          className="absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_8%,black_30%,black)] [perspective:1100px]"
+          className="absolute inset-0 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_18%,black_36%,black)] [perspective:1100px]"
         >
           <ul
             ref={grid}

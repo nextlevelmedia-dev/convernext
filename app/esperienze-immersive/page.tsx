@@ -7,7 +7,6 @@ import MedusaCompanion from "@/components/Immersive/MedusaCompanion"
 import StickyCta from "@/components/Immersive/StickyCta"
 import ImmersiveFooter from "@/components/Immersive/ImmersiveFooter"
 import MarineSnow from "@/components/Immersive/MarineSnow"
-import ConversionAnatomy from "@/components/Immersive/ConversionAnatomy"
 import { WhatsAppButton } from "@/components/Immersive/whatsapp"
 import JsonLd from "@/components/JsonLd"
 import { breadcrumbJsonLd, jsonLdGraph, pageMetadata } from "@/lib/seo"
@@ -238,7 +237,6 @@ export default function EsperienzeImmersivePage() {
             ))}
           </div>
 
-          <ConversionAnatomy />
 
           <h3 className="mt-24 text-2xl tracking-[-0.02em] !text-white md:mt-32 md:text-3xl" style={archivo}>
             E quello che non si vede
@@ -257,7 +255,8 @@ export default function EsperienzeImmersivePage() {
       </section>
 
       {/* come lavoriamo */}
-      <section data-medusa="left" className="relative px-5 pb-28 md:px-8 md:pb-40 xl:px-10">
+      {/* la medusa resta a destra: da qui scende con calma al centro, sul CN */}
+      <section data-medusa="right" className="relative px-5 pb-28 md:px-8 md:pb-40 xl:px-10">
         <div className="mx-auto max-w-7xl">
           <Eyebrow>Come funziona</Eyebrow>
           <h2

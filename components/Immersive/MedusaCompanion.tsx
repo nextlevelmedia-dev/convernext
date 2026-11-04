@@ -15,6 +15,8 @@ import { useEffect, useRef } from "react"
 
 type Spot = "left" | "right" | "top-left" | "top-right" | "hide"
 
+const ramp = (p: number, a: number, b: number) => Math.min(1, Math.max(0, (p - a) / (b - a)))
+
 // posizione del centro della medusa, in frazioni del viewport
 const DESKTOP: Record<Exclude<Spot, "hide">, [number, number]> = {
   left: [0.08, 0.5],
@@ -39,8 +41,10 @@ export default function MedusaCompanion() {
     if (!el) return
 
     let spot: Spot = "hide"
+    let merging = false
 
     const place = () => {
+      if (merging) return
       const mobile = window.innerWidth < 768
       if (spot === "hide") {
         el.style.opacity = "0"
@@ -70,10 +74,64 @@ export default function MedusaCompanion() {
     )
     sections.forEach((s) => io.observe(s))
 
+    // nella CTA finale la medusa va al posto del CN e lì si ritrasforma (OceanBackdrop)
+    // punto di partenza della nuotata finale: dov'era la medusa prima della sezione
+    let from: [number, number] | null = null
+    const onMerge = (e: Event) => {
+      const { x, y: yReal, cap, w, p } = (e as CustomEvent<{ x: number; y: number; cap: number; w: number; p: number }>).detail
+      // tiene la medusa in vista; poco prima del passaggio la porta esattamente sulla grande
+      const yHeld = Math.min(yReal, cap)
+      const y = yHeld + (yReal - yHeld) * ramp(p, 0.7, 0.84)
+      if (p <= 0.02) {
+        if (merging) {
+          merging = false
+          from = null
+          el.querySelector<HTMLElement>("[data-float]")?.style.removeProperty("animation-play-state")
+          el.style.transitionDuration = ""
+          place()
+        }
+        return
+      }
+      const mobile = window.innerWidth < 768
+      if (!merging) {
+        merging = true
+        el.querySelector<HTMLElement>("[data-float]")?.style.setProperty("animation-play-state", "paused")
+        // parte da dove si trova davvero in questo istante (anche a metà di una nuotata),
+        // così non c'è nessuno scatto
+        const b = el.getBoundingClientRect()
+        from = [b.left + b.width / 2, b.top + b.height / 2]
+      }
+      // movimento guidato dallo scroll, senza transizione CSS: arriva esattamente sulla medusa grande
+      el.style.transitionDuration = "0ms"
+      // discesa lenta e morbida (accelera e frena), lungo quasi tutta l'entrata della sezione
+      const t0 = ramp(p, 0.03, 0.84)
+      const t = t0 < 0.5 ? 4 * t0 * t0 * t0 : 1 - Math.pow(-2 * t0 + 2, 3) / 2
+      const natural = mobile ? 88 : 170
+      const [ax, ay] = from!
+      const px = ax + (x - ax) * t
+      const py = ay + (y - ay) * t
+      const scale = 1 + (w / natural - 1) * t
+      el.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`
+      el.style.opacity = (1 - ramp(p, 0.84, 0.9)).toFixed(3)
+      // per combaciare col primo fotogramma della trasformazione, la medusa compagna
+      // si porta all'istante 0 del suo loop (che è lo stesso istante 0 del filmato)
+      const vid = video.current
+      if (vid) {
+        if (p >= 0.66) {
+          if (!vid.paused) vid.pause()
+          if (vid.currentTime > 0.04) vid.currentTime = 0
+        } else if (vid.paused) {
+          vid.play().catch(() => {})
+        }
+      }
+    }
+
     window.addEventListener("resize", place)
+    window.addEventListener("medusa:merge", onMerge)
     return () => {
       io.disconnect()
       window.removeEventListener("resize", place)
+      window.removeEventListener("medusa:merge", onMerge)
     }
   }, [])
 
@@ -84,14 +142,14 @@ export default function MedusaCompanion() {
       data-no-reveal
       className="pointer-events-none fixed left-0 top-0 -z-10 opacity-0 mix-blend-screen transition-[transform,opacity] duration-[2200ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-opacity"
     >
-      <div className="animate-[immersive-float_7s_ease-in-out_infinite] motion-reduce:animate-none">
+      <div data-float className="animate-[immersive-float_7s_ease-in-out_infinite] motion-reduce:animate-none">
         <video
           ref={video}
           muted
           loop
           playsInline
           preload="metadata"
-          className="h-auto w-[88px] [mask-image:radial-gradient(ellipse_closest-side,black_62%,transparent)] md:w-[170px]"
+          className="h-auto w-[88px] [mask-image:linear-gradient(to_bottom,transparent_6%,black_16.5%),radial-gradient(ellipse_50%_50%_at_50%_42%,black_40%,transparent)] [mask-composite:intersect] [-webkit-mask-composite:source-in] md:w-[170px]"
         >
           <source src="/immersive/medusa-loop.webm" type="video/webm" />
           <source src="/immersive/medusa-loop.mp4" type="video/mp4" />

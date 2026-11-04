@@ -12,13 +12,13 @@ const archivo = { fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600
 
 export default function ImmersiveFooter() {
   return (
-    <footer id="contatto" data-medusa="hide" className="relative overflow-hidden">
+    <footer id="contatto" data-medusa="right" className="relative overflow-hidden">
       {/* CTA finale sul monogramma */}
       <div className="relative flex min-h-svh items-end px-5 pb-20 pt-40 md:items-center md:px-8 md:py-32 xl:px-10">
         <div aria-hidden className="absolute inset-0">
           <OceanBackdrop />
           {/* il CN si spegne verso il basso, nel buio dei titoli di coda */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#05040a] via-[#05040a]/55 to-[#05040a]/10 md:via-[#05040a]/20 md:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#05040a]/85 via-transparent to-transparent" />
         </div>
 
         <div className="relative mx-auto w-full max-w-7xl text-center md:pt-[46svh]">
