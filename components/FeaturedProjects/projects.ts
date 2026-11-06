@@ -59,6 +59,24 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/need-jpg.webp",
   },
   {
+    slug: "tornante",
+    name: "Tornante",
+    tags: ["E-commerce", "Custom development", "Prenotazioni"],
+    description:
+      "E-commerce di e-bike con showroom, test ride su appuntamento, noleggio e officina: si sceglie online, si prova in sella.",
+    url: "https://tornante.vercel.app/",
+    preview: "/media/work/tornante.webp",
+  },
+  {
+    slug: "aurelle",
+    name: "Aurelle",
+    tags: ["Sito web", "3D", "Custom development"],
+    description:
+      "Sito per una maison di gioielli: anelli su misura da vedere in 3D prima di sceglierli e appuntamenti in atelier.",
+    url: "https://aurelle-jewelry-two.vercel.app/",
+    preview: "/media/work/aurelle.webp",
+  },
+  {
     slug: "spazio-dance-on",
     name: "Spazio Dance On",
     tags: ["Sito web", "Custom development", "SEO"],
