@@ -50,15 +50,6 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/villa-san-carlo.webp",
   },
   {
-    slug: "need-jpg",
-    name: "Need Jpg",
-    tags: ["E-commerce", "Custom development", "ADV"],
-    description:
-      "Store online streetwear con UX studiata per la conversione e flusso d'acquisto rapido.",
-    url: "https://needjpg.com/",
-    preview: "/media/work/need-jpg.webp",
-  },
-  {
     slug: "tornante",
     name: "Tornante",
     tags: ["E-commerce", "Custom development", "Prenotazioni"],
@@ -75,6 +66,15 @@ export const featuredProjects: Project[] = [
       "Sito per una maison di gioielli: anelli su misura da vedere in 3D prima di sceglierli e appuntamenti in atelier.",
     url: "https://aurelle-jewelry-two.vercel.app/",
     preview: "/media/work/aurelle-cover.webp",
+  },
+  {
+    slug: "need-jpg",
+    name: "Need Jpg",
+    tags: ["E-commerce", "Custom development", "ADV"],
+    description:
+      "Store online streetwear con UX studiata per la conversione e flusso d'acquisto rapido.",
+    url: "https://needjpg.com/",
+    preview: "/media/work/need-jpg.webp",
   },
   {
     slug: "orvek",
