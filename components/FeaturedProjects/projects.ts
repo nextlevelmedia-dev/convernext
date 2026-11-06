@@ -83,7 +83,7 @@ export const featuredProjects: Project[] = [
     description:
       "Store di sneaker autenticate, con ogni paio esposto come in una boutique e un percorso d'acquisto rapido.",
     url: "https://sneaker-store-sooty.vercel.app/",
-    preview: "/media/work/orvek.webp",
+    preview: "/media/work/orvek-jordan.webp",
   },
   {
     slug: "spazio-dance-on",
