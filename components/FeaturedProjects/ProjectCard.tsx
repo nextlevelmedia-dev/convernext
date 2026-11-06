@@ -4,9 +4,6 @@ import Image from "next/image"
 import { useRef, type PointerEvent } from "react"
 import type { Project } from "./projects"
 
-const host = (url?: string) =>
-  url ? new URL(url).hostname.replace(/^www\./, "") : ""
-
 const EASE_OUT_EXPO = "ease-[cubic-bezier(0.16,1,0.3,1)]"
 
 /**
@@ -35,8 +32,6 @@ export function ProjectCard({ project }: { project: Project }) {
     ref.current?.style.setProperty("--ry", "0deg")
   }
 
-  const domain = project.displayUrl ?? host(project.url)
-
   // con l'URL tutta la card è il link al sito, non solo "Vedi il sito"
   const Wrapper = project.url ? "a" : "div"
   const linkProps = project.url
@@ -57,11 +52,6 @@ export function ProjectCard({ project }: { project: Project }) {
             <span className="size-2 rounded-full bg-[#ff5f57]" />
             <span className="size-2 rounded-full bg-[#febc2e]" />
             <span className="size-2 rounded-full bg-[#28c840]" />
-            {domain && (
-              <span className="ml-2 truncate font-mono text-[11px] text-slate-500 dark:text-white/60">
-                {domain}
-              </span>
-            )}
           </div>
 
           <div className="relative aspect-[650/404] overflow-hidden rounded-xl bg-slate-50 dark:bg-[#111827]">
