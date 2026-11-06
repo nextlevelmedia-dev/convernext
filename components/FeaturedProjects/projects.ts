@@ -74,7 +74,7 @@ export const featuredProjects: Project[] = [
     description:
       "Sito per una maison di gioielli: anelli su misura da vedere in 3D prima di sceglierli e appuntamenti in atelier.",
     url: "https://aurelle-jewelry-two.vercel.app/",
-    preview: "/media/work/aurelle.webp",
+    preview: "/media/work/aurelle-cover.webp",
   },
   {
     slug: "spazio-dance-on",
