@@ -77,6 +77,15 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/aurelle-cover.webp",
   },
   {
+    slug: "orvek",
+    name: "Orvek",
+    tags: ["E-commerce", "Custom development", "3D"],
+    description:
+      "Store di sneaker autenticate, con ogni paio esposto come in una boutique e un percorso d'acquisto rapido.",
+    url: "https://sneaker-store-sooty.vercel.app/",
+    preview: "/media/work/orvek.webp",
+  },
+  {
     slug: "spazio-dance-on",
     name: "Spazio Dance On",
     tags: ["Sito web", "Custom development", "SEO"],
