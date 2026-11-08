@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react"
 import ContactOrb from "../ContactOrb/ContactOrb"
 import { site } from "@/lib/seo"
@@ -259,6 +261,14 @@ export default function ContactSection() {
               >
                 {status === "loading" ? "Invio in corso..." : "Invia richiesta"}
               </button>
+
+              <p className="text-center text-xs leading-5 text-black/50 dark:text-white/50">
+                Inviando la richiesta accetti il trattamento dei dati per ricevere una risposta, come descritto nella{" "}
+                <Link href="/privacy-policy" className="underline underline-offset-2">
+                  privacy policy
+                </Link>
+                .
+              </p>
 
               {/* role="alert" viene annunciato all'inserimento; nessun wrapper per non aggiungere gap */}
               {status === "error" && (

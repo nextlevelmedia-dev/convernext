@@ -14,7 +14,7 @@ export const featuredProjects: Project[] = [
   {
     slug: "lumache-di-campagna",
     name: "Lumache di Campagna",
-    tags: ["E-commerce", "Custom development", "SEO"],
+    tags: ["Sito web", "Custom development", "SEO"],
     description:
       "Sito e shop per un'azienda che produce prodotti in vasetto e cosmetici a base di lumaca.",
     url: "https://www.lumachedicampagna.it/",

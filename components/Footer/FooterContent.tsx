@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { site } from "@/lib/seo"
+import CookiePreferencesLink from "@/components/Legal/CookiePreferencesLink"
 
 /*
  * Contenuto del footer, uguale in tutte le pagine (sito e landing immersiva):
@@ -27,8 +28,11 @@ const company = [
   { href: "/contatti", label: "Contatti" },
 ]
 
-// pagine legali: per ora solo le voci, i link arriveranno con le pagine
-const legal = ["Privacy policy", "Cookie policy"]
+// pagine legali (provvisorie, in attesa di iubenda)
+const legal = [
+  { href: "/privacy-policy", label: "Privacy policy" },
+  { href: "/cookie-policy", label: "Cookie policy" },
+]
 
 function Title({ children }: { children: React.ReactNode }) {
   return (
@@ -110,10 +114,18 @@ export default function FooterContent() {
         </p>
         <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
           {legal.map((l) => (
-            <li key={l} className="!text-white/55">
-              {l}
+            <li key={l.href}>
+              <Link href={l.href} className="!text-white/55 transition-colors hover:!text-white">
+                {l.label}
+              </Link>
             </li>
           ))}
+          <li>
+            <CookiePreferencesLink
+              label="Preferenze cookie"
+              className="!text-white/55 transition-colors hover:!text-white"
+            />
+          </li>
           <li>
             <a href="#top" className="!text-white/55 transition-colors hover:!text-white">
               Torna su ↑

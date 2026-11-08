@@ -569,3 +569,63 @@ body {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
   50% { transform: translate3d(0, -14px, 0) rotate(2deg); }
 }
+
+/* =========================
+   PAGINE LEGALI
+========================= */
+
+.legal-text {
+  color: rgb(15 23 42 / 0.75);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.dark .legal-text,
+.dark .main-bg .legal-text p,
+.dark .main-bg .legal-text li {
+  color: rgb(255 255 255 / 0.72);
+}
+
+.legal-text h2 {
+  margin: 2.5rem 0 0.75rem;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: #020617;
+}
+
+.dark .legal-text h2,
+.dark .main-bg .legal-text h2 {
+  color: #ffffff;
+}
+
+.legal-text p + p {
+  margin-top: 1rem;
+}
+
+.legal-text ul {
+  margin-top: 0.75rem;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.legal-text li + li {
+  margin-top: 0.5rem;
+}
+
+.legal-text a,
+.dark .main-bg .legal-text a {
+  color: #7c3aed;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.dark .main-bg .legal-text a {
+  color: #a78bfa;
+}
+
+.legal-text strong {
+  font-weight: 700;
+  color: inherit;
+}

@@ -3,6 +3,7 @@ import { Archivo, Lato, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Footer from "../components/Footer/Footer"
 import SiteFooter from "../components/SiteFooter"
+import CookieBanner from "../components/Legal/CookieBanner"
 import ScrollToTop from "../components/ScrollToTop"
 import ScrollReveal from "../components/ScrollReveal"
 import JsonLd from "../components/JsonLd"
@@ -122,6 +123,8 @@ export default function RootLayout({
         </SiteFooter>
 
         <ScrollReveal />
+
+        <CookieBanner />
       </body>
     </html>
   )
