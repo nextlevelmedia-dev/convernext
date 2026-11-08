@@ -81,7 +81,8 @@ export default function MedusaCompanion() {
       const { x, y: yReal, cap, w, p } = (e as CustomEvent<{ x: number; y: number; cap: number; w: number; p: number }>).detail
       // tiene la medusa in vista; poco prima del passaggio la porta esattamente sulla grande
       const yHeld = Math.min(yReal, cap)
-      const y = yHeld + (yReal - yHeld) * ramp(p, 0.7, 0.84)
+      // (soglie allineate a OceanBackdrop: passaggio 0.62–0.68, CN completo a metà schermo)
+      const y = yHeld + (yReal - yHeld) * ramp(p, 0.5, 0.62)
       if (p <= 0.02) {
         if (merging) {
           merging = false
@@ -104,7 +105,7 @@ export default function MedusaCompanion() {
       // movimento guidato dallo scroll, senza transizione CSS: arriva esattamente sulla medusa grande
       el.style.transitionDuration = "0ms"
       // discesa lenta e morbida (accelera e frena), lungo quasi tutta l'entrata della sezione
-      const t0 = ramp(p, 0.03, 0.84)
+      const t0 = ramp(p, 0.03, 0.62)
       const t = t0 < 0.5 ? 4 * t0 * t0 * t0 : 1 - Math.pow(-2 * t0 + 2, 3) / 2
       const natural = mobile ? 88 : 170
       const [ax, ay] = from!
@@ -112,12 +113,12 @@ export default function MedusaCompanion() {
       const py = ay + (y - ay) * t
       const scale = 1 + (w / natural - 1) * t
       el.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`
-      el.style.opacity = (1 - ramp(p, 0.84, 0.9)).toFixed(3)
+      el.style.opacity = (1 - ramp(p, 0.62, 0.68)).toFixed(3)
       // per combaciare col primo fotogramma della trasformazione, la medusa compagna
       // si porta all'istante 0 del suo loop (che è lo stesso istante 0 del filmato)
       const vid = video.current
       if (vid) {
-        if (p >= 0.66) {
+        if (p >= 0.48) {
           if (!vid.paused) vid.pause()
           if (vid.currentTime > 0.04) vid.currentTime = 0
         } else if (vid.paused) {

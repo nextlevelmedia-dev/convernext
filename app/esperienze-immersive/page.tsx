@@ -3,6 +3,7 @@ import Link from "next/link"
 import HeroSequence from "@/components/Immersive/HeroSequence"
 import Manifesto from "@/components/Immersive/Manifesto"
 import DemoGrid from "@/components/Immersive/DemoGrid"
+import ValueStage from "@/components/Immersive/ValueStage"
 import MedusaCompanion from "@/components/Immersive/MedusaCompanion"
 import StickyCta from "@/components/Immersive/StickyCta"
 import ImmersiveFooter from "@/components/Immersive/ImmersiveFooter"
@@ -29,27 +30,6 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
     <p className="mb-6 [font-family:var(--font-archivo),sans-serif] font-semibold text-[11px] uppercase tracking-[0.3em] !text-white/50 md:text-xs">{children}</p>
   )
 }
-
-const forms = [
-  {
-    title: "Siti web immersivi",
-    lead: "Per chi presenta un servizio, uno studio, un locale, un'azienda.",
-    points: [
-      "Hero cinematografiche e scene in 3D",
-      "Racconto che si sviluppa con lo scroll",
-      "Contatti e prenotazioni sempre a un tocco",
-    ],
-  },
-  {
-    title: "E-commerce immersivi",
-    lead: "Per chi vende un prodotto e vuole che si desideri prima ancora di leggerne il prezzo.",
-    points: [
-      "Prodotti da esplorare, non solo da guardare",
-      "Schede prodotto che raccontano",
-      "Carrello e checkout veloci, senza effetti in mezzo",
-    ],
-  },
-]
 
 // cosa è "wow" e cosa lavora per vendere
 const balance = [
@@ -139,45 +119,10 @@ export default function EsperienzeImmersivePage() {
 
       <Manifesto />
 
-      {/* sito o e-commerce: stessa esperienza */}
+      {/* proposta di valore: farsi scegliere invece di essere confrontati */}
       <section data-medusa="left" className="relative px-5 py-28 md:px-8 md:py-40 xl:px-10">
         <div className="mx-auto max-w-7xl">
-          <Eyebrow>Per ogni brand</Eyebrow>
-          <h2
-            className="max-w-4xl text-[clamp(2.2rem,5vw,4.6rem)] leading-[1.04] tracking-[-0.03em] !text-white"
-            style={archivo}
-          >
-            Sito o e-commerce.{" "}
-            <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">Stessa esperienza.</em>
-          </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-8 !text-white/65">
-            Non serve una nicchia particolare: serve un brand che vuole farsi ricordare. Ogni progetto ha il suo
-            protagonista e la sua scena, costruiti su ciò che vendi.
-          </p>
-
-          <div className="mt-16 grid gap-14 md:mt-24 md:grid-cols-2 md:gap-0">
-            {forms.map((f, i) => (
-              <div key={f.title} className={`md:px-12 ${i === 0 ? "md:border-r md:border-white/10 md:pl-0" : "md:pr-0"}`}>
-                <p className="[font-family:var(--font-archivo),sans-serif] font-semibold text-xs !text-white/40">0{i + 1}</p>
-                <h3 className="mt-3 text-3xl tracking-[-0.02em] !text-white md:text-4xl" style={archivo}>
-                  {f.title}
-                </h3>
-                <p className="mt-4 max-w-md text-base leading-7 !text-white/60">{f.lead}</p>
-                <ul className="mt-8 space-y-4">
-                  {f.points.map((pt) => (
-                    <li key={pt} className="flex items-start gap-4 border-t border-white/10 pt-4 text-lg !text-white/85">
-                      <i aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-brand-gradient" />
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-16 flex justify-center md:mt-24">
-            <WhatsAppButton label="Voglio il mio sito in 3D" />
-          </div>
+          <ValueStage />
         </div>
       </section>
 

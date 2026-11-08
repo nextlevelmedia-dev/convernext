@@ -1,0 +1,150 @@
+/* Proposta di valore immersiva: portali 3D con luce e parallasse */
+
+.vs-portal {
+  --rx: 0deg;
+  --ry: 0deg;
+  --px: 0;
+  --py: 0;
+  --mx: 50%;
+  --my: 30%;
+  perspective: 1200px;
+}
+
+.vs-inner {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 28px;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgb(124 58 237 / 0.16), transparent 60%),
+    linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.015));
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow:
+    0 40px 120px -50px rgb(168 60 214 / 0.55),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.4s;
+  backdrop-filter: blur(6px);
+}
+.vs-portal:hover .vs-inner {
+  border-color: rgb(255 255 255 / 0.2);
+  transition-duration: 0.15s, 0.4s;
+}
+
+/* bordo luminoso in gradient che si accende vicino al cursore */
+.vs-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(260px circle at var(--mx) var(--my), #fc03b0, #047cf9 45%, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.vs-portal:hover .vs-inner::before {
+  opacity: 0.9;
+}
+
+/* luce che segue il mouse */
+.vs-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(420px circle at var(--mx) var(--my), rgb(252 3 176 / 0.14), rgb(4 124 249 / 0.08) 40%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------- scene ---------- */
+
+.vs-scene {
+  position: relative;
+  height: 270px;
+  margin: 28px 28px 0;
+  border-radius: 20px;
+  background:
+    radial-gradient(70% 90% at 50% 100%, rgb(4 124 249 / 0.22), transparent 70%),
+    radial-gradient(60% 70% at 30% 20%, rgb(252 3 176 / 0.18), transparent 70%),
+    #07060f;
+  border: 1px solid rgb(255 255 255 / 0.06);
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .vs-scene {
+    height: 330px;
+    margin: 40px 40px 0;
+  }
+}
+
+/* canvas three.js: appare quando la scena è pronta */
+.vs-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.vs-scene.is-ready .vs-canvas {
+  opacity: 1;
+}
+
+.vs-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 99px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background-image: linear-gradient(to right, #fc03b0, #047cf9);
+  box-shadow: 0 14px 40px -12px rgb(168 60 214 / 0.9);
+  white-space: nowrap;
+}
+
+.vs-chip-shop {
+  z-index: 1;
+  position: absolute;
+  right: 7%;
+  bottom: 9%;
+  transform: translate3d(calc(var(--px) * 22px), calc(var(--py) * 16px), 0);
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* entrata dal fondo, guidata dallo scroll (solo dove supportato) */
+@supports (animation-timeline: view()) {
+  .vs-rise {
+    animation: vs-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+  @keyframes vs-rise {
+    from {
+      opacity: 0;
+      transform: perspective(1000px) translate3d(0, 70px, -120px) rotateX(10deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vs-rise {
+    animation: none !important;
+  }
+  .vs-inner,
+  .vs-scene {
+    transition: none;
+  }
+}

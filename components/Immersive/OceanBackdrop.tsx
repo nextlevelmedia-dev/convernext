@@ -93,19 +93,11 @@ export default function OceanBackdrop() {
       return -1
     }
 
-    const progress = () => {
-      const r = el.getBoundingClientRect()
-      // 0: la sezione spunta dal basso · 1: la sezione arriva in cima allo schermo.
-      // Va un po' oltre 1, così la trasformazione finisce col CN ben in vista.
-      return clamp(1 - r.top / window.innerHeight, 0, 1.4)
-    }
-
     const drawMorph = () => {
       const r = el.getBoundingClientRect()
       const vh = window.innerHeight
       // carica i fotogrammi quando la sezione si avvicina
-      if (!framesRequested && r.top < vh * 2) loadFrames()
-      const p = progress()
+      if (!framesRequested && r.top < vh * 2.5) loadFrames()
 
       // la medusa compagna nuota al centro, poi lascia il posto a quella grande
       // dove si trova la medusa del primo fotogramma, così la compagna ci si sovrappone
@@ -116,6 +108,12 @@ export default function OceanBackdrop() {
       const ch0 = mc.clientHeight
       const fs = Math.max(cw0 / srcW, ch0 / 1080)
       const canvasTop = r.top + (mc.offsetTop || 0)
+
+      // avanzamento legato a dove si trova il CN sullo schermo (non alla sezione):
+      // 0 = centro del CN quasi uno schermo sotto il bordo · 1 = centro del CN poco sotto
+      // metà schermo. Così il CN è già formato quando arriva al centro, su desktop e mobile.
+      const cnCenter = canvasTop + ch0 / 2
+      const p = clamp(1 - (cnCenter - vh * 0.62) / vh, 0, 1.4)
       window.dispatchEvent(
         new CustomEvent("medusa:merge", {
           detail: {
@@ -131,8 +129,8 @@ export default function OceanBackdrop() {
 
       // passaggio di consegne: la compagna sfuma mentre appare il primo fotogramma
       // (quando la medusa grande è ben dentro lo schermo)
-      const show = ramp(p, 0.84, 0.9)
-      const done = p >= 1.28
+      const show = ramp(p, 0.62, 0.68)
+      const done = p >= 1
       // cambio canvas → loop video senza buchi: prima compare il video (sotto),
       // e solo quando è del tutto visibile il canvas sopra sfuma
       if (done) {
@@ -149,8 +147,8 @@ export default function OceanBackdrop() {
       if (v) v.style.opacity = "0"
       if (!mctx) return
 
-      // la trasformazione avviene mentre il CN attraversa lo schermo
-      const idx = nearest(Math.round(ramp(p, 0.9, 1.26) * (set.count - 1)))
+      // la trasformazione avviene mentre il CN sale verso il centro dello schermo
+      const idx = nearest(Math.round(ramp(p, 0.68, 0.98) * (set.count - 1)))
       if (idx === -1 || idx === lastIdx) return
       lastIdx = idx
       const img = frames[idx]
