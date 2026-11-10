@@ -86,6 +86,33 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/orvek-jordan.webp",
   },
   {
+    slug: "sordina",
+    name: "Sordina",
+    tags: ["E-commerce", "Custom development", "Brand"],
+    description:
+      "E-commerce di lampade fatte a mano in ottone e travertino, raccontate con una luce calda d'atmosfera.",
+    url: "https://lighting-brand-hazel.vercel.app/",
+    preview: "/media/work/sordina-cover.webp",
+  },
+  {
+    slug: "vaerk",
+    name: "VÆRK",
+    tags: ["E-commerce", "Custom development", "3D"],
+    description:
+      "Store streetwear heavyweight con i capi appesi a uno stender in 3D, da girare con un tocco.",
+    url: "https://vaerk-studio.vercel.app/",
+    preview: "/media/work/vaerk-rail.webp",
+  },
+  {
+    slug: "velatura",
+    name: "Velatura",
+    tags: ["Sito web", "Custom development", "3D"],
+    description:
+      "Sito per un atelier di detailing: l'auto emerge dal buio mentre scorri, poi trattamenti e preventivo.",
+    url: "https://velatura-livid.vercel.app/",
+    preview: "/media/work/velatura.webp",
+  },
+  {
     slug: "spazio-dance-on",
     name: "Spazio Dance On",
     tags: ["Sito web", "Custom development", "SEO"],

@@ -41,4 +41,20 @@ export const demos: Demo[] = [
     url: "https://dental-atelier-eight.vercel.app",
     image: "/immersive/demo/dental-atelier.webp",
   },
+  {
+    slug: "vaerk",
+    name: "VÆRK",
+    kind: "E-commerce",
+    description: "Uno stender in 3D con i capi streetwear appesi: si girano con un tocco e si guardano da vicino prima di sceglierli.",
+    url: "https://vaerk-studio.vercel.app",
+    image: "/immersive/demo/vaerk-rail.webp",
+  },
+  {
+    slug: "velatura",
+    name: "Velatura",
+    kind: "Sito web",
+    description: "Un atelier di detailing in cui l'auto emerge dal buio, riflesso dopo riflesso, mentre scorri.",
+    url: "https://velatura-livid.vercel.app",
+    image: "/immersive/demo/velatura-cover.webp",
+  },
 ]
