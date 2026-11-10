@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useRef } from "react"
-import type { Project } from "./projects"
+import { projectLink, type Project } from "./projects"
 
 const EASE_OUT_EXPO = "ease-[cubic-bezier(0.16,1,0.3,1)]"
 
@@ -59,6 +59,7 @@ export function MobileProjectList({ items }: { items: Project[] }) {
 }
 
 function MobileProjectCard({ project }: { project: Project }) {
+  const link = projectLink(project)
   const content = (
     <>
       <div className="relative aspect-square overflow-hidden rounded-3xl bg-slate-100 shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.18)] dark:bg-[#111827]">
@@ -74,7 +75,7 @@ function MobileProjectCard({ project }: { project: Project }) {
           className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/85 via-black/45 to-transparent"
         />
 
-        {project.url && (
+        {link && (
           // div e non span: in dark mode il CSS globale forza il bianco sugli span
           <div
             aria-hidden
@@ -110,12 +111,22 @@ function MobileProjectCard({ project }: { project: Project }) {
     </>
   )
 
-  if (!project.url) return <article>{content}</article>
+  if (!link) return <article>{content}</article>
+
+  if (!link.external)
+    return (
+      <article>
+        <Link href={link.href} className="group block">
+          {content}
+          <span className="sr-only">{link.label}</span>
+        </Link>
+      </article>
+    )
 
   return (
     <article>
       <a
-        href={project.url}
+        href={link.href}
         target="_blank"
         rel="noopener noreferrer"
         className="group block"

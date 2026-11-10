@@ -8,6 +8,15 @@ export type Project = {
   displayUrl?: string
   // vuoto finché non c'è l'anteprima: il progetto non viene mostrato
   preview: string
+  // con il case study la card porta a /progetti/[slug] invece che al sito
+  caseStudy?: boolean
+}
+
+/** dove porta la card: il case study se c'è, altrimenti il sito esterno */
+export function projectLink(p: Project) {
+  if (p.caseStudy) return { href: `/progetti/${p.slug}`, external: false, label: "Leggi il case study" }
+  if (p.url) return { href: p.url, external: true, label: "Vedi il sito" }
+  return null
 }
 
 export const featuredProjects: Project[] = [
@@ -19,6 +28,7 @@ export const featuredProjects: Project[] = [
       "Sito e shop per un'azienda che produce prodotti in vasetto e cosmetici a base di lumaca.",
     url: "https://www.lumachedicampagna.it/",
     preview: "/media/work/lumache-di-campagna.webp",
+    caseStudy: true,
   },
   {
     slug: "martinails-lab",
@@ -28,6 +38,7 @@ export const featuredProjects: Project[] = [
       "Sito per uno studio di nail art, con la galleria dei lavori e richieste di appuntamento semplici.",
     url: "https://martinails-lab.com/",
     preview: "/media/work/martinails-lab.webp",
+    caseStudy: true,
   },
   {
     slug: "davide-rizzi",
@@ -38,6 +49,7 @@ export const featuredProjects: Project[] = [
     url: "https://davide-rizzi.vercel.app/",
     displayUrl: "daviderizzi.it",
     preview: "/media/work/davide-rizzi.webp",
+    caseStudy: true,
   },
   {
     slug: "villa-san-carlo",

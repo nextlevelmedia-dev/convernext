@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { client } from "../sanity/lib/client"
 import { absoluteUrl } from "../lib/seo"
+import { caseStudies } from "../components/CaseStudies/caseStudies"
 
 // rigenerata al massimo una volta al giorno: le date seguono le modifiche in Sanity
 export const revalidate = 86400
@@ -24,6 +25,8 @@ const routes: Route[] = [
   { path: "/chi-siamo", priority: 0.7, slug: "chi-siamo" },
   { path: "/contatti", priority: 0.8, updated: "2026-10-24" },
   { path: "/esperienze-immersive", priority: 0.8, updated: "2026-11-04" },
+  // case study dei progetti
+  ...caseStudies.map((c) => ({ path: `/progetti/${c.slug}`, priority: 0.6, updated: "2026-11-10" })),
 ]
 
 const query = `{

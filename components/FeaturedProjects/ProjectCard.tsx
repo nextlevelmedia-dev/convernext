@@ -2,7 +2,8 @@
 
 import Image from "next/image"
 import { useRef, type PointerEvent } from "react"
-import type { Project } from "./projects"
+import Link from "next/link"
+import { projectLink, type Project } from "./projects"
 
 const EASE_OUT_EXPO = "ease-[cubic-bezier(0.16,1,0.3,1)]"
 
@@ -32,15 +33,26 @@ export function ProjectCard({ project }: { project: Project }) {
     ref.current?.style.setProperty("--ry", "0deg")
   }
 
-  // con l'URL tutta la card è il link al sito, non solo "Vedi il sito"
-  const Wrapper = project.url ? "a" : "div"
-  const linkProps = project.url
-    ? { href: project.url, target: "_blank", rel: "noopener noreferrer" }
-    : {}
+  // tutta la card è il link: al case study se c'è, altrimenti al sito
+  const link = projectLink(project)
+  const wrapClass =
+    "block h-full rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#047cf9]"
+  const wrap = (children: React.ReactNode) =>
+    !link ? (
+      <div className={wrapClass}>{children}</div>
+    ) : link.external ? (
+      <a href={link.href} target="_blank" rel="noopener noreferrer" className={wrapClass}>
+        {children}
+      </a>
+    ) : (
+      <Link href={link.href} className={wrapClass}>
+        {children}
+      </Link>
+    )
 
   return (
     <article className="group h-full [perspective:1200px]">
-      <Wrapper {...linkProps} className="block h-full rounded-3xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#047cf9]">
+      {wrap(
       <div
         ref={ref}
         onPointerMove={onMove}
@@ -90,16 +102,18 @@ export function ProjectCard({ project }: { project: Project }) {
             </p>
           )}
 
-          {project.url && (
+          {link && (
             <p className="mt-4 inline-flex items-center gap-1.5 font-bold text-slate-950 transition-colors group-hover:text-[#047cf9] dark:text-white">
-              Vedi il sito
-              <span aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">↗</span>
-              <span className="sr-only">(si apre in una nuova scheda)</span>
+              {link.label}
+              <span aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                {link.external ? "↗" : "→"}
+              </span>
+              {link.external && <span className="sr-only">(si apre in una nuova scheda)</span>}
             </p>
           )}
         </div>
       </div>
-      </Wrapper>
+      )}
     </article>
   )
 }
