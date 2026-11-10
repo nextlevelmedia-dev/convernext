@@ -35,6 +35,8 @@ type HeroProps = {
   rightContent?: ReactNode
 }
 
+const SHOW_PROOF_BAND = false
+
 export default function Hero({
   title,
   titleTwo,
@@ -52,19 +54,24 @@ export default function Hero({
 }: HeroProps) {
   const hasCtaProof = Boolean(ctaProofText)
 
+  // banda statistiche sotto la hero: nascosta per ora, i dati restano in Sanity.
+  // Per rimetterla basta togliere "SHOW_PROOF_BAND &&".
   const hasSocialProof =
-    Boolean(socialProofBadgeTitle) ||
+    SHOW_PROOF_BAND &&
+    (Boolean(socialProofBadgeTitle) ||
     Boolean(socialProofBadgeSubtitle) ||
-    Boolean(socialProofStats?.length)
+    Boolean(socialProofStats?.length))
 
   return (
     // da desktop hero + banda occupano esattamente lo schermo
     <div className="lg:flex lg:min-h-svh lg:flex-col">
       {/* =====================================================
           HERO
+          in dark lo sfondo sfuma dal nero al colore della pagina
+          (#111118), così non c'è stacco con la sezione successiva
       ===================================================== */}
       <section
-        className="relative overflow-hidden bg-white px-5 pb-24 pt-28 md:px-6 md:pt-40 lg:flex lg:flex-1 lg:items-center lg:pb-12 lg:pt-28 text-black transition-colors duration-300 dark:bg-black dark:text-white"
+        className="relative overflow-hidden bg-white px-5 pb-24 pt-28 md:px-6 md:pt-40 lg:flex lg:flex-1 lg:items-center lg:pb-12 lg:pt-28 text-black transition-colors duration-300 dark:bg-black dark:bg-[linear-gradient(to_bottom,#000_55%,#111118)] dark:text-white"
         style={{
           fontFamily: "var(--font-lato), sans-serif",
         }}

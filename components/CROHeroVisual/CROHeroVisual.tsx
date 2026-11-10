@@ -146,7 +146,7 @@ export default function CROHeroVisual() {
         <div className="cro-float cro-float--bottom cro-in" style={{ animationDelay: "2.2s" }}>
           <div className="cro-float-icon cro-float-icon--grad">↗</div>
           <div>
-            <b>+61% ordini</b>
+            <b>Più ordini</b>
             <small>Stesso traffico, nessun costo ads in più</small>
           </div>
         </div>

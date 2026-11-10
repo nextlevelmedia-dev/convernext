@@ -83,7 +83,7 @@ export default function ContactHero() {
           </div>
 
           <TrustPoints
-            points={["Risposta entro 24 ore", "Nessun impegno", "Un referente diretto"]}
+            points={["Risposta entro 24 ore", "Un referente diretto"]}
             className="mt-8"
           />
         </div>
