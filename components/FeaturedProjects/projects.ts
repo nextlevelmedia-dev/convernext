@@ -68,6 +68,33 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/aurelle-cover.webp",
   },
   {
+    slug: "vaerk",
+    name: "VÆRK",
+    tags: ["E-commerce", "Custom development", "3D"],
+    description:
+      "Store streetwear heavyweight con i capi appesi a uno stender in 3D, da girare con un tocco.",
+    url: "https://vaerk-studio.vercel.app/",
+    preview: "/media/work/vaerk-rail.webp",
+  },
+  {
+    slug: "velatura",
+    name: "Velatura",
+    tags: ["Sito web", "Custom development", "3D"],
+    description:
+      "Sito per un atelier di detailing: l'auto emerge dal buio mentre scorri, poi trattamenti e preventivo.",
+    url: "https://velatura-livid.vercel.app/",
+    preview: "/media/work/velatura.webp",
+  },
+  {
+    slug: "17-milano",
+    name: "17 Milano",
+    tags: ["E-commerce", "Shopify", "Brand"],
+    description:
+      "Store Shopify per un brand streetwear a drop limitati, pensato per comprare veloce da mobile.",
+    url: "https://17milano.com/",
+    preview: "/media/work/17-milano.webp",
+  },
+  {
     slug: "need-jpg",
     name: "Need Jpg",
     tags: ["E-commerce", "Custom development", "ADV"],
@@ -95,22 +122,30 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/sordina-cover.webp",
   },
   {
-    slug: "vaerk",
-    name: "VÆRK",
-    tags: ["E-commerce", "Custom development", "3D"],
+    slug: "effemme-exclusive-lab",
+    name: "Effemme Exclusive Lab",
+    tags: ["E-commerce", "Custom development", "ADV"],
     description:
-      "Store streetwear heavyweight con i capi appesi a uno stender in 3D, da girare con un tocco.",
-    url: "https://vaerk-studio.vercel.app/",
-    preview: "/media/work/vaerk-rail.webp",
+      "Store online streetwear con UX studiata per la conversione e flusso d'acquisto rapido.",
+    url: "https://effemmeexclusivelab.com/",
+    preview: "/media/work/effemme-exclusive-lab.webp",
   },
   {
-    slug: "velatura",
-    name: "Velatura",
-    tags: ["Sito web", "Custom development", "3D"],
+    slug: "delta-antinfortunistica",
+    name: "Delta Antinfortunistica",
+    tags: ["Landing page", "Custom development"],
+    description: "Landing per promuovere catalogo di dpi antinfortunistici.",
+    url: "https://www.antinfortunisticadelta.it/",
+    preview: "/media/work/delta-antinfortunistica.webp",
+  },
+  {
+    slug: "shout-it",
+    name: "Shout It",
+    tags: ["E-commerce", "Shopify", "Brand"],
     description:
-      "Sito per un atelier di detailing: l'auto emerge dal buio mentre scorri, poi trattamenti e preventivo.",
-    url: "https://velatura-livid.vercel.app/",
-    preview: "/media/work/velatura.webp",
+      "Store online per un brand di felpe dalle grafiche particolari, con schede prodotto che raccontano ogni capo.",
+    url: "https://shoutit.it/",
+    preview: "/media/work/shout-it.webp",
   },
   {
     slug: "spazio-dance-on",
@@ -129,15 +164,6 @@ export const featuredProjects: Project[] = [
       "Sito web per squadra di Powerchair Football con sistema di donazioni e struttura pensata per supportare il progetto sportivo.",
     url: "https://www.snakesmilano.it/",
     preview: "/media/work/snakes-milano.webp",
-  },
-  {
-    slug: "effemme-exclusive-lab",
-    name: "Effemme Exclusive Lab",
-    tags: ["E-commerce", "Custom development", "ADV"],
-    description:
-      "Store online streetwear con UX studiata per la conversione e flusso d'acquisto rapido.",
-    url: "https://effemmeexclusivelab.com/",
-    preview: "/media/work/effemme-exclusive-lab.webp",
   },
   {
     slug: "barlafus-cafe",
@@ -173,23 +199,6 @@ export const featuredProjects: Project[] = [
     description: "Sito professionale per geometra, layout pulito e struttura SEO.",
     url: "https://www.samgroup.it/",
     preview: "/media/work/samgroup-srl.webp",
-  },
-  {
-    slug: "delta-antinfortunistica",
-    name: "Delta Antinfortunistica",
-    tags: ["Landing page", "Custom development"],
-    description: "Landing per promuovere catalogo di dpi antinfortunistici.",
-    url: "https://www.antinfortunisticadelta.it/",
-    preview: "/media/work/delta-antinfortunistica.webp",
-  },
-  {
-    slug: "shout-it",
-    name: "Shout It",
-    tags: ["E-commerce", "Shopify", "Brand"],
-    description:
-      "Store online per un brand di felpe dalle grafiche particolari, con schede prodotto che raccontano ogni capo.",
-    url: "https://shoutit.it/",
-    preview: "/media/work/shout-it.webp",
   },
   {
     slug: "dimensione-animale-rho",
