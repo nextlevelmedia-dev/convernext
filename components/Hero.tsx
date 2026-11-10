@@ -27,6 +27,8 @@ type HeroProps = {
 
   ctaProofText?: string
   ctaProofAvatars?: CtaProofAvatar[]
+  // foto dei clienti nel badge di valutazione (le stesse della sezione recensioni)
+  ratingAvatars?: CtaProofAvatar[]
 
   socialProofBadgeTitle?: string
   socialProofBadgeSubtitle?: string
@@ -47,6 +49,7 @@ export default function Hero({
   trustPoints,
   ctaProofText,
   ctaProofAvatars,
+  ratingAvatars,
   socialProofBadgeTitle,
   socialProofBadgeSubtitle,
   socialProofStats,
@@ -93,13 +96,30 @@ export default function Hero({
           <div className="hero-in flex min-w-0 flex-col items-start text-left">
             <a
               href="#recensioni"
-              aria-label="Valutati 5 su 5 dai nostri clienti, vai alle recensioni"
-              className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-slate-300/80 bg-white/80 py-2 pl-3.5 pr-4 backdrop-blur transition-[box-shadow,border-color] hover:border-slate-400/80 hover:shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.14)] md:mb-6 md:gap-3 md:py-2.5 md:pl-4 md:pr-5 dark:border-white/15 dark:bg-[#0f1726]/80 dark:hover:border-white/25"
+              aria-label="Valutazione 5 su 5 dai nostri clienti, vai alle recensioni"
+              className="mb-7 inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/80 py-1.5 pl-3 pr-3 backdrop-blur transition-[box-shadow,border-color] hover:border-slate-400/80 hover:shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.14)] md:mb-6 md:gap-2.5 md:py-1.5 md:pl-3.5 md:pr-3.5 dark:border-white/15 dark:bg-[#0f1726]/80 dark:hover:border-white/25"
             >
               <RatingStars />
-              <div className="whitespace-nowrap text-[13px] font-bold tracking-[-0.01em] text-slate-900 md:text-[15px] dark:text-white">
-                Valutati 5/5 dai clienti
+              <div className="whitespace-nowrap text-[12px] font-bold tracking-[-0.01em] text-slate-900 md:text-[13px] dark:text-white">
+                Rated 5/5
               </div>
+              {ratingAvatars && ratingAvatars.some((a) => a.photo) && (
+                <div className="-mr-1 flex -space-x-1.5">
+                  {ratingAvatars
+                    .filter((a) => a.photo)
+                    .slice(0, 3)
+                    .map((avatar, index) => (
+                      <Image
+                        key={index}
+                        src={urlFor(avatar.photo!).width(72).height(72).url()}
+                        alt=""
+                        width={36}
+                        height={36}
+                        className="size-6 rounded-full border-2 border-white object-cover md:size-[26px] dark:border-[#0f1726]"
+                      />
+                    ))}
+                </div>
+              )}
             </a>
 
             <h1
@@ -585,7 +605,7 @@ function RatingStars() {
     <svg
       aria-hidden="true"
       viewBox="0 0 88 16"
-      className="h-[15px] w-auto shrink-0 md:h-[18px]"
+      className="h-[12px] w-auto shrink-0 md:h-[14px]"
     >
       <defs>
         <linearGradient id="hero-stars-fill" x1="0" x2="1" y1="0" y2="0">

@@ -248,7 +248,7 @@ export default async function Home() {
 
       <div>
         {/* HERO */}
-        <Hero {...page?.hero} rightContent={<ConversionScene />} />
+        <Hero {...page?.hero} ratingAvatars={page?.reviews?.socialProofAvatars} rightContent={<ConversionScene />} />
 
         {/* RECENSIONI */}
         <ReviewsSection

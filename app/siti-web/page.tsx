@@ -251,6 +251,7 @@ export default async function SitiWebPage() {
       <div>
         {/* HERO */}
         <Hero
+          ratingAvatars={data?.reviews?.socialProofAvatars}
           eyebrow={data?.hero?.eyebrow}
           title={data?.hero?.title}
           highlightOne={data?.hero?.highlightOne}
