@@ -217,7 +217,7 @@ export default function Hero({
                         fontFamily: "var(--font-lato), sans-serif",
                       }}
                     >
-                      next-level-media.it — Analytics
+                      convernext.com — Analytics
                     </span>
                   </div>
 

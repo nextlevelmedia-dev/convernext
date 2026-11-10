@@ -54,7 +54,7 @@ function Ring({ items, radius, duration, reverse = false, offset = 0, variant }:
 }
 
 /**
- * Il modello di Next in un colpo d'occhio: il referente al centro, le
+ * Il modello di Convernext in un colpo d'occhio: il referente al centro, le
  * competenze core nell'anello interno e gli specialisti, coinvolti quando
  * servono, in quello esterno. Al passaggio del mouse le orbite si fermano e
  * gli specialisti "si attivano".
@@ -92,7 +92,7 @@ export default function TeamOrbit({
             {imageUrl && (
               <Image
                 src={imageUrl}
-                alt={imageAlt || name || "Il fondatore di Next"}
+                alt={imageAlt || name || "Il fondatore di Convernext"}
                 fill
                 sizes="200px"
                 className="object-cover object-top"

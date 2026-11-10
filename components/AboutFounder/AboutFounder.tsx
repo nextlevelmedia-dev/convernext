@@ -40,7 +40,7 @@ export default function AboutFounder({
               src={imageUrl}
               loading="lazy"
               decoding="async"
-              alt={imageAlt || name || "Founder NEXT"}
+              alt={imageAlt || name || "Fondatore di Convernext"}
               className={styles.image}
             />
           ) : (

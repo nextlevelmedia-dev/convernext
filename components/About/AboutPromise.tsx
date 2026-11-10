@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Eyebrow, gradientTitle } from "./SectionHeading"
 
-/** La promessa di Next, con CTA verso il form contatti. */
+/** La promessa di Convernext, con CTA verso il form contatti. */
 export default function AboutPromise({
   eyebrow,
   title,

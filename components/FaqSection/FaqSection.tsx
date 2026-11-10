@@ -16,7 +16,7 @@ interface FaqSectionProps {
 }
 
 export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
   const baseId = useId()
 
   if (!items?.length) return null
@@ -33,13 +33,14 @@ export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSe
         className="pointer-events-none absolute -right-40 bottom-0 size-[420px] rounded-full bg-[#047cf9]/[0.07] blur-3xl dark:bg-[#047cf9]/[0.12]"
       />
 
-      <div className="relative mx-auto grid max-w-6xl gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-        <div className="lg:sticky lg:top-32 lg:self-start">
+      <div className="relative mx-auto max-w-4xl">
+        {/* intestazione centrata */}
+        <div className="flex flex-col items-center text-center">
           <Eyebrow>FAQ</Eyebrow>
 
           {(titleHighlight || titleNormal) && (
             <h2
-              className="mt-5 text-4xl leading-[1.2] tracking-tight text-slate-950 dark:text-white md:text-[42px]"
+              className="mt-5 text-4xl leading-[1.15] tracking-tight text-slate-950 dark:text-white md:text-5xl"
               style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
             >
               {titleHighlight && (
@@ -49,35 +50,17 @@ export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSe
               {titleNormal}
             </h2>
           )}
-
-          <div className="mt-5 max-w-sm text-base leading-7 text-slate-600 dark:text-white/65">
-            Non trovi la risposta che cerchi? Scrivici: ti rispondiamo entro 24 ore.
-          </div>
-
-          <Link
-            href="/contatti"
-            className="group mt-8 inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-bold text-slate-950 transition-colors hover:border-transparent hover:bg-slate-950 hover:!text-white dark:border-white/15 dark:bg-white/[0.04] dark:text-white dark:hover:bg-white dark:hover:!text-slate-950"
-          >
-            Fai una domanda
-            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </Link>
         </div>
 
-        <div className="flex flex-col gap-3">
+        {/* lista a filo: righe separate da linee sottili, niente card */}
+        <div className="mt-14 border-t border-slate-200 dark:border-white/10 md:mt-16">
           {items.map((item, i) => {
             const open = openIndex === i
             const buttonId = `${baseId}-q${i}`
             const panelId = `${baseId}-a${i}`
 
             return (
-              <div
-                key={i}
-                className={`rounded-2xl border transition-[background-color,border-color,box-shadow] duration-300 ${
-                  open
-                    ? "border-[#7c3aed]/30 bg-white shadow-[0_18px_40px_-18px_rgb(124_58_237/0.35)] dark:border-[#a78bfa]/30 dark:bg-[#0f1726] dark:shadow-[0_18px_40px_-18px_rgb(124_58_237/0.5)]"
-                    : "border-slate-200 bg-white/70 hover:border-slate-300 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-white/20"
-                }`}
-              >
+              <div key={i} className="group border-b border-slate-200 dark:border-white/10">
                 <h3>
                   <button
                     id={buttonId}
@@ -85,27 +68,33 @@ export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSe
                     aria-expanded={open}
                     aria-controls={panelId}
                     onClick={() => setOpenIndex(open ? null : i)}
-                    className="flex w-full cursor-pointer items-center gap-4 px-5 py-5 text-left md:px-6"
+                    className="flex w-full cursor-pointer items-center gap-5 py-6 text-left md:gap-8 md:py-7"
                   >
                     <span
                       aria-hidden
-                      className={`hidden font-mono text-xs tracking-wider sm:block ${
+                      className={`hidden w-8 shrink-0 font-mono text-sm tracking-wider transition-colors sm:block ${
                         open ? "text-[#7c3aed] dark:text-[#a78bfa]" : "text-slate-400 dark:text-white/35"
                       }`}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </span>
 
-                    <span className="flex-1 text-base font-semibold leading-snug text-slate-950 dark:text-white md:text-lg">
+                    <span
+                      className={`flex-1 text-lg font-semibold leading-snug transition-colors md:text-xl ${
+                        open
+                          ? "text-slate-950 dark:text-white"
+                          : "text-slate-800 group-hover:text-slate-950 dark:text-white/85 dark:group-hover:text-white"
+                      }`}
+                    >
                       {item.question}
                     </span>
 
                     <span
                       aria-hidden
-                      className={`flex size-9 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+                      className={`flex size-10 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
                         open
-                          ? "rotate-45 bg-brand-gradient text-white"
-                          : "bg-slate-100 text-slate-700 dark:bg-white/[0.08] dark:text-white/80"
+                          ? "rotate-45 border-transparent bg-brand-gradient text-white"
+                          : "border-slate-300 text-slate-700 group-hover:border-slate-950 group-hover:text-slate-950 dark:border-white/20 dark:text-white/80 dark:group-hover:border-white dark:group-hover:text-white"
                       }`}
                     >
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -125,7 +114,7 @@ export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSe
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="px-5 pb-6 text-[15px] leading-7 text-slate-600 dark:text-white/65 sm:pl-[3.25rem] md:pr-16">
+                    <div className="max-w-2xl pb-7 text-base leading-8 text-slate-600 dark:text-white/65 sm:pl-[4.25rem]">
                       {item.answer}
                     </div>
                   </div>
@@ -133,6 +122,21 @@ export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSe
               </div>
             )
           })}
+        </div>
+
+        {/* chiusura: chi non trova la risposta scrive */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-5 rounded-3xl border border-slate-200 bg-white/70 px-6 py-6 text-center sm:flex-row sm:text-left md:px-8 dark:border-white/10 dark:bg-white/[0.03]">
+          <div>
+            <p className="font-semibold text-slate-950 dark:text-white">Non trovi la risposta che cerchi?</p>
+            <p className="mt-1 text-slate-600 dark:text-white/65">Scrivici: ti rispondiamo entro 24 ore.</p>
+          </div>
+          <Link
+            href="/contatti"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-slate-950 px-6 py-3 text-sm font-bold !text-white transition-colors hover:bg-slate-800 dark:bg-white dark:!text-slate-950 dark:hover:bg-white/90"
+          >
+            Fai una domanda
+            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
         </div>
       </div>
     </section>

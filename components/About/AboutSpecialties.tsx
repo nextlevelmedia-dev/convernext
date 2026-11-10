@@ -2,7 +2,7 @@ import SectionHeading, { CARD, CONTAINER, SECTION } from "./SectionHeading"
 
 type Item = { title?: string; text?: string }
 
-/** In cosa è specializzato Next: griglia numerata. */
+/** In cosa è specializzato Convernext: griglia numerata. */
 export default function AboutSpecialties({
   eyebrow,
   title,

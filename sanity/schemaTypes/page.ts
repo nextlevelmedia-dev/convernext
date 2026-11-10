@@ -294,7 +294,7 @@ export const pageType = defineType({
 defineField({
   name: "ctaProofText",
   title: "Social proof accanto al bottone — Testo",
-  description: "Es: +100 aziende stanno già crescendo con Next",
+  description: "Es: +100 aziende stanno già crescendo con Convernext",
   type: "string",
 }),
 
@@ -552,7 +552,7 @@ defineField({
 
     defineField({
       name: "aboutManifesto",
-      title: "Filosofia NEXT",
+      title: "Filosofia Convernext",
       type: "object",
       fieldset: "aboutManifestoSection",
 
@@ -655,7 +655,7 @@ defineField({
           title: "Alt immagine",
           type: "string",
           description:
-            "Es: Francesco, fondatore di NEXT",
+            "Es: Francesco, fondatore di Convernext",
         }),
       ],
     }),
@@ -698,12 +698,12 @@ defineField({
           name: "coreTitle",
           title: "Titolo competenze core",
           type: "string",
-          description: "Es: Il cuore di NEXT",
+          description: "Es: Il cuore di Convernext",
         }),
 
         defineField({
           name: "coreSkills",
-          title: "Competenze core NEXT",
+          title: "Competenze core Convernext",
           type: "array",
 
           of: [
@@ -810,7 +810,7 @@ defineField({
 
     defineField({
       name: "aboutPrinciples",
-      title: "Principi NEXT",
+      title: "Principi Convernext",
       type: "object",
       fieldset: "aboutPrinciplesSection",
 

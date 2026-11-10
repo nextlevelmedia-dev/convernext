@@ -3,7 +3,7 @@ import SectionHeading, { CARD, CONTAINER, SECTION } from "./SectionHeading"
 type Item = { title?: string; text?: string }
 
 /**
- * Confronto agenzia / Next / freelance. Con tre voci, quella centrale è Next
+ * Confronto agenzia / Convernext / freelance. Con tre voci, quella centrale è Convernext
  * ed è evidenziata.
  */
 export default function AboutCompare({
