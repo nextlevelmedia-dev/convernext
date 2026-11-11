@@ -46,6 +46,78 @@ function MarqueeRow({
     return () => observer.disconnect()
   }, [direction])
 
+  // trascinamento (dito o mouse): durante il drag l'animazione CSS si ferma e la fila
+  // segue il puntatore; al rilascio l'animazione riparte dal punto raggiunto
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    let dragging = false
+    let startX = 0
+    let startT = 0
+    let current = 0
+    let moved = false
+
+    const currentX = () => new DOMMatrixReadOnly(getComputedStyle(track).transform).m41
+    const wrap = (x: number) => {
+      const half = track.scrollWidth / 2
+      if (!half) return x
+      let v = x % half
+      if (v > 0) v -= half
+      return v
+    }
+
+    const down = (e: PointerEvent) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return
+      dragging = true
+      moved = false
+      startX = e.clientX
+      startT = currentX()
+      current = startT
+      track.style.animationName = "none"
+      track.style.transform = `translate3d(${startT}px,0,0)`
+      track.setPointerCapture(e.pointerId)
+    }
+    const move = (e: PointerEvent) => {
+      if (!dragging) return
+      const dx = e.clientX - startX
+      if (Math.abs(dx) > 4) moved = true
+      current = wrap(startT + dx)
+      track.style.transform = `translate3d(${current}px,0,0)`
+    }
+    const up = (e: PointerEvent) => {
+      if (!dragging) return
+      dragging = false
+      if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId)
+      const half = track.scrollWidth / 2
+      const duration = parseFloat(track.style.animationDuration) || 60
+      // posizione raggiunta → punto equivalente dell'animazione (ritardo negativo)
+      const p = half ? -current / half : 0
+      const progress = direction === "left" ? p : 1 - p
+      track.style.transform = ""
+      track.style.animationDelay = `${-progress * duration}s`
+      track.style.animationName = direction === "left" ? "mockup-marquee-left" : "mockup-marquee-right"
+    }
+    const click = (e: MouseEvent) => {
+      if (moved) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+
+    track.addEventListener("pointerdown", down)
+    track.addEventListener("pointermove", move)
+    track.addEventListener("pointerup", up)
+    track.addEventListener("pointercancel", up)
+    track.addEventListener("click", click, true)
+    return () => {
+      track.removeEventListener("pointerdown", down)
+      track.removeEventListener("pointermove", move)
+      track.removeEventListener("pointerup", up)
+      track.removeEventListener("pointercancel", up)
+      track.removeEventListener("click", click, true)
+    }
+  }, [direction])
+
   useEffect(() => {
     const el = rowRef.current
     if (!el) return
@@ -70,8 +142,6 @@ const startPoint = windowHeight * 1.1
     return () => window.removeEventListener("scroll", handleScroll)
   }, [rowRef])
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
-  const itemWidth = isMobile ? "calc(50vw - 12px)" : "calc(25vw - 12px)"
 
   return (
     <div
@@ -79,19 +149,20 @@ const startPoint = windowHeight * 1.1
       className="relative flex overflow-hidden w-full"
       style={{ opacity: 0, transform: "translateY(20px)", transition: "opacity 0.1s ease-out, transform 0.1s ease-out" }}
     >
-      <div ref={trackRef} style={{ display: "flex", width: "max-content", alignItems: "flex-start", animationTimingFunction: "linear", animationIterationCount: "infinite", willChange: "transform" }}>
+      <div ref={trackRef} className="cursor-grab select-none active:cursor-grabbing" style={{ display: "flex", width: "max-content", alignItems: "flex-start", animationTimingFunction: "linear", animationIterationCount: "infinite", willChange: "transform", touchAction: "pan-y" }}>
         {[...items, ...items].map((item, i) => (
           <div
   key={i}
   aria-hidden={i >= items.length || undefined}
-  className="shrink-0 px-2 md:px-3 w-[calc(50vw-12px)] md:w-[calc(25vw-12px)]"
+  className="shrink-0 px-2 md:px-3 w-[calc(62vw-12px)] md:w-[calc(25vw-12px)]"
 >
             <Image
               src={urlFor(item.image).width(600).url()}
               alt={i >= items.length ? "" : item.alt || "Progetto realizzato"}
               width={600}
               height={0}
-              sizes="(max-width: 768px) 50vw, 25vw"
+              sizes="(max-width: 768px) 62vw, 25vw"
+              draggable={false}
               className="w-full h-auto rounded-2xl block"
               style={{ height: "auto" }}
             />
