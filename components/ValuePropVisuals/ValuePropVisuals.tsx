@@ -476,7 +476,7 @@ function EcommercePerformanceVisual() {
       <style>{`
         @keyframes perf-score {
           from { stroke-dashoffset: 283; }
-          to { stroke-dashoffset: 0; }
+          to { stroke-dashoffset: 14; }
         }
 
         @keyframes perf-glow {
@@ -645,7 +645,7 @@ function EcommercePerformanceVisual() {
             fontWeight="800"
             fill="var(--vp-text-strong)"
           >
-            100
+            95
           </text>
 
           <text
@@ -2127,6 +2127,118 @@ function CROCrescitaVisual() {
 /* =========================================================
    SITI WEB — IMMERSIVE
 ========================================================= */
+
+/* Temi Shopify: lo stesso negozio che cambia volto in base alla nicchia */
+function TemiNicchiaVisual() {
+  const niches: { name: string; hero: string; accent: string; title: string }[] = [
+    { name: "Gioielli", hero: "linear-gradient(135deg,#2a1f14,#8a6a3a)", accent: "#d4b17a", title: "Anelli su misura" },
+    { name: "Streetwear", hero: "linear-gradient(135deg,#111,#3a3a3a)", accent: "#fc03b0", title: "Nuovo drop" },
+    { name: "Food", hero: "linear-gradient(135deg,#3d5a2a,#9bb36b)", accent: "#f5c451", title: "Dal campo a casa" },
+  ]
+  return (
+    <VisualShell>
+      <style>{`
+        @keyframes tn-show { 0%, 30% { opacity: 1; } 36%, 94% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes tn-chip {
+          0%, 30% { background: linear-gradient(90deg,#fc03b0,#047cf9); color: #fff; border-color: transparent; }
+          36%, 94% { background: var(--vp-panel); color: var(--vp-muted); border-color: var(--vp-border); }
+          100% { background: linear-gradient(90deg,#fc03b0,#047cf9); color: #fff; border-color: transparent; }
+        }
+        .tn-layer { animation: tn-show 9s ease-in-out infinite; }
+        .tn-chip { animation: tn-chip 9s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .tn-layer, .tn-chip { animation: none; } .tn-layer:not(:first-child) { opacity: 0; } }
+      `}</style>
+      <div style={{ position: "relative", zIndex: 2, width: "80%", display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "flex", gap: 6, justifyContent: "center" }}>
+          {niches.map((n, i) => (
+            <b
+              key={n.name}
+              className="tn-chip"
+              style={{ animationDelay: `${i * 3}s`, fontSize: 10, fontWeight: 700, padding: "4px 10px", borderRadius: 99, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", color: "var(--vp-muted)" }}
+            >
+              {n.name}
+            </b>
+          ))}
+        </div>
+        <div style={{ position: "relative", aspectRatio: "16 / 9", borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", overflow: "hidden" }}>
+          {niches.map((n, i) => (
+            <div key={n.name} className="tn-layer" style={{ animationDelay: `${i * 3}s`, opacity: i === 0 ? 1 : 0, position: "absolute", inset: 0, padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <i style={{ width: 34, height: 6, borderRadius: 4, background: n.accent }} />
+                <i style={{ width: 60, height: 5, borderRadius: 4, background: "var(--vp-line-strong)" }} />
+              </div>
+              <div style={{ flex: 1, borderRadius: 9, background: n.hero, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: 10, gap: 6 }}>
+                <b style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{n.title}</b>
+                <i style={{ width: 54, height: 14, borderRadius: 99, background: n.accent }} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 6 }}>
+                {[0, 1, 2].map((k) => (
+                  <i key={k} style={{ height: 22, borderRadius: 6, background: "var(--vp-panel-subtle)", border: "1px solid var(--vp-border-soft)" }} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </VisualShell>
+  )
+}
+
+/* Temi Shopify: l'editor del tema, sezioni che si riordinano e anteprima che segue */
+function TemiEditorVisual() {
+  const sections = ["Hero", "Prodotti in evidenza", "Recensioni", "Newsletter"]
+  return (
+    <VisualShell>
+      <style>{`
+        @keyframes te-swap-a { 0%, 35% { transform: translateY(0); } 45%, 80% { transform: translateY(100%); } 90%, 100% { transform: translateY(0); } }
+        @keyframes te-swap-b { 0%, 35% { transform: translateY(0); } 45%, 80% { transform: translateY(-100%); } 90%, 100% { transform: translateY(0); } }
+        @keyframes te-pick { 0%, 30% { box-shadow: none; } 35%, 85% { box-shadow: 0 0 0 1.5px #7c3aed, 0 10px 24px -12px rgba(124,58,237,.6); } 90%, 100% { box-shadow: none; } }
+        @keyframes te-color { 0%, 50% { background: linear-gradient(120deg, rgba(252,3,176,.35), rgba(4,124,249,.35)); } 60%, 90% { background: linear-gradient(120deg, rgba(245,196,81,.45), rgba(252,3,176,.3)); } 100% { background: linear-gradient(120deg, rgba(252,3,176,.35), rgba(4,124,249,.35)); } }
+        @keyframes te-saved { 0%, 80% { opacity: 0; transform: translateY(4px); } 86%, 96% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+        .te-a { animation: te-swap-a 6s cubic-bezier(.65,0,.35,1) infinite, te-pick 6s ease infinite; }
+        .te-b { animation: te-swap-b 6s cubic-bezier(.65,0,.35,1) infinite; }
+        .te-hero { animation: te-color 6s ease infinite; }
+        .te-saved { animation: te-saved 6s ease infinite; }
+        @media (prefers-reduced-motion: reduce) { .te-a, .te-b, .te-hero, .te-saved { animation: none; } }
+      `}</style>
+      <div style={{ position: "relative", zIndex: 2, width: "86%", display: "grid", gridTemplateColumns: "0.9fr 1.3fr", gap: 10 }}>
+        <div style={{ borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+          <b style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--vp-muted)" }}>Sezioni</b>
+          {sections.map((name, i) => (
+            <div
+              key={name}
+              className={i === 1 ? "te-a" : i === 2 ? "te-b" : undefined}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 8px", borderRadius: 7, border: "1px solid var(--vp-border-soft)", background: "var(--vp-panel-soft)" }}
+            >
+              <b style={{ fontSize: 9, color: "var(--vp-muted-soft)", letterSpacing: 1 }}>⋮⋮</b>
+              <b style={{ fontSize: 10, fontWeight: 600, color: "var(--vp-text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{name}</b>
+            </div>
+          ))}
+          <div style={{ display: "flex", gap: 5, marginTop: 4, alignItems: "center" }}>
+            <b style={{ fontSize: 9, color: "var(--vp-muted)" }}>Colore</b>
+            {["#fc03b0", "#047cf9", "#f5c451"].map((c) => (
+              <i key={c} style={{ width: 12, height: 12, borderRadius: 99, background: c, border: "1.5px solid var(--vp-panel)" }} />
+            ))}
+          </div>
+        </div>
+        <div style={{ position: "relative", borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 8, display: "flex", flexDirection: "column", gap: 6 }}>
+          <div className="te-hero" style={{ height: 52, borderRadius: 8, background: "linear-gradient(120deg, rgba(252,3,176,.35), rgba(4,124,249,.35))" }} />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 5 }}>
+            {[0, 1, 2].map((k) => (
+              <i key={k} style={{ height: 26, borderRadius: 6, background: "var(--vp-panel-subtle)", border: "1px solid var(--vp-border-soft)" }} />
+            ))}
+          </div>
+          <i style={{ height: 18, borderRadius: 6, background: "var(--vp-panel-subtle)" }} />
+          <i style={{ height: 12, width: "60%", borderRadius: 6, background: "var(--vp-line)" }} />
+          <div className="te-saved" style={{ position: "absolute", right: 8, bottom: 8, display: "flex", alignItems: "center", gap: 5, padding: "4px 9px", borderRadius: 99, background: "rgba(22,163,74,.14)", border: "1px solid rgba(22,163,74,.3)" }}>
+            <i style={{ width: 6, height: 6, borderRadius: 99, background: "#16a34a" }} />
+            <b style={{ fontSize: 9, fontWeight: 700, color: "#16a34a" }}>Salvato, senza codice</b>
+          </div>
+        </div>
+      </div>
+    </VisualShell>
+  )
+}
 
 /* Struttura di pagina a conversione: le sezioni si accendono in sequenza */
 function SitiwebStrutturaVisual() {
@@ -3981,6 +4093,12 @@ export function ValuePropVisual({
 
     case "cro-crescita":
       return <CROCrescitaVisual />
+
+    case "temi-nicchia":
+      return <TemiNicchiaVisual />
+
+    case "temi-editor":
+      return <TemiEditorVisual />
 
     case "sitiweb-struttura":
       return <SitiwebStrutturaVisual />
