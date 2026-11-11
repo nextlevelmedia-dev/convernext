@@ -2128,13 +2128,42 @@ function CROCrescitaVisual() {
    SITI WEB — IMMERSIVE
 ========================================================= */
 
-/* Temi Shopify: lo stesso negozio che cambia volto in base alla nicchia */
+/* Temi Shopify: lo stesso tema che cambia volto in base alla nicchia, con le foto dei nostri progetti */
+const TEMI_IMG = "/media/visuals/temi"
+const TEMI_NICHES = [
+  {
+    name: "Gioielli",
+    brand: "AURELLE",
+    title: "Gioielli su misura",
+    cta: "Scopri la collezione",
+    accent: "#c9a46a",
+    dark: "#1c1712",
+    img: "gioielli",
+    products: [["Orecchini", "€ 420"], ["Collana", "€ 380"], ["Solitario", "€ 1.250"]],
+  },
+  {
+    name: "Streetwear",
+    brand: "VÆRK",
+    title: "Heavyweight, nuovo drop",
+    cta: "Shop now",
+    accent: "#fc03b0",
+    dark: "#0d0d0f",
+    img: "street",
+    products: [["Hoodie", "€ 95"], ["Capsule", "€ 60"], ["Drop 17", "€ 75"]],
+  },
+  {
+    name: "Food",
+    brand: "LUMACHE DI CAMPAGNA",
+    title: "Dall'allevamento alla tavola",
+    cta: "Scopri i prodotti",
+    accent: "#7fa34a",
+    dark: "#141a0f",
+    img: "food",
+    products: [["Vasetti", "€ 9"], ["Lumache sfuse", "€ 18"], ["Allevamento", "Visita"]],
+  },
+]
+
 function TemiNicchiaVisual() {
-  const niches: { name: string; hero: string; accent: string; title: string }[] = [
-    { name: "Gioielli", hero: "linear-gradient(135deg,#2a1f14,#8a6a3a)", accent: "#d4b17a", title: "Anelli su misura" },
-    { name: "Streetwear", hero: "linear-gradient(135deg,#111,#3a3a3a)", accent: "#fc03b0", title: "Nuovo drop" },
-    { name: "Food", hero: "linear-gradient(135deg,#3d5a2a,#9bb36b)", accent: "#f5c451", title: "Dal campo a casa" },
-  ]
   return (
     <VisualShell>
       <style>{`
@@ -2146,11 +2175,13 @@ function TemiNicchiaVisual() {
         }
         .tn-layer { animation: tn-show 9s ease-in-out infinite; }
         .tn-chip { animation: tn-chip 9s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .tn-layer, .tn-chip { animation: none; } .tn-layer:not(:first-child) { opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) { .tn-layer, .tn-chip { animation: none; } }
+        /* su mobile il riquadro è basso: il negozio si rimpicciolisce per lasciare margine */
+        @media (max-width: 640px) { .tn-wrap { width: 64% !important; gap: 6px !important; } }
       `}</style>
-      <div style={{ position: "relative", zIndex: 2, width: "80%", display: "flex", flexDirection: "column", gap: 10 }}>
+      <div className="tn-wrap" style={{ position: "relative", zIndex: 2, width: "80%", display: "flex", flexDirection: "column", gap: 9 }}>
         <div style={{ display: "flex", gap: 6, justifyContent: "center" }}>
-          {niches.map((n, i) => (
+          {TEMI_NICHES.map((n, i) => (
             <b
               key={n.name}
               className="tn-chip"
@@ -2160,20 +2191,43 @@ function TemiNicchiaVisual() {
             </b>
           ))}
         </div>
-        <div style={{ position: "relative", aspectRatio: "16 / 9", borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", overflow: "hidden" }}>
-          {niches.map((n, i) => (
-            <div key={n.name} className="tn-layer" style={{ animationDelay: `${i * 3}s`, opacity: i === 0 ? 1 : 0, position: "absolute", inset: 0, padding: 10, display: "flex", flexDirection: "column", gap: 8 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <i style={{ width: 34, height: 6, borderRadius: 4, background: n.accent }} />
-                <i style={{ width: 60, height: 5, borderRadius: 4, background: "var(--vp-line-strong)" }} />
+        <div style={{ position: "relative", aspectRatio: "16 / 10.5", borderRadius: 12, border: "1px solid var(--vp-border)", overflow: "hidden", boxShadow: "0 24px 50px -24px rgba(0,0,0,.6)" }}>
+          {TEMI_NICHES.map((n, i) => (
+            <div
+              key={n.name}
+              className="tn-layer"
+              style={{ animationDelay: `${i * 3}s`, opacity: i === 0 ? 1 : 0, position: "absolute", inset: 0, background: n.dark, display: "flex", flexDirection: "column" }}
+            >
+              {/* barra del negozio */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 10px" }}>
+                <b style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".18em", color: "#fff" }}>{n.brand}</b>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {["Shop", "Collezioni", "Chi siamo"].map((l) => (
+                    <b key={l} style={{ fontSize: 7.5, fontWeight: 500, color: "rgba(255,255,255,.6)" }}>{l}</b>
+                  ))}
+                </div>
               </div>
-              <div style={{ flex: 1, borderRadius: 9, background: n.hero, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: 10, gap: 6 }}>
-                <b style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{n.title}</b>
-                <i style={{ width: 54, height: 14, borderRadius: 99, background: n.accent }} />
+              {/* hero con la foto vera */}
+              <div style={{ position: "relative", flex: 1.4, margin: "0 8px", borderRadius: 8, overflow: "hidden" }}>
+                <img src={`${TEMI_IMG}/${n.img}-hero.webp`} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,.65), rgba(0,0,0,.05) 70%)" }} />
+                <div style={{ position: "absolute", left: 10, bottom: 10, display: "flex", flexDirection: "column", gap: 6 }}>
+                  <b style={{ fontSize: 12, fontWeight: 700, color: "#fff", lineHeight: 1.15, maxWidth: 140 }}>{n.title}</b>
+                  <b style={{ alignSelf: "flex-start", fontSize: 7.5, fontWeight: 700, color: "#111", background: n.accent, padding: "4px 9px", borderRadius: 99 }}>{n.cta}</b>
+                </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 6 }}>
-                {[0, 1, 2].map((k) => (
-                  <i key={k} style={{ height: 22, borderRadius: 6, background: "var(--vp-panel-subtle)", border: "1px solid var(--vp-border-soft)" }} />
+              {/* prodotti */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 6, padding: 8 }}>
+                {n.products.map(([name, price], k) => (
+                  <div key={name} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                    <div style={{ position: "relative", aspectRatio: "16 / 10", borderRadius: 6, overflow: "hidden", background: "rgba(255,255,255,.06)" }}>
+                      <img src={`${TEMI_IMG}/${n.img}-${k + 1}.webp`} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: 4 }}>
+                      <b style={{ fontSize: 7.5, fontWeight: 600, color: "rgba(255,255,255,.85)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{name}</b>
+                      <b style={{ fontSize: 7.5, fontWeight: 700, color: n.accent, whiteSpace: "nowrap" }}>{price}</b>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -2184,55 +2238,84 @@ function TemiNicchiaVisual() {
   )
 }
 
-/* Temi Shopify: l'editor del tema, sezioni che si riordinano e anteprima che segue */
+/* Temi Shopify: editor del tema in stile Shopify, sezioni che si riordinano e anteprima con foto vere */
 function TemiEditorVisual() {
   const sections = ["Hero", "Prodotti in evidenza", "Recensioni", "Newsletter"]
   return (
     <VisualShell>
       <style>{`
-        @keyframes te-swap-a { 0%, 35% { transform: translateY(0); } 45%, 80% { transform: translateY(100%); } 90%, 100% { transform: translateY(0); } }
-        @keyframes te-swap-b { 0%, 35% { transform: translateY(0); } 45%, 80% { transform: translateY(-100%); } 90%, 100% { transform: translateY(0); } }
+        @keyframes te-swap-a { 0%, 35% { transform: translateY(0); } 45%, 80% { transform: translateY(calc(100% + 5px)); } 90%, 100% { transform: translateY(0); } }
+        @keyframes te-swap-b { 0%, 35% { transform: translateY(0); } 45%, 80% { transform: translateY(calc(-100% - 5px)); } 90%, 100% { transform: translateY(0); } }
         @keyframes te-pick { 0%, 30% { box-shadow: none; } 35%, 85% { box-shadow: 0 0 0 1.5px #7c3aed, 0 10px 24px -12px rgba(124,58,237,.6); } 90%, 100% { box-shadow: none; } }
-        @keyframes te-color { 0%, 50% { background: linear-gradient(120deg, rgba(252,3,176,.35), rgba(4,124,249,.35)); } 60%, 90% { background: linear-gradient(120deg, rgba(245,196,81,.45), rgba(252,3,176,.3)); } 100% { background: linear-gradient(120deg, rgba(252,3,176,.35), rgba(4,124,249,.35)); } }
+        @keyframes te-prev-a { 0%, 38% { opacity: 1; } 46%, 82% { opacity: 0; } 90%, 100% { opacity: 1; } }
+        @keyframes te-prev-b { 0%, 38% { opacity: 0; } 46%, 82% { opacity: 1; } 90%, 100% { opacity: 0; } }
+        @keyframes te-btn { 0%, 50% { background: #fff; color: #111; } 60%, 90% { background: #fc03b0; color: #fff; } 100% { background: #fff; color: #111; } }
         @keyframes te-saved { 0%, 80% { opacity: 0; transform: translateY(4px); } 86%, 96% { opacity: 1; transform: none; } 100% { opacity: 0; } }
         .te-a { animation: te-swap-a 6s cubic-bezier(.65,0,.35,1) infinite, te-pick 6s ease infinite; }
         .te-b { animation: te-swap-b 6s cubic-bezier(.65,0,.35,1) infinite; }
-        .te-hero { animation: te-color 6s ease infinite; }
+        .te-pa { animation: te-prev-a 6s cubic-bezier(.65,0,.35,1) infinite; }
+        .te-pb { animation: te-prev-b 6s cubic-bezier(.65,0,.35,1) infinite; }
+        .te-btn { animation: te-btn 6s ease infinite; }
         .te-saved { animation: te-saved 6s ease infinite; }
-        @media (prefers-reduced-motion: reduce) { .te-a, .te-b, .te-hero, .te-saved { animation: none; } }
+        @media (prefers-reduced-motion: reduce) { .te-a, .te-b, .te-pa, .te-pb, .te-btn, .te-saved { animation: none; } }
+        @media (max-width: 640px) { .te-wrap { width: 82% !important; transform: scale(.86); } }
       `}</style>
-      <div style={{ position: "relative", zIndex: 2, width: "86%", display: "grid", gridTemplateColumns: "0.9fr 1.3fr", gap: 10 }}>
-        <div style={{ borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 10, display: "flex", flexDirection: "column", gap: 6 }}>
-          <b style={{ fontSize: 9, fontWeight: 600, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--vp-muted)" }}>Sezioni</b>
+      <div className="te-wrap" style={{ position: "relative", zIndex: 2, width: "88%", display: "grid", gridTemplateColumns: "0.85fr 1.35fr", gap: 9 }}>
+        {/* pannello sezioni dell'editor */}
+        <div style={{ borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 9, display: "flex", flexDirection: "column", gap: 5 }}>
+          <b style={{ fontSize: 9, fontWeight: 700, color: "var(--vp-text-strong)" }}>Home page</b>
+          <b style={{ fontSize: 8, fontWeight: 600, letterSpacing: ".12em", textTransform: "uppercase", color: "var(--vp-muted)", marginTop: 2 }}>Sezioni</b>
           {sections.map((name, i) => (
             <div
               key={name}
               className={i === 1 ? "te-a" : i === 2 ? "te-b" : undefined}
-              style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 8px", borderRadius: 7, border: "1px solid var(--vp-border-soft)", background: "var(--vp-panel-soft)" }}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 7px", borderRadius: 7, border: "1px solid var(--vp-border-soft)", background: "var(--vp-panel-soft)" }}
             >
               <b style={{ fontSize: 9, color: "var(--vp-muted-soft)", letterSpacing: 1 }}>⋮⋮</b>
-              <b style={{ fontSize: 10, fontWeight: 600, color: "var(--vp-text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{name}</b>
+              <b style={{ fontSize: 9.5, fontWeight: 600, color: "var(--vp-text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{name}</b>
             </div>
           ))}
-          <div style={{ display: "flex", gap: 5, marginTop: 4, alignItems: "center" }}>
-            <b style={{ fontSize: 9, color: "var(--vp-muted)" }}>Colore</b>
-            {["#fc03b0", "#047cf9", "#f5c451"].map((c) => (
-              <i key={c} style={{ width: 12, height: 12, borderRadius: 99, background: c, border: "1.5px solid var(--vp-panel)" }} />
-            ))}
-          </div>
+          <b style={{ fontSize: 8.5, fontWeight: 700, color: "#7c3aed", marginTop: 2 }}>+ Aggiungi sezione</b>
         </div>
-        <div style={{ position: "relative", borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 8, display: "flex", flexDirection: "column", gap: 6 }}>
-          <div className="te-hero" style={{ height: 52, borderRadius: 8, background: "linear-gradient(120deg, rgba(252,3,176,.35), rgba(4,124,249,.35))" }} />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 5 }}>
-            {[0, 1, 2].map((k) => (
-              <i key={k} style={{ height: 26, borderRadius: 6, background: "var(--vp-panel-subtle)", border: "1px solid var(--vp-border-soft)" }} />
-            ))}
+        {/* anteprima del negozio */}
+        <div style={{ position: "relative", borderRadius: 12, border: "1px solid var(--vp-border)", background: "#0d0d0f", padding: 7, display: "flex", flexDirection: "column", gap: 5, overflow: "hidden" }}>
+          <div style={{ position: "relative", height: 58, borderRadius: 7, overflow: "hidden" }}>
+            <img src={`${TEMI_IMG}/street-hero.webp`} alt="" loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,.6), transparent 70%)" }} />
+            <b className="te-btn" style={{ position: "absolute", left: 8, bottom: 7, fontSize: 7, fontWeight: 700, padding: "3px 8px", borderRadius: 99, background: "#fff", color: "#111" }}>Shop now</b>
           </div>
-          <i style={{ height: 18, borderRadius: 6, background: "var(--vp-panel-subtle)" }} />
-          <i style={{ height: 12, width: "60%", borderRadius: 6, background: "var(--vp-line)" }} />
-          <div className="te-saved" style={{ position: "absolute", right: 8, bottom: 8, display: "flex", alignItems: "center", gap: 5, padding: "4px 9px", borderRadius: 99, background: "rgba(22,163,74,.14)", border: "1px solid rgba(22,163,74,.3)" }}>
-            <i style={{ width: 6, height: 6, borderRadius: 99, background: "#16a34a" }} />
-            <b style={{ fontSize: 9, fontWeight: 700, color: "#16a34a" }}>Salvato, senza codice</b>
+          {/* due disposizioni dell'anteprima che si alternano insieme alle sezioni */}
+          <div style={{ position: "relative", flex: 1, minHeight: 70 }}>
+            {[false, true].map((swapped) => {
+              const products = (
+                <div key="p" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 4 }}>
+                  {[1, 2, 3].map((k) => (
+                    <div key={k} style={{ aspectRatio: "1", borderRadius: 5, overflow: "hidden" }}>
+                      <img src={`${TEMI_IMG}/street-${k}.webp`} alt="" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+                  ))}
+                </div>
+              )
+              const reviews = (
+                <div key="r" style={{ display: "flex", gap: 4, alignItems: "center", padding: "5px 6px", borderRadius: 6, background: "rgba(255,255,255,.06)" }}>
+                  <b style={{ fontSize: 8, color: "#fbbf24" }}>★★★★★</b>
+                  <i style={{ flex: 1, height: 4, borderRadius: 4, background: "rgba(255,255,255,.18)" }} />
+                </div>
+              )
+              return (
+                <div
+                  key={String(swapped)}
+                  className={swapped ? "te-pb" : "te-pa"}
+                  style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", gap: 5, opacity: swapped ? 0 : 1 }}
+                >
+                  {swapped ? [reviews, products] : [products, reviews]}
+                </div>
+              )
+            })}
+          </div>
+          <div className="te-saved" style={{ position: "absolute", right: 7, top: 7, display: "flex", alignItems: "center", gap: 5, padding: "4px 9px", borderRadius: 99, background: "rgba(22,163,74,.9)" }}>
+            <i style={{ width: 6, height: 6, borderRadius: 99, background: "#fff" }} />
+            <b style={{ fontSize: 8.5, fontWeight: 700, color: "#fff" }}>Salvato, senza codice</b>
           </div>
         </div>
       </div>
