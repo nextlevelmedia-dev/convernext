@@ -2,11 +2,9 @@
 
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import ReviewCard from "../ReviewsSection/ReviewCard"
 
 /*
- * Modulo per lasciare una recensione. A destra l'anteprima della card, uguale
- * a quella che comparirà sul sito. Le immagini vengono ridimensionate nel
+ * Modulo per lasciare una recensione. Le immagini vengono ridimensionate nel
  * browser prima dell'invio (max 600 px), così restano leggere.
  */
 
@@ -49,8 +47,6 @@ export default function ReviewForm() {
   const [stars, setStars] = useState(5)
   const [photo, setPhoto] = useState<File | null>(null)
   const [logo, setLogo] = useState<File | null>(null)
-  const [photoUrl, setPhotoUrl] = useState<string>()
-  const [logoUrl, setLogoUrl] = useState<string>()
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle")
   const [error, setError] = useState("")
 
@@ -58,18 +54,11 @@ export default function ReviewForm() {
   const set = (k: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setValues((v) => ({ ...v, [k]: e.target.value }))
 
-  // file scelto → ridimensionato + URL locale per l'anteprima (il precedente viene liberato)
-  const pick =
-    (setFile: (f: File | null) => void, setUrl: React.Dispatch<React.SetStateAction<string | undefined>>) =>
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const f = e.target.files?.[0]
-      const small = f ? await shrink(f) : null
-      setFile(small)
-      setUrl((prev) => {
-        if (prev) URL.revokeObjectURL(prev)
-        return small ? URL.createObjectURL(small) : undefined
-      })
-    }
+  // file scelto → ridimensionato prima dell'invio
+  const pick = (setFile: (f: File | null) => void) => async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    setFile(f ? await shrink(f) : null)
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -110,16 +99,8 @@ export default function ReviewForm() {
     )
   }
 
-  const preview = {
-    stars,
-    reviewTitle: values.reviewTitle || "Il titolo della tua recensione",
-    reviewText: values.reviewText || "Racconta com'è andato il progetto e cosa è cambiato da quando il sito è online.",
-    authorName: values.authorName || "Nome Cognome",
-    authorRole: values.company,
-  }
-
   return (
-    <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14">
+    <div className="max-w-3xl">
       <form onSubmit={onSubmit} className="rounded-[28px] border border-slate-200 bg-white p-6 sm:p-10 dark:border-white/10 dark:bg-[#0f1726]">
         {/* honeypot: invisibile alle persone */}
         <input type="text" name="fax" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
@@ -183,11 +164,11 @@ export default function ReviewForm() {
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <label className="block">
             <b className={LABEL}>La tua foto{OPTIONAL}</b>
-            <input type="file" name="authorPhoto" accept="image/jpeg,image/png,image/webp" onChange={pick(setPhoto, setPhotoUrl)} className={`${FIELD} py-2.5 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-bold dark:file:bg-white/10 dark:file:text-white`} />
+            <input type="file" name="authorPhoto" accept="image/jpeg,image/png,image/webp" onChange={pick(setPhoto)} className={`${FIELD} py-2.5 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-bold dark:file:bg-white/10 dark:file:text-white`} />
           </label>
           <label className="block">
             <b className={LABEL}>Logo aziendale{OPTIONAL}</b>
-            <input type="file" name="companyLogo" accept="image/png,image/webp,image/jpeg" onChange={pick(setLogo, setLogoUrl)} className={`${FIELD} py-2.5 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-bold dark:file:bg-white/10 dark:file:text-white`} />
+            <input type="file" name="companyLogo" accept="image/png,image/webp,image/jpeg" onChange={pick(setLogo)} className={`${FIELD} py-2.5 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-bold dark:file:bg-white/10 dark:file:text-white`} />
           </label>
         </div>
 
@@ -222,14 +203,6 @@ export default function ReviewForm() {
         </button>
       </form>
 
-      {/* anteprima: la card come apparirà sul sito */}
-      <div className="lg:sticky lg:top-28 lg:self-start">
-        <p className="mb-4 font-mono text-xs uppercase tracking-[0.16em] text-slate-500 dark:text-white/50">Anteprima</p>
-        <ReviewCard review={preview} photoSrc={photoUrl} logoSrc={logoUrl} />
-        <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-white/50">
-          Così apparirà sul sito. Leggiamo ogni recensione prima di pubblicarla.
-        </p>
-      </div>
     </div>
   )
 }

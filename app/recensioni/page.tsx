@@ -35,7 +35,7 @@ export default async function RecensioniPage() {
             <div className="hero-in max-w-2xl">
               <p className="font-mono text-xs uppercase tracking-[0.16em] text-slate-500 dark:text-white/50">Recensioni</p>
               <h1 className="mt-4 text-[clamp(2.2rem,4.4vw,3.6rem)] leading-[1.08] tracking-[-0.03em] text-slate-950 dark:text-white" style={archivo}>
-                Com&apos;è andata <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">con noi?</em>
+                <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">Com&apos;è andata</em> con noi?
               </h1>
               <p className="mt-5 text-lg leading-8 text-black/65 dark:text-white/70">
                 Bastano un paio di minuti. La tua esperienza aiuta chi sta scegliendo a capire cosa aspettarsi.
@@ -51,8 +51,8 @@ export default async function RecensioniPage() {
           {reviews.length > 0 && (
             <section id="tutte" className="mt-28 scroll-mt-28 md:mt-36">
               <div className="mx-auto mb-12 max-w-2xl text-center">
-                <h2 className="text-[clamp(2rem,4vw,2.8rem)] leading-[1.15] tracking-[-0.02em] text-slate-950 dark:text-white" style={archivo}>
-                  <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">Tutte le recensioni</em> dei nostri clienti
+                <h2 className="text-balance text-[clamp(2rem,4vw,2.8rem)] leading-[1.15] tracking-[-0.02em] text-slate-950 dark:text-white" style={archivo}>
+                  Lo raccontano i <em className="bg-brand-gradient bg-clip-text not-italic text-transparent">nostri clienti</em>
                 </h2>
               </div>
               <div className="grid grid-cols-1 items-start gap-3 md:grid-cols-3">

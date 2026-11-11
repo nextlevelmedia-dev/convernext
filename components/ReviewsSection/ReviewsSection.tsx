@@ -38,6 +38,9 @@ const APPROVED_FOR: Record<ReviewService, string[]> = {
 
 const MAX_REVIEWS = 6
 
+// foto dei clienti sotto la CTA: nascoste per ora (i dati restano, li usa anche il badge della hero)
+const SHOW_PROOF_AVATARS = false
+
 /*
  * Pagine servizio: 3 recensioni pertinenti al servizio (le prime della lista
  * disponibili). Home e Contatti mostrano tutte e 6.
@@ -220,7 +223,7 @@ export default async function ReviewsSection({
               </a>
             )}
 
-            {(socialProofAvatars?.length || socialProofText) && (
+            {SHOW_PROOF_AVATARS && (socialProofAvatars?.length || socialProofText) && (
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 {socialProofAvatars && socialProofAvatars.length > 0 && (
                   <div style={{ display: "flex" }}>

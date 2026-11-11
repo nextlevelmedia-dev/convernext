@@ -253,7 +253,6 @@ export default async function Home() {
         {/* RECENSIONI */}
         <ReviewsSection
           mobileLimit={5}
-          showAllHref="/recensioni#tutte"
           titleHighlight={page?.reviews?.titleHighlight}
           titleNormal={page?.reviews?.titleNormal}
           items={page?.reviews?.items}
