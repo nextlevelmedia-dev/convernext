@@ -9,6 +9,7 @@ interface ValuePropItem {
   label?: string
   titleHighlight?: string
   titleNormal?: string
+  highlightLast?: boolean
   subtitle?: string
   ctaText?: string
   ctaHref?: string
@@ -243,15 +244,27 @@ function ValuePropRow({
               fontWeight: 600,
             }}
           >
-            {item.titleHighlight && (
-              <span className="bg-brand-gradient bg-clip-text text-transparent">
-                {item.titleHighlight}
-              </span>
+            {item.highlightLast ? (
+              <>
+                {item.titleNormal}
+                {item.titleHighlight && item.titleNormal && " "}
+                {item.titleHighlight && (
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">{item.titleHighlight}</span>
+                )}
+              </>
+            ) : (
+              <>
+                {item.titleHighlight && (
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">
+                    {item.titleHighlight}
+                  </span>
+                )}
+
+                {item.titleHighlight && item.titleNormal && " "}
+
+                {item.titleNormal}
+              </>
             )}
-
-            {item.titleHighlight && item.titleNormal && " "}
-
-            {item.titleNormal}
           </h3>
         )}
 

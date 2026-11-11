@@ -1326,6 +1326,13 @@ defineField({
             }),
 
             defineField({
+              name: "highlightLast",
+              title: "Parte in gradient in fondo al titolo",
+              description: "Attivo: prima la parte normale, poi quella in gradient",
+              type: "boolean",
+            }),
+
+            defineField({
               name: "subtitle",
               title: "Paragrafo",
               type: "text",

@@ -38,9 +38,9 @@ const show = (on: boolean) => `${EASE} ${on ? "translate-y-0 opacity-100" : "tra
 
 function Strategy({ on }: { on: boolean }) {
   const chips = [
-    ["Obiettivo", "Più ordini", "left-0 top-2"],
-    ["Target", "Chi compra", "right-0 top-10"],
-    ["Messaggio", "Perché noi", "bottom-1 left-6"],
+    ["Obiettivo", "Più clienti", "left-0 top-2"],
+    ["Target", "A chi ti rivolgi", "right-0 top-10"],
+    ["Messaggio", "Perché te", "bottom-1 left-6"],
   ]
   return (
     <Panel tag="Brief strategico">

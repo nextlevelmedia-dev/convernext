@@ -153,6 +153,7 @@ async function getPageData() {
 
     valueProps[]{
       label,
+      highlightLast,
       titleHighlight,
       titleNormal,
       subtitle,

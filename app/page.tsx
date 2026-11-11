@@ -130,6 +130,7 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
 
   valueProps[]{
     label,
+    highlightLast,
     titleHighlight,
     titleNormal,
     subtitle,

@@ -85,7 +85,7 @@ export default function ProcessSection({
     <section className="relative px-5 py-20 md:px-8 md:py-28 xl:px-10">
       <div className="mx-auto w-full max-w-6xl">
         {/* INTESTAZIONE */}
-        <div className="mx-auto flex max-w-2xl flex-col items-start md:items-center md:text-center">
+        <div className="mx-auto flex max-w-2xl flex-col items-start md:items-center md:text-center lg:max-w-5xl">
           {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
 
           {(titleHighlight || titleNormal) && (

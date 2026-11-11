@@ -108,6 +108,7 @@ const query = `*[_type == "page" && slug.current == "ottimizzazione-conversioni"
 
   valueProps[]{
     label,
+    highlightLast,
     titleHighlight,
     titleNormal,
     subtitle,

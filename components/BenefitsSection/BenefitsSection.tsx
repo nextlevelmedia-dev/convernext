@@ -22,7 +22,7 @@ export default function BenefitsSection({ titleHighlight, titleNormal, items, ct
     <section className="benefits-section py-24 px-6">
       <div className="mx-auto max-w-6xl">
         {(titleHighlight || titleNormal) && (
-          <div className="text-center mb-16 max-w-lg mx-auto">
+          <div className="text-center mb-16 max-w-lg mx-auto lg:max-w-4xl">
             <h2
   className="benefits-title text-4xl leading-[1.2] tracking-tight md:text-[42px]"
   style={{

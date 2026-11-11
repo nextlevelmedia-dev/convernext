@@ -167,6 +167,7 @@ const query = `*[_type == "page" && slug.current == "ecommerce"][0]{
 
   valueProps[]{
     label,
+    highlightLast,
     titleHighlight,
     titleNormal,
     subtitle,

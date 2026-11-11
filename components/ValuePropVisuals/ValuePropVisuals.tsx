@@ -2128,6 +2128,74 @@ function CROCrescitaVisual() {
    SITI WEB — IMMERSIVE
 ========================================================= */
 
+/* Struttura di pagina a conversione: le sezioni si accendono in sequenza */
+function SitiwebStrutturaVisual() {
+  const rows: [string, string, number][] = [
+    ["Hero", "Beneficio per il cliente", 30],
+    ["Problema", "Il dubbio che risolvi", 18],
+    ["Proposta di valore", "Perché scegliere te", 18],
+    ["Recensioni", "Prova sociale", 14],
+    ["Differenze", "Rispetto ai concorrenti", 14],
+    ["Metodo", "Come lavori", 12],
+    ["CTA", "Il passo successivo", 12],
+  ]
+  return (
+    <VisualShell>
+      <style>{`
+        @keyframes st-on {
+          0%, 8% { border-color: var(--vp-border); box-shadow: none; }
+          14%, 26% { border-color: rgba(124,58,237,.55); box-shadow: 0 10px 30px -14px rgba(124,58,237,.55); }
+          34%, 100% { border-color: var(--vp-border); box-shadow: none; }
+        }
+        @keyframes st-dot {
+          0%, 8% { opacity: .25; }
+          14%, 26% { opacity: 1; }
+          34%, 100% { opacity: .25; }
+        }
+        .st-row { animation: st-on 7s ease-in-out infinite; }
+        .st-row i { animation: st-dot 7s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .st-row, .st-row i { animation: none; } }
+      `}</style>
+      <div style={{ position: "relative", zIndex: 2, width: "78%", display: "flex", flexDirection: "column", gap: 5 }}>
+        {rows.map(([name, hint, h], i) => (
+          <div
+            key={name}
+            className="st-row"
+            style={{
+              animationDelay: `${i * 0.9}s`,
+              height: h * 2.2,
+              minHeight: 22,
+              borderRadius: 9,
+              border: "1px solid var(--vp-border)",
+              background: i === 0 ? "linear-gradient(120deg, rgba(252,3,176,.14), rgba(4,124,249,.14))" : "var(--vp-panel)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "0 12px",
+              gap: 10,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+              <i
+                style={{
+                  animationDelay: `${i * 0.9}s`,
+                  width: 7,
+                  height: 7,
+                  borderRadius: 99,
+                  flexShrink: 0,
+                  background: "linear-gradient(90deg,#fc03b0,#047cf9)",
+                }}
+              />
+              <b style={{ fontSize: 11, fontWeight: 700, color: "var(--vp-text-strong)", whiteSpace: "nowrap" }}>{name}</b>
+            </div>
+            <b style={{ fontSize: 10, fontWeight: 500, color: "var(--vp-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{hint}</b>
+          </div>
+        ))}
+      </div>
+    </VisualShell>
+  )
+}
+
 function SitiwebImmersiveVisual() {
   return (
     <VisualShell>
@@ -2409,7 +2477,7 @@ function SitiwebImmersiveVisual() {
         />
 
         <g transform="translate(80,290)">
-          {["Animazioni", "Micro-interazioni", "Layout evoluti"].map(
+          {["SEO tecnico", "SEO locale", "Dati strutturati"].map(
             (text, i) => (
               <g key={text} transform={`translate(${i * 130},0)`}>
                 <rect
@@ -3913,6 +3981,9 @@ export function ValuePropVisual({
 
     case "cro-crescita":
       return <CROCrescitaVisual />
+
+    case "sitiweb-struttura":
+      return <SitiwebStrutturaVisual />
 
     case "sitiweb-immersive":
       return <SitiwebImmersiveVisual />
