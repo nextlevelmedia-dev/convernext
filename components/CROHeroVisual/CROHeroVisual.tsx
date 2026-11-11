@@ -139,7 +139,7 @@ export default function CROHeroVisual() {
           <div className="cro-float-icon cro-float-icon--ok">✓</div>
           <div>
             <b>Test completato</b>
-            <small>B vince con il 97% di confidenza</small>
+            <small>B converte meglio di A</small>
           </div>
         </div>
 

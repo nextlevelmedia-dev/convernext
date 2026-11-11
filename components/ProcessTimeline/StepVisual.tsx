@@ -172,7 +172,7 @@ function AbTest({ on }: { on: boolean }) {
     ["B", 74, true],
   ]
   return (
-    <Panel tag="A/B test">
+    <Panel tag="Varianti a confronto">
       <div className="mx-auto grid w-full max-w-[340px] grid-cols-2 gap-3">
         {variants.map(([k, v, win], i) => (
           <div
@@ -203,7 +203,7 @@ function AbTest({ on }: { on: boolean }) {
 
 function Report({ on }: { on: boolean }) {
   return (
-    <Panel tag="Report settimanale">
+    <Panel tag="Report dei risultati">
       <div className="mx-auto w-full max-w-[340px]">
         <div className="mb-3 grid grid-cols-3 gap-2">
           {["CVR", "AOV", "ROAS"].map((k, i) => (
@@ -242,6 +242,63 @@ function Report({ on }: { on: boolean }) {
             />
           </svg>
         </div>
+      </div>
+    </Panel>
+  )
+}
+
+function Priority({ on }: { on: boolean }) {
+  // matrice di prioritizzazione: ogni ipotesi riceve un punteggio, si parte dalla più alta
+  const cols = ["Piega", "Dati", "Clienti", "Facile"]
+  const rows: [string, number[], number][] = [
+    ["Riscrivere il titolo della pagina prodotto", [2, 2, 2, 3], 9],
+    ["Portare le recensioni sopra la piega", [2, 2, 0, 3], 7],
+    ["Testo più grande su mobile", [0, 1, 0, 2], 3],
+  ]
+  return (
+    <Panel tag="Ipotesi in ordine di impatto">
+      <div className={`mx-auto w-full max-w-[360px] overflow-hidden ${BOX}`}>
+        <div className="grid grid-cols-[1fr_repeat(4,34px)_32px] items-end gap-1.5 border-b border-slate-200 px-3 py-2 dark:border-white/10">
+          <div className={LABEL}>Ipotesi</div>
+          {cols.map((c) => (
+            <div key={c} className="text-center font-mono text-[8px] uppercase tracking-normal text-slate-400 dark:text-white/40">
+              {c}
+            </div>
+          ))}
+          <div className="text-center font-mono text-[8px] uppercase tracking-wide text-slate-500 dark:text-white/60">Tot.</div>
+        </div>
+        {rows.map(([name, scores, total], i) => (
+          <div
+            key={name}
+            className={`grid grid-cols-[1fr_repeat(4,34px)_32px] items-center gap-1.5 px-3 py-2.5 ${i < rows.length - 1 ? "border-b border-slate-100 dark:border-white/[0.06]" : ""} ${
+              i === 0 && on ? "bg-[linear-gradient(90deg,rgb(252_3_176/0.10),rgb(4_124_249/0.10))]" : ""
+            } ${show(on)}`}
+            style={{ transitionDelay: `${i * 160}ms` }}
+          >
+            <div className="flex min-w-0 items-center gap-2">
+              <div className={`grid size-4 shrink-0 place-items-center rounded text-[9px] font-bold ${i === 0 ? `${GRAD} text-white` : "bg-slate-200 text-slate-500 dark:bg-white/10 dark:text-white/60"}`}>
+                {i + 1}
+              </div>
+              <div className="text-[11px] font-semibold leading-tight text-slate-700 dark:text-white/85">{name}</div>
+            </div>
+            {scores.map((v, k) => (
+              <div key={k} className="text-center text-[11px] tabular-nums text-slate-500 dark:text-white/55">
+                {v}
+              </div>
+            ))}
+            <div
+              className={`rounded-md py-0.5 text-center text-[12px] font-bold tabular-nums ${
+                i === 0 ? `${GRAD} text-white` : "bg-slate-100 text-slate-700 dark:bg-white/[0.08] dark:text-white/80"
+              }`}
+            >
+              {total}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className={`mx-auto mt-3 inline-flex items-center gap-2 self-start rounded-full border border-[#7c3aed]/25 bg-[#7c3aed]/[0.08] px-3 py-1 ${show(on)}`} style={{ transitionDelay: "700ms" }}>
+        <div className="size-1.5 rounded-full bg-[#7c3aed]" />
+        <div className="text-[11px] font-bold text-[#6d28d9] dark:text-[#c4b5fd]">Si parte dall&apos;ipotesi con più impatto</div>
       </div>
     </Panel>
   )
@@ -311,6 +368,7 @@ const VISUALS: Partial<Record<BenefitIconName, (p: { on: boolean }) => ReactNode
   editor: Prototype,
   funnel: Funnel,
   abtest: AbTest,
+  priority: Priority,
   report: Report,
   code: Code,
   sections: Code,

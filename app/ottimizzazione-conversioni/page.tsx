@@ -19,7 +19,7 @@ import { breadcrumbJsonLd, jsonLdGraph, pageMetadata, serviceJsonLd } from "@/li
 export const revalidate = 300
 
 const description =
-  "Ottimizziamo copy, UX, CTA e funnel con heatmap, session recording e A/B test per trasformare più visitatori in clienti, senza aumentare il budget ads."
+  "Più clienti dallo stesso traffico: analizziamo dati e comportamento degli utenti, troviamo cosa blocca le conversioni e interveniamo dove c'è più margine, misurando ogni risultato."
 
 export const metadata = pageMetadata({
   title: "Ottimizzazione delle conversioni (CRO)",

@@ -60,6 +60,8 @@ export const BENEFIT_ICONS = {
     p("M15.4 12.3l1.6 1.6 2.8-3.2"),
   ],
   copy: [p("M15.5 4.5l4 4L9 19H5v-4L15.5 4.5z"), p("M13.5 6.5l4 4"), p("M13 20h7")],
+  // tabella con righe ordinate per punteggio: prioritizzazione delle ipotesi
+  priority: [r(3.5, 4, 17, 16), p("M3.5 9h17"), p("M9 9v11"), p("M6 12.5h.01"), p("M6 16h.01"), p("M12 12.5h5.5"), p("M12 16h3.5")],
   report: [r(5, 3.5, 14, 17), p("M9 7.5h6"), p("M9 16.5v-3"), p("M12 16.5v-5"), p("M15 16.5v-2")],
   sections: [r(3, 4, 18, 16), p("M3 9h18"), p("M9 9v11"), p("M15 12.5v4"), p("M13 14.5h4")],
   editor: [r(3, 4, 18, 13), p("M3 8h18"), p("M6 11.5h4"), p("M6 14h2.5"), p("M13 11.5l6 2.2-2.6 1-1 2.6L13 11.5z")],
@@ -86,6 +88,7 @@ export type BenefitIconName = keyof typeof BENEFIT_ICONS
  * descrizione. L'ordine conta (es. "veloce … convertire" → speed, non cart).
  */
 const RULES: [BenefitIconName, RegExp][] = [
+  ["priority", /ipotes|intervent|priorit/],
   ["speed", /velo|rapid|performan|caricament|core web vital/],
   ["prototype", /prototip|testabil|preview|anteprima/],
   ["abtest", /\ba\/?b\b|\btest\b|testing/],
