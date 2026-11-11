@@ -115,7 +115,7 @@ export default function Hero({
                         alt=""
                         width={36}
                         height={36}
-                        className="size-6 rounded-full border-[1.5px] border-white object-cover md:size-[21px] dark:border-[#0f1726]"
+                        className="size-[18px] rounded-full border-[1.5px] border-white object-cover md:size-[21px] dark:border-[#0f1726]"
                       />
                     ))}
                 </div>

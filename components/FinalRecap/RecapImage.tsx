@@ -58,14 +58,14 @@ const RECAPS = {
     ],
   },
   "temi-shopify": {
-    alt: "Editor del tema Shopify con sezioni personalizzabili e anteprima su mobile",
-    ratio: "1240 / 842",
+    alt: "Tema Shopify su misura per VÆRK, su desktop e su smartphone",
+    ratio: "1240 / 900",
     layers: [
-      { src: "/recap/temi-shopify-0.webp", width: 1252, height: 857, left: 0.0, top: 8.14, size: 80.84, from: "center" },
-      { src: "/recap/temi-shopify-1.webp", width: 433, height: 770, left: 72.05, top: 25.61, size: 27.95, from: "right" },
+      { src: "/recap/temi-vaerk-desktop.webp", width: 1252, height: 798, left: 0.0, top: 9.5, size: 80.0, from: "center" },
+      { src: "/recap/temi-vaerk-mobile.webp", width: 433, height: 908, left: 73.0, top: 18.0, size: 27.0, from: "right" },
       { src: "/recap/temi-shopify-2.webp", width: 422, height: 153, left: 46.59, top: 0.0, size: 27.23, from: "top" },
-      { src: "/recap/temi-shopify-3.webp", width: 409, height: 153, left: 11.09, top: 83.18, size: 26.42, from: "bottom" },
-      { src: "/recap/temi-shopify-4.webp", width: 422, height: 177, left: 38.08, top: 83.18, size: 27.27, from: "bottom" },
+      { src: "/recap/temi-shopify-3.webp", width: 409, height: 153, left: 8.0, top: 84.0, size: 26.42, from: "bottom" },
+      { src: "/recap/temi-shopify-4.webp", width: 422, height: 177, left: 36.0, top: 84.0, size: 27.27, from: "bottom" },
     ],
   },
 } satisfies Record<string, { alt: string; ratio: string; layers: Layer[] }>

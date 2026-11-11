@@ -298,16 +298,25 @@ function ValuePropRow({
   )
 }
 
-export default function ValueProps({ items }: ValuePropsProps) {
+export default function ValueProps({ items, bare }: ValuePropsProps & { bare?: boolean }) {
   if (!items?.length) return null
 
   return (
     <section
-      className="bg-[#f7f7f7] px-6 py-24 text-slate-950 transition-colors duration-300 dark:bg-black dark:text-white"
+      className={`${bare ? "vp-bare " : ""}bg-[#f7f7f7] px-6 py-24 text-slate-950 transition-colors duration-300 dark:bg-black dark:text-white`}
       style={{
         fontFamily: "var(--font-lato), sans-serif",
       }}
     >
+      {/* bare: grafiche senza contenitore, più grandi (prova su Temi Shopify) */}
+      {bare && (
+        <style>{`
+          .vp-bare .vp-visual-card { background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; }
+          .vp-bare .vp-visual-card > div[style*="position: absolute"] { display: none; }
+          .vp-bare .vp-visual-card > svg, .vp-bare .tn-wrap, .vp-bare .te-wrap { width: 100% !important; max-width: none !important; }
+          @media (max-width: 640px) { .vp-bare .te-wrap { transform: none !important; } }
+        `}</style>
+      )}
       <div className="mx-auto flex max-w-6xl flex-col gap-24">
         {items.map((item, i) => (
           <ValuePropRow

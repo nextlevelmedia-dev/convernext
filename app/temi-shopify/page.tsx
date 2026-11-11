@@ -325,7 +325,7 @@ export default async function TemiShopifyPage() {
         />
 
         {/* VALUE PROPOSITIONS */}
-        <ValueProps items={page?.valueProps} />
+        <ValueProps items={page?.valueProps} bare />
 
         {/* BENEFITS */}
         <BenefitsSection
