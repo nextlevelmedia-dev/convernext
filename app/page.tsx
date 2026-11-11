@@ -1,6 +1,6 @@
 import Header from "../components/Header"
 import Hero from "../components/Hero"
-import ConversionScene from "../components/ConversionScene/ConversionScene"
+import HeroMorph from "../components/HeroMorph/HeroMorph"
 import FeaturedProjects from "../components/FeaturedProjects/FeaturedProjects"
 import ServicesGrid from "../components/ServicesGrid/ServicesGrid"
 import ReviewsSection from "../components/ReviewsSection/ReviewsSection"
@@ -248,7 +248,7 @@ export default async function Home() {
 
       <div>
         {/* HERO */}
-        <Hero {...page?.hero} ratingAvatars={page?.reviews?.socialProofAvatars} rightContent={<ConversionScene />} />
+        <Hero {...page?.hero} ratingAvatars={page?.reviews?.socialProofAvatars} rightContent={<HeroMorph />} />
 
         {/* RECENSIONI */}
         <ReviewsSection

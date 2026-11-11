@@ -35,6 +35,7 @@ export default function ConversionScene() {
 
   const timers = useRef(new Set<number>())
   const nextId = useRef(0)
+  const busy = useRef(false)
 
   useEffect(() => {
     const pending = timers.current
@@ -46,14 +47,22 @@ export default function ConversionScene() {
       createConversionScene(el, {
         ...env,
         onHover: setHovering,
+        // una notifica alla volta: finché è visibile (più una breve pausa) le altre conversioni non ne aprono di nuove
         onConvert: (kind) => {
+          if (busy.current) return
+          busy.current = true
           const id = nextId.current++
-          setToasts((t) => [...t.slice(-2), { id, kind }])
-          const timer = window.setTimeout(() => {
-            timers.current.delete(timer)
-            setToasts((t) => t.filter((x) => x.id !== id))
+          setToasts([{ id, kind }])
+          const hide = window.setTimeout(() => {
+            timers.current.delete(hide)
+            setToasts([])
           }, 2600)
-          timers.current.add(timer)
+          const free = window.setTimeout(() => {
+            timers.current.delete(free)
+            busy.current = false
+          }, 4200)
+          timers.current.add(hide)
+          timers.current.add(free)
         },
       })
     ),
@@ -76,30 +85,30 @@ export default function ConversionScene() {
         className={`absolute inset-0 cursor-pointer touch-pan-y transition-opacity duration-1000 ${ready ? "opacity-100" : "opacity-0"}`}
       />
 
-      <span className="pointer-events-none absolute left-[4%] top-[18%] font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/55">
+      <span className="pointer-events-none absolute left-[8%] top-[18%] font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/55">
         Traffico
       </span>
       <span className="pointer-events-none absolute bottom-[22%] right-[4%] bg-brand-gradient bg-clip-text font-mono text-[11px] uppercase tracking-[0.16em] text-transparent">
         Clienti
       </span>
 
-      {/* notifiche di conversione: da mobile una sola pillola compatta sotto l'anello */}
-      <div aria-hidden className="pointer-events-none absolute bottom-[4%] left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 md:bottom-auto md:left-auto md:right-0 md:top-0 md:w-[210px] md:translate-x-0 md:items-end">
+      {/* notifica di conversione: una sola pillola compatta, sotto l'anello su mobile, in alto a destra da desktop */}
+      <div aria-hidden className="pointer-events-none absolute bottom-[4%] left-1/2 flex -translate-x-1/2 flex-col items-center md:bottom-auto md:left-auto md:right-0 md:top-[6%] md:translate-x-0 md:items-end">
         {toasts.map((t) => {
           const toast = TOASTS[t.kind]
           return (
             <div
               key={t.id}
-              className="flex animate-[toast-in_2.6s_cubic-bezier(0.16,1,0.3,1)_forwards] items-center gap-2 whitespace-nowrap rounded-full border border-slate-200 bg-white/85 py-1 pl-1 pr-3 max-md:[&:not(:last-child)]:hidden md:w-full md:gap-3 md:whitespace-normal md:rounded-2xl md:px-3.5 md:py-2.5 shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.18)] backdrop-blur-md dark:border-white/10 dark:bg-[#0f1726]/85"
+              className="flex animate-[toast-in_2.6s_cubic-bezier(0.16,1,0.3,1)_forwards] items-center gap-2 whitespace-nowrap rounded-full border border-slate-200 bg-white/85 py-1 pl-1 pr-3 md:gap-2.5 md:py-1.5 md:pl-1.5 md:pr-4 shadow-[0_1px_2px_rgb(15_23_42/0.04),0_12px_32px_-12px_rgb(15_23_42/0.18)] backdrop-blur-md dark:border-white/10 dark:bg-[#0f1726]/85"
             >
-              <span className="grid size-6 shrink-0 place-items-center rounded-full bg-brand-gradient text-white md:size-8">
-                <svg viewBox="0 0 16 16" className="size-3 md:size-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <span className="grid size-6 shrink-0 place-items-center rounded-full bg-brand-gradient text-white md:size-7">
+                <svg viewBox="0 0 16 16" className="size-3 md:size-3.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d={toast.icon} />
                 </svg>
               </span>
               <span className="min-w-0">
                 <span className="block text-xs font-bold text-slate-950 md:text-sm dark:text-white">{toast.title}</span>
-                <span className="hidden truncate text-xs md:block text-slate-500 dark:text-white/60">{toast.text}</span>
+
               </span>
             </div>
           )
