@@ -2328,6 +2328,73 @@ function TemiEditorVisual() {
   )
 }
 
+/* Home: esperienza immersiva, la hero 3D di Aurelle in una finestra */
+function HomeImmersiveVisual() {
+  return (
+    <VisualShell>
+      <div style={{ position: "relative", zIndex: 2, width: "84%", borderRadius: 12, overflow: "hidden", border: "1px solid var(--vp-border)", boxShadow: "0 24px 50px -24px rgba(0,0,0,.6)" }}>
+        <div style={{ display: "flex", gap: 5, padding: "7px 10px", background: "#14161c" }}>
+          {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+            <i key={c} style={{ width: 7, height: 7, borderRadius: 99, background: c }} />
+          ))}
+        </div>
+        <img src="/media/visuals/temi/gioielli-hero.webp" alt="" loading="lazy" style={{ display: "block", width: "100%", aspectRatio: "1000 / 625", objectFit: "cover" }} />
+      </div>
+    </VisualShell>
+  )
+}
+
+/* Home: referente diretto, una conversazione con il fondatore */
+function HomeReferenteVisual() {
+  const msgs: [boolean, string][] = [
+    [false, "Ciao Francesco, possiamo spostare le recensioni più in alto?"],
+    [true, "Certo, lo faccio oggi e ti mando l'anteprima."],
+    [true, "Per le foto prodotto coinvolgo il nostro fotografo."],
+  ]
+  return (
+    <VisualShell>
+      <style>{`
+        @keyframes rf-in { 0%, 8% { opacity: 0; transform: translateY(6px); } 14%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+        .rf-msg { animation: rf-in 9s ease infinite; opacity: 0; }
+        @media (prefers-reduced-motion: reduce) { .rf-msg { animation: none; opacity: 1; } }
+      `}</style>
+      <div style={{ position: "relative", zIndex: 2, width: "74%", borderRadius: 14, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, paddingBottom: 10, borderBottom: "1px solid var(--vp-border-soft)" }}>
+          <div style={{ width: 30, height: 30, borderRadius: 99, background: "linear-gradient(135deg,#fc03b0,#047cf9)", display: "grid", placeItems: "center" }}>
+            <b style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>F</b>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <b style={{ fontSize: 12, fontWeight: 700, color: "var(--vp-text-strong)" }}>Francesco</b>
+            <b style={{ fontSize: 10, fontWeight: 500, color: "#16a34a" }}>● il tuo referente</b>
+          </div>
+        </div>
+        {msgs.map(([me, text], i) => (
+          <div
+            key={text}
+            className="rf-msg"
+            style={{
+              animationDelay: `${i * 1.1}s`,
+              alignSelf: me ? "flex-end" : "flex-start",
+              maxWidth: "82%",
+              padding: "8px 11px",
+              borderRadius: me ? "12px 12px 4px 12px" : "12px 12px 12px 4px",
+              background: me ? "linear-gradient(120deg,#fc03b0,#047cf9)" : "var(--vp-panel-subtle)",
+              border: me ? "none" : "1px solid var(--vp-border-soft)",
+            }}
+          >
+            <b style={{ fontSize: 11, fontWeight: 500, lineHeight: 1.4, color: me ? "#fff" : "var(--vp-text)" }}>{text}</b>
+          </div>
+        ))}
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", paddingTop: 4 }}>
+          {["Advertising", "Copy", "Foto"].map((t) => (
+            <b key={t} style={{ fontSize: 9.5, fontWeight: 600, padding: "3px 8px", borderRadius: 99, border: "1px solid var(--vp-border)", color: "var(--vp-muted)" }}>+ {t}</b>
+          ))}
+        </div>
+      </div>
+    </VisualShell>
+  )
+}
+
 /* Struttura di pagina a conversione: le sezioni si accendono in sequenza */
 function SitiwebStrutturaVisual() {
   const rows: [string, string, number][] = [
@@ -4187,6 +4254,12 @@ export function ValuePropVisual({
 
     case "temi-editor":
       return <TemiEditorVisual />
+
+    case "home-immersive":
+      return <HomeImmersiveVisual />
+
+    case "home-referente":
+      return <HomeReferenteVisual />
 
     case "sitiweb-struttura":
       return <SitiwebStrutturaVisual />

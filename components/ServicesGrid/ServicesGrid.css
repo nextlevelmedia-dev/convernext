@@ -630,3 +630,75 @@
     padding: 16px 24px;
   }
 }
+
+/* =========================
+   CARD LARGHE (4ª e 5ª): seconda riga, immagine a sinistra e testo a destra
+========================= */
+
+.services-grid-cards {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.services-grid-card {
+  grid-column: span 2;
+}
+
+.services-grid-card--wide {
+  grid-column: span 3;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+}
+
+.services-grid-card--wide .services-grid-media {
+  height: 230px;
+}
+
+.services-grid-card--wide .services-grid-content {
+  padding: 22px 26px 22px 8px;
+}
+
+.services-grid-card--wide .services-grid-text {
+  font-size: 16px;
+}
+
+.services-grid-card--wide .services-grid-link {
+  padding-top: 18px;
+}
+
+@media (max-width: 1023px) {
+  .services-grid-card,
+  .services-grid-card--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* mobile: le card larghe diventano compatte, immagine piccola a lato */
+@media (max-width: 639px) {
+  .services-grid-card--wide {
+    grid-template-columns: 38% 1fr;
+  }
+
+  .services-grid-card--wide .services-grid-media {
+    height: 150px;
+    margin: 10px 0 10px 10px;
+  }
+
+  .services-grid-card--wide .services-grid-content {
+    padding: 14px 14px 14px 12px;
+  }
+
+  .services-grid-card--wide .services-grid-title {
+    font-size: 20px;
+  }
+
+  .services-grid-card--wide .services-grid-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .services-grid-card--wide .services-grid-link {
+    padding-top: 10px;
+  }
+}
