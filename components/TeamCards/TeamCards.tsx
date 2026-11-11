@@ -80,7 +80,7 @@ export default function TeamCards({ titleHighlight, titleNormal, subtitle, cards
   const smallCards = cardList.slice(2)
 
   return (
-    <section className="px-6 py-24 bg-[#f2f2f2] dark:bg-[#111118]">
+    <section className="px-6 py-24">
       <div className="mx-auto max-w-6xl">
 
         <div className="mb-16 grid grid-cols-1 gap-8 md:grid-cols-5 items-start">

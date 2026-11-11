@@ -74,7 +74,7 @@ export default function Hero({
           (#111118), così non c'è stacco con la sezione successiva
       ===================================================== */}
       <section
-        className="relative overflow-hidden bg-white px-5 pb-24 pt-28 md:px-6 md:pt-40 lg:flex lg:flex-1 lg:items-center lg:pb-12 lg:pt-28 text-black transition-colors duration-300 dark:bg-black dark:bg-[linear-gradient(to_bottom,#000_55%,#111118)] dark:text-white"
+        className="relative overflow-hidden bg-transparent px-5 pb-24 pt-28 md:px-6 md:pt-40 lg:flex lg:flex-1 lg:items-center lg:pb-12 lg:pt-28 text-black transition-colors duration-300 dark:text-white"
         style={{
           fontFamily: "var(--font-lato), sans-serif",
         }}

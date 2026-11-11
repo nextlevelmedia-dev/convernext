@@ -629,3 +629,32 @@ body {
   font-weight: 700;
   color: inherit;
 }
+
+
+/* =========================
+   SFONDO UNICO DEL SITO
+   Un solo colore per tutte le sezioni (chiaro / scuro), con gli aloni
+   animati di AmbientBackground sopra. Le sezioni restano trasparenti.
+========================= */
+
+:root {
+  --page-bg: #f7f7fa;
+}
+
+.dark {
+  --page-bg: #0b0b12;
+}
+
+.main-bg,
+.dark .main-bg,
+.dark body {
+  background: var(--page-bg);
+}
+
+.faq-section,
+.dark .faq-section,
+.benefits-section,
+.dark .benefits-section {
+  background-color: transparent !important;
+  background-image: none !important;
+}

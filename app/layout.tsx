@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next"
 import { Archivo, Lato, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Footer from "../components/Footer/Footer"
+import AmbientBackground from "../components/AmbientBackground/AmbientBackground"
 import SiteFooter from "../components/SiteFooter"
 import CookieBanner from "../components/Legal/CookieBanner"
 import ScrollToTop from "../components/ScrollToTop"
@@ -100,12 +101,13 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-full bg-black">
+      <body className="min-h-full bg-[var(--page-bg)]">
         <JsonLd data={siteJsonLd} />
 
         <ScrollToTop />
 
         <main id="main" className="main-bg relative z-10 min-h-screen rounded-b-[42px]">
+          <AmbientBackground />
           {children}
         </main>
 
