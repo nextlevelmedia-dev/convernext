@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import "./ServicesGrid.css"
-import ServiceVisual from "./ServiceVisual"
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false })
 
@@ -251,16 +250,15 @@ export default function ServicesGrid({
           </div>
         )}
 
-        {/* le prime 3 card grandi, le successive larghe e basse in una seconda riga */}
         <div className="services-grid-cards">
           {services.map((service, index) => (
             <Link
               href={service.href || "/contatti"}
-              className={`services-grid-card${index >= 3 ? " services-grid-card--wide" : ""}`}
+              className="services-grid-card"
               key={`${service.title}-${index}`}
             >
               <div className="services-grid-media">
-                {ServiceVisual({ href: service.href }) ?? <ServiceMedia service={service} />}
+                <ServiceMedia service={service} />
               </div>
 
               <div className="services-grid-content">
