@@ -39,6 +39,9 @@ type HeroProps = {
 
 const SHOW_PROOF_BAND = false
 
+// trattino che non va a capo: "e-commerce" non si spezza a fine riga
+const nb = (t?: string) => t?.replace(/-/g, "\u2011")
+
 export default function Hero({
   title,
   titleTwo,
@@ -129,19 +132,19 @@ export default function Hero({
                 fontWeight: 600,
               }}
             >
-              {title}{" "}
+              {nb(title)}{" "}
 
               {highlightOne && (
                 <span className="bg-brand-gradient bg-clip-text text-transparent">
-                  {highlightOne}
+                  {nb(highlightOne)}
                 </span>
               )}{" "}
 
-              {titleTwo}{" "}
+              {nb(titleTwo)}{" "}
 
               {highlightTwo && (
                 <span className="bg-brand-gradient bg-clip-text text-transparent">
-                  {highlightTwo}
+                  {nb(highlightTwo)}
                 </span>
               )}
             </h1>
