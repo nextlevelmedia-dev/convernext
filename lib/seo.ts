@@ -10,14 +10,6 @@ export const site = {
   phone: "+39 3334187542",
   phoneDisplay: "+39 333 418 7542",
   vatId: "01831470198",
-  hours: "Lun – Ven, 9:00 – 18:00",
-  address: {
-    street: "Via Risorgimento, 61",
-    locality: "Pescarolo ed Uniti",
-    postalCode: "26033",
-    region: "CR",
-    country: "IT",
-  },
 }
 
 export const absoluteUrl = (path: string) => (path === "/" ? site.url : `${site.url}${path}`)

@@ -62,9 +62,6 @@ export default function FooterContent() {
                 {site.email}
               </a>
             </li>
-            <li className="!text-white/45">
-              {site.address.street}, {site.address.locality} ({site.address.region})
-            </li>
           </ul>
         </div>
 

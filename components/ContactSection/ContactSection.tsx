@@ -35,14 +35,6 @@ const INFO = [
     text: site.phoneDisplay,
     href: `tel:${site.phone.replace(/\s/g, "")}`,
   },
-  {
-    icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z",
-    text: `${site.address.locality} (${site.address.region})`,
-  },
-  {
-    icon: "M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Zm0 5v5l4 2",
-    text: site.hours,
-  },
 ]
 
 const LABEL = "mb-2 block text-sm font-bold text-slate-950 dark:text-white"

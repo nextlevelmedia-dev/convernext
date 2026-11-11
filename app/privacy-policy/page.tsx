@@ -23,8 +23,7 @@ export default function PrivacyPolicyPage() {
 
       <h2>1. Titolare del trattamento</h2>
       <p>
-        {site.name}, {site.address.street}, {site.address.postalCode} {site.address.locality} ({site.address.region}),
-        P.IVA {site.vatId}.
+        {site.name}, P.IVA {site.vatId}.
         <br />
         Email: <a href={`mailto:${site.email}`}>{site.email}</a> · Telefono: {site.phoneDisplay}
       </p>

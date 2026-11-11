@@ -68,14 +68,6 @@ const siteJsonLd = jsonLdGraph(
     telephone: site.phone,
     vatID: `IT${site.vatId}`,
     description: site.description,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: site.address.street,
-      postalCode: site.address.postalCode,
-      addressLocality: site.address.locality,
-      addressRegion: site.address.region,
-      addressCountry: site.address.country,
-    },
     areaServed: { "@type": "Country", name: "Italia" },
     knowsAbout: [
       "Realizzazione siti web",
