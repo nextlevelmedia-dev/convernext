@@ -310,9 +310,7 @@ export default function HeroMorph() {
                 : "border-slate-200 text-slate-500 hover:text-slate-900 dark:border-white/10 dark:text-white/55 dark:hover:text-white"
             }`}
           >
-            {/* su mobile il nome completo, da desktop quello corto per stare su una riga */}
-            <b className="font-bold md:hidden">{s.name}</b>
-            <b className="hidden font-bold md:inline">{s.short}</b>
+            {s.short}
           </button>
         ))}
       </div>
