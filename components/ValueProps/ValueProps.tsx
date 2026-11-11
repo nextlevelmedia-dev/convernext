@@ -143,11 +143,80 @@ function LazyLottie({ file }: { file: string }) {
   )
 }
 
+/*
+ * Senza il riquadro blu le grafiche più piccole sembrerebbero perse: le
+ * ingrandiamo (zoom) finché il contenuto non riempie lo spazio del vecchio riquadro.
+ * Misura una volta al mount e quando cambia la larghezza.
+ */
+function FitVisual({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const host = ref.current
+    if (!host) return
+    let raf = 0
+    const fit = () => {
+      const card = host.querySelector<HTMLElement>(".vp-visual-card")
+      if (!card) return
+      const content = [...card.children].find(
+        (c): c is HTMLElement | SVGElement =>
+          (c instanceof HTMLElement || c instanceof SVGElement) && c.tagName !== "STYLE" && getComputedStyle(c).position !== "absolute"
+      )
+      if (!content) return
+      // SVG: il disegno spesso occupa solo una parte della tela, quindi si stringe
+      // il viewBox attorno al contenuto reale (una volta sola) prima di ingrandire
+      if (content instanceof SVGSVGElement && !content.dataset.fitted) {
+        try {
+          const b = content.getBBox()
+          const vb = content.viewBox.baseVal
+          if (b.width > 0 && b.height > 0 && vb && vb.width > 0) {
+            const pad = Math.max(b.width, b.height) * 0.06
+            const x = Math.max(vb.x, b.x - pad)
+            const y = Math.max(vb.y, b.y - pad)
+            const w = Math.min(vb.x + vb.width, b.x + b.width + pad) - x
+            const h = Math.min(vb.y + vb.height, b.y + b.height + pad) - y
+            if (w < vb.width * 0.92 || h < vb.height * 0.92) {
+              content.setAttribute("viewBox", `${x} ${y} ${w} ${h}`)
+            }
+          }
+        } catch {}
+        content.dataset.fitted = "1"
+      }
+      content.style.zoom = "1"
+      const cw = card.clientWidth
+      const ch = card.clientHeight
+      const r = content.getBoundingClientRect()
+      if (!r.width || !r.height) return
+      const z = Math.max(1, Math.min(1.8, (cw * 0.96) / r.width, (ch * 0.96) / r.height))
+      content.style.zoom = z.toFixed(3)
+    }
+    const schedule = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(fit)
+    }
+    // la grafica arriva in modo lazy: si misura quando compare e quando cambia dimensione
+    const mo = new MutationObserver(schedule)
+    mo.observe(host, { childList: true, subtree: false })
+    const ro = new ResizeObserver(schedule)
+    ro.observe(host)
+    schedule()
+    const t = window.setTimeout(schedule, 600)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.clearTimeout(t)
+      mo.disconnect()
+      ro.disconnect()
+    }
+  }, [])
+  return <div ref={ref}>{children}</div>
+}
+
 function MediaBlock({ item }: { item: ValuePropItem }) {
   if (item.mediaType === "component" && item.componentKey) {
     return (
       <LazyMount rootMargin="250px 0px">
-        <ValuePropVisual visualKey={item.componentKey} />
+        <FitVisual>
+          <ValuePropVisual visualKey={item.componentKey} />
+        </FitVisual>
       </LazyMount>
     )
   }
@@ -298,7 +367,7 @@ function ValuePropRow({
   )
 }
 
-export default function ValueProps({ items, bare }: ValuePropsProps & { bare?: boolean }) {
+export default function ValueProps({ items, bare = true }: ValuePropsProps & { bare?: boolean }) {
   if (!items?.length) return null
 
   return (
@@ -308,12 +377,20 @@ export default function ValueProps({ items, bare }: ValuePropsProps & { bare?: b
         fontFamily: "var(--font-lato), sans-serif",
       }}
     >
-      {/* bare: grafiche senza contenitore, più grandi (prova su Temi Shopify) */}
+      {/* bare (ora predefinito): grafiche senza il riquadro blu, a tutta larghezza.
+          I pannelli interni prendono il blu del vecchio riquadro, così la grafica resta di quel colore. */}
       {bare && (
         <style>{`
           .vp-bare .vp-visual-card { background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; }
+          .dark .vp-bare .vp-visual-card {
+            --vp-panel: #12203d;
+            --vp-panel-soft: #0f1b35;
+            --vp-panel-subtle: rgba(255,255,255,0.035);
+            --vp-border: rgba(255,255,255,0.10);
+            --vp-border-soft: rgba(255,255,255,0.07);
+          }
           .vp-bare .vp-visual-card > div[style*="position: absolute"] { display: none; }
-          .vp-bare .vp-visual-card > svg, .vp-bare .tn-wrap, .vp-bare .te-wrap { width: 100% !important; max-width: none !important; }
+          .vp-bare .tn-wrap, .vp-bare .te-wrap { width: 100% !important; max-width: none !important; }
           @media (max-width: 640px) { .vp-bare .te-wrap { transform: none !important; } }
         `}</style>
       )}

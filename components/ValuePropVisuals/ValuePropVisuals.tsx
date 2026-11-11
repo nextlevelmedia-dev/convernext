@@ -2328,17 +2328,37 @@ function TemiEditorVisual() {
   )
 }
 
-/* Home: esperienza immersiva, la hero 3D di Aurelle in una finestra */
+/* Home: esperienza immersiva illustrata, sfera 3D con card che fluttuano */
 function HomeImmersiveVisual() {
   return (
     <VisualShell>
-      <div style={{ position: "relative", zIndex: 2, width: "84%", borderRadius: 12, overflow: "hidden", border: "1px solid var(--vp-border)", boxShadow: "0 24px 50px -24px rgba(0,0,0,.6)" }}>
-        <div style={{ display: "flex", gap: 5, padding: "7px 10px", background: "#14161c" }}>
+      <style>{`
+        @keyframes hi-spin { to { transform: rotate(360deg) } }
+        @keyframes hi-float { 0%,100% { transform: translateY(0) rotate(var(--r)) } 50% { transform: translateY(-8px) rotate(var(--r)) } }
+        .hi-orb { animation: hi-spin 16s linear infinite }
+        .hi-card { animation: hi-float 6s ease-in-out infinite }
+        @media (prefers-reduced-motion: reduce) { .hi-orb, .hi-card { animation: none } }
+      `}</style>
+      <div style={{ position: "relative", zIndex: 2, width: "80%", aspectRatio: "16 / 10", borderRadius: 14, overflow: "hidden", border: "1px solid var(--vp-border)", background: "#0b0f1d", boxShadow: "0 24px 50px -24px rgba(0,0,0,.6)" }}>
+        <div style={{ position: "absolute", left: 12, top: 10, display: "flex", gap: 5 }}>
           {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
             <i key={c} style={{ width: 7, height: 7, borderRadius: 99, background: c }} />
           ))}
         </div>
-        <img src="/media/visuals/temi/gioielli-hero.webp" alt="" loading="lazy" style={{ display: "block", width: "100%", aspectRatio: "1000 / 625", objectFit: "cover" }} />
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 60% at 50% 55%, rgba(124,58,237,.35), transparent 70%)" }} />
+        <i className="hi-orb" style={{ position: "absolute", left: "50%", top: "50%", width: "34%", aspectRatio: "1", margin: "-17% 0 0 -17%", borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, #fff 0, #fc03b0 22%, #7c3aed 52%, #047cf9 78%)", boxShadow: "0 0 70px rgba(252,3,176,.5)" }} />
+        {[
+          { l: "8%", t: "20%", w: "20%", h: "34%", r: "-8deg", d: "0s" },
+          { l: "72%", t: "14%", w: "19%", h: "30%", r: "8deg", d: "-2s" },
+          { l: "74%", t: "60%", w: "18%", h: "28%", r: "-5deg", d: "-4s" },
+        ].map((c, i) => (
+          <i
+            key={i}
+            className="hi-card"
+            style={{ position: "absolute", left: c.l, top: c.t, width: c.w, height: c.h, borderRadius: 10, border: "1px solid rgba(255,255,255,.15)", background: "linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.03))", backdropFilter: "blur(6px)", ["--r" as string]: c.r, animationDelay: c.d } as React.CSSProperties}
+          />
+        ))}
+        <i style={{ position: "absolute", left: "50%", bottom: "11%", width: "24%", height: 12, marginLeft: "-12%", borderRadius: 99, background: "linear-gradient(90deg,#fc03b0,#047cf9)" }} />
       </div>
     </VisualShell>
   )
