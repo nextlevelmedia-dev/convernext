@@ -26,6 +26,7 @@ const company = [
   { href: "/progetti", label: "Progetti" },
   { href: "/chi-siamo", label: "Chi siamo" },
   { href: "/contatti", label: "Contatti" },
+  { href: "/recensioni", label: "Recensioni" },
 ]
 
 // pagine legali (provvisorie, in attesa di iubenda)

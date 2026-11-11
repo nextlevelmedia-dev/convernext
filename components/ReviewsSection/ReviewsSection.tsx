@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { urlFor } from "../../sanity/lib/image"
 import { client } from "../../sanity/lib/client"
-import { companyLogoFor } from "./CompanyLogos"
+import ReviewCard, { type Review } from "./ReviewCard"
 
 // recensioni della home: servono a completare le pagine che ne hanno poche
 const POOL_QUERY = `*[_type == "page" && slug.current == "home"][0].reviews.items[]{
@@ -13,6 +13,28 @@ const POOL_QUERY = `*[_type == "page" && slug.current == "home"][0].reviews.item
   authorPhoto{ asset->{ _id, url } },
   companyLogo{ asset->{ _id, url } }
 }`
+
+// recensioni lasciate dai clienti su /recensioni e approvate (pubblicate)
+// nello Studio: compaiono prima di quelle già presenti nelle pagine
+const APPROVED_QUERY = `*[_type == "review" && !(_id in path("drafts.**"))] | order(submittedAt desc){
+  stars,
+  reviewTitle,
+  reviewText,
+  authorName,
+  "authorRole": company,
+  website,
+  service,
+  authorPhoto,
+  companyLogo
+}`
+
+// pagina → servizi delle recensioni approvate da mostrare (Temi Shopify usa quelle e-commerce)
+const APPROVED_FOR: Record<ReviewService, string[]> = {
+  "siti-web": ["siti-web"],
+  ecommerce: ["ecommerce"],
+  "temi-shopify": ["ecommerce"],
+  "ottimizzazione-conversioni": ["ottimizzazione-conversioni"],
+}
 
 const MAX_REVIEWS = 6
 
@@ -55,16 +77,6 @@ function pickForService(reviews: Review[], service: ReviewService) {
   return [...picked, ...rest].slice(0, SERVICE_LIMIT)
 }
 
-interface Review {
-  stars: number
-  reviewTitle: string
-  reviewText: string
-  authorName: string
-  authorRole: string
-  authorPhoto?: { asset: { _ref: string } }
-  companyLogo?: { asset: { _ref: string } }
-}
-
 interface Avatar {
   photo?: { asset: { _ref: string } }
 }
@@ -80,107 +92,8 @@ interface ReviewsSectionProps {
   service?: ReviewService
   // quante recensioni mostrare su mobile, dove le colonne si impilano
   mobileLimit?: number
-}
-
-function StarRating({ stars }: { stars: number }) {
-  return (
-    <div
-      style={{
-        display: "inline-block",
-        background: "linear-gradient(to right, #fc03b0, #047cf9)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        backgroundClip: "text",
-        fontSize: "18px",
-        letterSpacing: "2px",
-        marginBottom: "12px",
-      }}
-    >
-      {"★".repeat(stars)}
-    </div>
-  )
-}
-
-function ReviewCard({ review, hideOnMobile }: { review: Review; hideOnMobile?: boolean }) {
-  return (
-    <div className={`review-card card-adaptive rounded-2xl p-5 mb-3${hideOnMobile ? " max-md:hidden" : ""}`}>
-      <StarRating stars={review.stars} />
-
-      {review.reviewTitle && (
-        <h3
-          className="review-card-title"
-          style={{ fontSize: "18px", fontWeight: 700, marginBottom: "8px", lineHeight: "1.4" }}
-        >
-          &ldquo;{review.reviewTitle}&rdquo;
-        </h3>
-      )}
-
-      {review.reviewText && (
-        <p
-          className="review-card-text"
-          style={{ fontSize: "14px", lineHeight: "1.6", marginBottom: "16px" }}
-        >
-          &ldquo;{review.reviewText}&rdquo;
-        </p>
-      )}
-
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          {review.authorPhoto ? (
-            <Image
-              src={urlFor(review.authorPhoto).width(80).height(80).url()}
-              alt={review.authorName}
-              width={36}
-              height={36}
-              style={{ borderRadius: "50%", width: "36px", height: "36px", objectFit: "cover", flexShrink: 0 }}
-            />
-          ) : (
-            <div
-              style={{
-                width: "36px",
-                height: "36px",
-                borderRadius: "50%",
-                background: "linear-gradient(to right, #fc03b0, #047cf9)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "white",
-                fontWeight: 700,
-                fontSize: "14px",
-                flexShrink: 0,
-              }}
-            >
-              {review.authorName?.charAt(0)}
-            </div>
-          )}
-          <div>
-            <p
-              className="review-card-author"
-              style={{ fontSize: "13px", fontWeight: 700, lineHeight: 1.2 }}
-            >
-              {review.authorName}
-            </p>
-            {review.authorRole && (
-              <p className="review-card-role" style={{ fontSize: "11px" }}>
-                {review.authorRole}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {companyLogoFor(review.authorName) ??
-          (review.companyLogo && (
-          <Image
-            src={urlFor(review.companyLogo).width(120).height(60).url()}
-            alt="logo"
-            width={70}
-            height={35}
-            style={{ height: "28px", width: "auto", objectFit: "contain", flexShrink: 0 }}
-          />
-        ))}
-      </div>
-    </div>
-  )
+  // link "Vedi tutte le recensioni" (solo in home)
+  showAllHref?: string
 }
 
 const ctaStyle = {
@@ -198,6 +111,17 @@ const ctaStyle = {
   cursor: "pointer",
 }
 
+/** Tutte le recensioni: prima quelle approvate dal modulo (più recenti), poi quelle già presenti. */
+export async function getAllReviews() {
+  const [pool, approved] = await Promise.all([
+    client.fetch<Review[] | null>(POOL_QUERY).catch(() => null),
+    client.fetch<Review[] | null>(APPROVED_QUERY).catch(() => null),
+  ])
+  return uniqueReviews(approved, pool)
+}
+
+export { ReviewCard }
+
 export default async function ReviewsSection({
   titleHighlight,
   titleNormal,
@@ -208,10 +132,16 @@ export default async function ReviewsSection({
   socialProofAvatars,
   service,
   mobileLimit,
+  showAllHref,
 }: ReviewsSectionProps) {
-  const pool = await client.fetch<Review[] | null>(POOL_QUERY).catch(() => null)
+  const [pool, approvedAll] = await Promise.all([
+    client.fetch<Review[] | null>(POOL_QUERY).catch(() => null),
+    client.fetch<(Review & { service?: string })[] | null>(APPROVED_QUERY).catch(() => null),
+  ])
+  const approved = (approvedAll ?? []).filter((r) => !service || APPROVED_FOR[service].includes(r.service ?? ""))
   const all = uniqueReviews(items, pool)
-  const reviews = service ? pickForService(all, service) : all.slice(0, MAX_REVIEWS)
+  const existing = service ? pickForService(all, service) : all
+  const reviews = uniqueReviews(approved, existing).slice(0, service ? SERVICE_LIMIT : MAX_REVIEWS)
   if (!reviews.length) return null
 
   const col1 = reviews.filter((_, i) => i % 3 === 0)
@@ -261,6 +191,18 @@ export default async function ReviewsSection({
           <div>{col2.map(card)}</div>
           <div>{col3.map(card)}</div>
         </div>
+
+        {showAllHref && (
+          <div className="mt-8 flex justify-center">
+            <a
+              href={showAllHref}
+              className="group inline-flex items-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-bold text-slate-950 transition-colors hover:border-slate-950 dark:border-white/20 dark:text-white dark:hover:border-white"
+            >
+              Vedi tutte le recensioni
+              <i aria-hidden className="not-italic transition-transform duration-300 group-hover:translate-x-1">→</i>
+            </a>
+          </div>
+        )}
 
         {(ctaText || socialProofText) && (
           <div
