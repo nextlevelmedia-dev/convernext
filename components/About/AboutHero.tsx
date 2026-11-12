@@ -48,7 +48,7 @@ export default function AboutHero({
       />
 
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-16">
-        <div className="hero-in flex min-w-0 flex-col items-start">
+        <div className="hero-in order-2 flex min-w-0 flex-col items-start lg:order-1">
           <h1
             className="max-w-3xl text-[clamp(2.35rem,1.2rem+4.4vw,4.6rem)] leading-[1.04] tracking-[-0.035em] text-slate-950 md:text-5xl md:leading-[1.15] md:tracking-[-0.025em] dark:text-white"
             style={{ fontFamily: "var(--font-archivo), sans-serif", fontWeight: 600 }}
@@ -89,6 +89,7 @@ export default function AboutHero({
           <TrustPoints points={trustPoints} className="mt-8" />
         </div>
 
+        <div className="order-1 min-w-0 lg:order-2">
         <TeamOrbit
           imageUrl={imageUrl}
           imageAlt={imageAlt}
@@ -97,6 +98,7 @@ export default function AboutHero({
           coreSkills={coreSkills}
           specialistSkills={specialistSkills}
         />
+        </div>
       </div>
     </section>
   )

@@ -95,8 +95,8 @@ export default function Hero({
         />
 
         <div className="relative mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-2 lg:gap-20">
-          {/* LEFT */}
-          <div className="hero-in flex min-w-0 flex-col items-start text-left">
+          {/* LEFT (su mobile va sotto il visual) */}
+          <div className="hero-in order-2 flex min-w-0 flex-col items-start text-left lg:order-1">
             <a
               href="#recensioni"
               aria-label="Valutazione 5 su 5 dai nostri clienti, vai alle recensioni"
@@ -227,8 +227,8 @@ export default function Hero({
             <TrustPoints points={trustPoints} className="mt-8" />
           </div>
 
-          {/* RIGHT */}
-          <div className="min-w-0">
+          {/* RIGHT (su mobile va per primo) */}
+          <div className="order-1 min-w-0 lg:order-2">
             {rightContent ? (
               rightContent
             ) : (

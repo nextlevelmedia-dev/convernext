@@ -170,6 +170,8 @@
     height: 300px;
     /* compensa la parte trasparente in alto della cornice iMac */
     margin-top: -36px;
+    /* lo smartphone sporge sotto il riquadro: spazio per non coprire il contenuto dopo */
+    margin-bottom: 40px;
   }
 
   .mockup-stage {
@@ -203,6 +205,10 @@
 }
 
 @media (max-width: 600px) {
+  .mockup-row {
+    margin-bottom: 28px;
+  }
+
   .mockup-stage {
     transform: translate(-50%, -50%) scale(0.48);
   }

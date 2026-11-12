@@ -294,7 +294,7 @@ export default function HeroMorph() {
       </div>
 
       {/* servizi: quello attivo evidenziato, cliccabili per fermarsi su uno */}
-      <div className="mt-5 flex flex-wrap justify-center gap-1.5 md:flex-nowrap">
+      <div className="mt-5 hidden flex-wrap justify-center gap-1.5 md:flex md:flex-nowrap">
         {SERVICES.map((s, i) => (
           <button
             key={s.name}
