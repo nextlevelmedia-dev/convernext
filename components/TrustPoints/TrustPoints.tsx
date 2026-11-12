@@ -5,7 +5,7 @@ export default function TrustPoints({ points, className = "" }: { points?: strin
 
   return (
     <ul
-      className={`flex max-w-full flex-wrap items-center gap-x-5 gap-y-2.5 text-sm font-bold text-black/60 dark:text-white/70 ${className}`}
+      className={`flex max-w-full flex-wrap items-center gap-x-5 gap-y-2.5 text-sm font-normal text-black/70 dark:text-white/80 ${className}`}
       style={{ fontFamily: "var(--font-lato), sans-serif" }}
     >
       {items.map((point, index) => (
@@ -14,15 +14,15 @@ export default function TrustPoints({ points, className = "" }: { points?: strin
           // su mobile solo i primi 2 punti, per non andare su due righe
           className={`items-center gap-2 ${index >= 2 ? "hidden md:inline-flex" : "inline-flex"}`}
         >
+          {/* solo la spunta, con il gradient del brand */}
           <svg aria-hidden viewBox="0 0 20 20" className="size-[18px] shrink-0">
             <defs>
-              <linearGradient id={`tp-${index}`} x1="0" y1="0" x2="1" y2="1">
+              <linearGradient id="tp-tick" gradientUnits="userSpaceOnUse" x1="3" y1="15" x2="17" y2="5">
                 <stop offset="0" stopColor="#fc03b0" />
                 <stop offset="1" stopColor="#047cf9" />
               </linearGradient>
             </defs>
-            <circle cx="10" cy="10" r="10" fill={`url(#tp-${index})`} />
-            <path d="M6 10.4l2.6 2.6L14 7.6" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M3.5 10.8l4.3 4.2L16.5 5.5" fill="none" stroke="url(#tp-tick)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           {point}
         </li>

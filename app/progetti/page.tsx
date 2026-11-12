@@ -89,7 +89,7 @@ export default async function ProgettiPage() {
                     {hero.ctaText}
                   </a>
                 )}
-                <TrustPoints points={hero?.trustPoints} className="mt-6" />
+                <TrustPoints points={hero?.trustPoints} className="mt-4" />
               </div>
             </div>
 

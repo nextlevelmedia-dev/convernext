@@ -228,7 +228,7 @@ export default function Hero({
             )}
 
             {/* PUNTI SOTTO CTA */}
-            <TrustPoints points={trustPoints} className="mt-8" />
+            <TrustPoints points={trustPoints} className="mt-4" />
           </div>
 
           {/* RIGHT (su mobile va per primo) */}

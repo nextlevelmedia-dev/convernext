@@ -86,7 +86,7 @@ export default function AboutHero({
             </Link>
           </div>
 
-          <TrustPoints points={trustPoints} className="mt-8" />
+          <TrustPoints points={trustPoints} className="mt-4" />
         </div>
 
         <div className="order-1 min-w-0 lg:order-2">

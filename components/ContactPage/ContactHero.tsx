@@ -70,7 +70,7 @@ export default function ContactHero() {
 
           <TrustPoints
             points={["Risposta entro 24 ore", "Un referente diretto"]}
-            className="mt-8"
+            className="mt-4"
           />
         </div>
 

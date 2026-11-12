@@ -189,28 +189,15 @@ export default function FinalRecap({
                     key={i}
                     className="flex items-center gap-3"
                   >
-                    <span
-                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, #fc03b0, #047cf9)",
-                      }}
-                    >
-                      <svg
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        fill="none"
-                      >
-                        <path
-                          d="M2 5l2 2 4-4"
-                          stroke="white"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
+                    <svg aria-hidden viewBox="0 0 20 20" className="size-[18px] shrink-0">
+                      <defs>
+                        <linearGradient id="recap-tick" gradientUnits="userSpaceOnUse" x1="3" y1="15" x2="17" y2="5">
+                          <stop offset="0" stopColor="#fc03b0" />
+                          <stop offset="1" stopColor="#047cf9" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M3.5 10.8l4.3 4.2L16.5 5.5" fill="none" stroke="url(#recap-tick)" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
 
                     <span className="text-[15px] font-medium text-slate-700 dark:text-white/85">
                       {point}
