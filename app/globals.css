@@ -658,3 +658,19 @@ body {
   background-color: transparent !important;
   background-image: none !important;
 }
+
+/* =========================
+   BANNER COOKIE (iubenda): pulsante "Accetta" con il gradient del brand
+   (dal pannello iubenda si può impostare solo un colore pieno)
+========================= */
+/* specificità alta: le regole di iubenda sono molto specifiche e con !important */
+html body #iubenda-cs-banner#iubenda-cs-banner button.iubenda-cs-accept-btn.iubenda-cs-btn-primary.iubenda-cs-btn-primary {
+  background-color: #7c3aed !important;
+  background-image: linear-gradient(90deg, #fc03b0, #7c3aed 50%, #047cf9) !important;
+  color: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 10px 28px -10px rgb(124 58 237 / 0.65) !important;
+}
+html body #iubenda-cs-banner#iubenda-cs-banner button.iubenda-cs-accept-btn.iubenda-cs-btn-primary.iubenda-cs-btn-primary:hover {
+  filter: brightness(1.08);
+}
