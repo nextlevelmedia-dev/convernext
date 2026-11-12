@@ -1,10 +1,10 @@
 "use client"
 
-import Link from "next/link"
 
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react"
 import ContactOrb from "../ContactOrb/ContactOrb"
 import { site } from "@/lib/seo"
+import { eventId, track } from "@/lib/track"
 
 const STEPS = [
   {
@@ -82,6 +82,8 @@ export default function ContactSection() {
         return
       }
       setStatus("success")
+      // conversione principale: GTM la inoltra a GA4 / Meta (solo con consenso)
+      track("generate_lead", { form_name: "contatti", service: formData.servizio || "non indicato", page_path: window.location.pathname, event_id: eventId() })
     } catch {
       setStatus("error")
     }
@@ -256,9 +258,9 @@ export default function ContactSection() {
 
               <p className="text-center text-xs leading-5 text-black/50 dark:text-white/50">
                 Inviando la richiesta accetti il trattamento dei dati per ricevere una risposta, come descritto nella{" "}
-                <Link href="/privacy-policy" className="underline underline-offset-2">
+                <a href="https://www.iubenda.com/privacy-policy/90237580" target="_blank" rel="noopener" className="underline underline-offset-2">
                   privacy policy
-                </Link>
+                </a>
                 .
               </p>
 

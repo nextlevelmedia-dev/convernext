@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next"
+import Script from "next/script"
 import { Archivo, Lato, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Footer from "../components/Footer/Footer"
 import AmbientBackground from "../components/AmbientBackground/AmbientBackground"
 import SiteFooter from "../components/SiteFooter"
-import CookieBanner from "../components/Legal/CookieBanner"
+import ClickTracking from "../components/Analytics/ClickTracking"
 import ScrollToTop from "../components/ScrollToTop"
 import ScrollReveal from "../components/ScrollReveal"
 import JsonLd from "../components/JsonLd"
@@ -56,6 +57,18 @@ export const viewport: Viewport = {
 // l'utente ha scelto light. Gira prima del paint, quindi niente flash.
 const themeScript = `try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}`
 
+/*
+ * Tracciamento: iubenda (consenso) + Google Tag Manager.
+ * Ordine: 1) Consent Mode con tutto negato di default, 2) iubenda, 3) GTM.
+ * Così nessun tag in GTM parte prima che l'utente abbia scelto.
+ */
+const GTM_ID = "GTM-KXMGLPFJ"
+const IUBENDA_WIDGET = "https://embeds.iubenda.com/widgets/3d5396df-31f3-4e12-ab04-b47bfc7c3cf9.js"
+
+const consentDefaultScript = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",functionality_storage:"granted",security_storage:"granted",wait_for_update:2000});gtag("set","ads_data_redaction",true);gtag("set","url_passthrough",true);`
+
+const gtmScript = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');`
+
 const siteJsonLd = jsonLdGraph(
   {
     "@type": "ProfessionalService",
@@ -100,8 +113,19 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* eseguiti nell'ordine: consenso negato di default, poi iubenda */}
+        <Script id="consent-default" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: consentDefaultScript }} />
+        <Script id="iubenda" strategy="beforeInteractive" src={IUBENDA_WIDGET} />
       </head>
       <body className="min-h-full bg-[var(--page-bg)]">
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <JsonLd data={siteJsonLd} />
 
         <ScrollToTop />
@@ -118,7 +142,10 @@ export default function RootLayout({
 
         <ScrollReveal />
 
-        <CookieBanner />
+        <ClickTracking />
+
+        {/* GTM dopo l'idratazione: il consenso è già impostato */}
+        <Script id="gtm" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: gtmScript }} />
       </body>
     </html>
   )

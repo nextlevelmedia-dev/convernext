@@ -1,8 +1,6 @@
 "use client"
 
-import { openCookiePreferences } from "./consent"
-
-/** Pulsante che riapre il banner cookie (footer e cookie policy). */
+/** Pulsante che riapre le preferenze cookie di iubenda (footer). */
 export default function CookiePreferencesLink({
   className = "",
   label = "modifica le preferenze cookie",
@@ -10,8 +8,12 @@ export default function CookiePreferencesLink({
   className?: string
   label?: string
 }) {
+  const open = () => {
+    const w = window as unknown as { _iub?: { cs?: { api?: { openPreferences?: () => void } } } }
+    w._iub?.cs?.api?.openPreferences?.()
+  }
   return (
-    <button type="button" onClick={openCookiePreferences} className={`cursor-pointer ${className}`}>
+    <button type="button" onClick={open} className={`iubenda-cs-preferences-link cursor-pointer ${className}`}>
       {label}
     </button>
   )

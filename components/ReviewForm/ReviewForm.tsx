@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
+import { track } from "@/lib/track"
 
 /*
  * Modulo per lasciare una recensione. Le immagini vengono ridimensionate nel
@@ -76,6 +77,7 @@ export default function ReviewForm() {
       const json = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(json.error || "Invio non riuscito.")
       setStatus("done")
+      track("review_submit", { service: values.service })
     } catch (err) {
       setError(err instanceof Error ? err.message : "Invio non riuscito.")
       setStatus("error")
@@ -181,9 +183,9 @@ export default function ReviewForm() {
           <input type="checkbox" name="consent" required className="mt-1 size-4 shrink-0 accent-[#7c3aed]" />
           <i className="not-italic">
             Acconsento alla pubblicazione della recensione sul sito, con nome, azienda e le immagini caricate, come descritto nella{" "}
-            <Link href="/privacy-policy" className="font-bold text-slate-950 underline underline-offset-2 dark:text-white">
+            <a href="https://www.iubenda.com/privacy-policy/90237580" target="_blank" rel="noopener" className="font-bold text-slate-950 underline underline-offset-2 dark:text-white">
               privacy policy
-            </Link>
+            </a>
             .
           </i>
         </label>

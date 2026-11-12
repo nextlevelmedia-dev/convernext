@@ -30,10 +30,10 @@ const company = [
   { href: "/recensioni", label: "Recensioni" },
 ]
 
-// pagine legali (provvisorie, in attesa di iubenda)
+// informative legali generate con iubenda
 const legal = [
-  { href: "/privacy-policy", label: "Privacy policy" },
-  { href: "/cookie-policy", label: "Cookie policy" },
+  { href: "https://www.iubenda.com/privacy-policy/90237580", label: "Privacy policy" },
+  { href: "https://www.iubenda.com/privacy-policy/90237580/cookie-policy", label: "Cookie policy" },
 ]
 
 function Title({ children }: { children: React.ReactNode }) {
