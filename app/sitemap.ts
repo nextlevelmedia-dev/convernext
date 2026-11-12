@@ -17,6 +17,7 @@ type Route = {
 
 const routes: Route[] = [
   { path: "/", priority: 1, slug: "home" },
+  { path: "/soluzioni", priority: 0.9, updated: "2026-11-12" },
   { path: "/ecommerce", priority: 0.9, slug: "ecommerce" },
   { path: "/siti-web", priority: 0.9, slug: "siti-web" },
   { path: "/ottimizzazione-conversioni", priority: 0.9, slug: "ottimizzazione-conversioni" },

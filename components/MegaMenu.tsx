@@ -150,6 +150,14 @@ export default function MegaMenu() {
             </div>
 
           </div>
+
+          {/* panoramica di tutte le soluzioni */}
+          <div className="flex items-center justify-between gap-4 border-t border-slate-200 px-8 py-4 dark:border-white/10">
+            <p className="text-sm !text-slate-500 dark:!text-white/60">Non sai quale scegliere? Confrontale tutte in una pagina.</p>
+            <Link href="/soluzioni" className="inline-flex items-center gap-2 text-sm font-bold !text-slate-900 transition-colors hover:!text-[#7c3aed] dark:!text-white dark:hover:!text-[#a78bfa]">
+              Tutte le soluzioni →
+            </Link>
+          </div>
         </div>
       </div>
     </div>

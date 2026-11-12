@@ -290,8 +290,8 @@ export default async function Home() {
           titleNormal={page?.stickyServices?.titleNormal}
           subtitle={page?.stickyServices?.subtitle}
           services={services}
-          ctaText="Parliamo del tuo progetto"
-          ctaHref="/contatti"
+          ctaText="Scopri tutte le soluzioni"
+          ctaHref="/soluzioni"
         />
 
         {/* PROGETTI */}

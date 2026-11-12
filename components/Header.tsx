@@ -162,6 +162,17 @@ export default function Header() {
             </li>
           </ul>
 
+          {/* tutte le soluzioni */}
+          <div className={stagger} style={staggerDelay(services.length + 2)}>
+            <Link
+              href="/soluzioni"
+              onClick={closeDrawer}
+              className="mt-3 inline-flex items-center gap-2 text-sm font-bold !text-slate-900 dark:!text-white"
+            >
+              Tutte le soluzioni <span aria-hidden>→</span>
+            </Link>
+          </div>
+
           {/* pagine */}
           <div className={`${stagger} mt-6`} style={staggerDelay(services.length + 2)}>
             <div className="mb-1 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.16em] text-slate-500 dark:text-white/50">

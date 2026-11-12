@@ -19,6 +19,7 @@ const services = [
   { href: "/temi-shopify", label: "Temi Shopify" },
   { href: "/ottimizzazione-conversioni", label: "Ottimizzazione conversioni" },
   { href: "/esperienze-immersive", label: "Esperienze immersive" },
+  { href: "/soluzioni", label: "Tutte le soluzioni" },
 ]
 
 const company = [

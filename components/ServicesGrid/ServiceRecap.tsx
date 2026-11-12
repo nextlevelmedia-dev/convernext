@@ -76,6 +76,10 @@ const I = {
   bag: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8h12l-1 13H7z" /><path d="M9 8a3 3 0 016 0" /></svg>,
   split: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M6 3v6a6 6 0 006 6h0a6 6 0 006-6V3" /><path d="M12 15v6" /></svg>,
   click: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M9 9l11 4-5 2-2 5z" /><path d="M5 3v3M3 5h3M9 4l1.5 1.5M4 9l1.5 1.5" /></svg>,
+  edit: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" /></svg>,
+  play: <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>,
+  cube: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7z" /><path d="M12 22V12M21 7l-9 5-9-5" /></svg>,
+  bolt: <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 9-12h-7z" /></svg>,
   flag: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 21V4h11l-2 4 2 4H5" /></svg>,
 }
 
@@ -106,13 +110,15 @@ function Cart() {
   )
 }
 
-export type ServiceRecapVariant = "siti-web" | "ecommerce" | "cro"
+export type ServiceRecapVariant = "siti-web" | "ecommerce" | "cro" | "temi-shopify" | "immersive"
 
 export function serviceRecapFor(href?: string): ServiceRecapVariant | null {
   if (!href) return null
   if (href.includes("siti-web")) return "siti-web"
   if (href.includes("ecommerce")) return "ecommerce"
   if (href.includes("ottimizzazione") || href.includes("cro")) return "cro"
+  if (href.includes("temi-shopify")) return "temi-shopify"
+  if (href.includes("esperienze-immersive")) return "immersive"
   return null
 }
 
@@ -137,7 +143,7 @@ export default function ServiceRecap({ variant }: { variant: ServiceRecapVariant
   }, [])
 
   return (
-    <div ref={ref} className="sr-wrap" role="img" aria-label={LABELS[variant]}>
+    <div ref={ref} className="sr-wrap" aria-hidden title={LABELS[variant]}>
       <style>{`
         .sr-wrap { position: relative; width: 100%; height: 100%; z-index: 2; }
         .sr-layer { transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
@@ -208,6 +214,33 @@ export default function ServiceRecap({ variant }: { variant: ServiceRecapVariant
           </Layer>
         </>
       )}
+      {variant === "temi-shopify" && (
+        <>
+          <Layer show={show} i={0} from="center" style={{ left: "4%", top: "15%", width: "74%" }}><Shot src="/recap/temi-vaerk-desktop.webp" /></Layer>
+          <Layer show={show} i={1} from="right" style={{ left: "75%", top: "21%", width: "21%" }}><Shot src="/recap/temi-vaerk-mobile.webp" /></Layer>
+          <Layer show={show} i={2} from="top" style={{ left: "44%", top: "5%" }}>
+            <Chip icon={I.check} accent="#16a34a" title="Modifiche pubblicate" sub="Dall'editor di Shopify" />
+          </Layer>
+          <Layer show={show} i={3} from="bottom" style={{ left: "6%", bottom: "6%" }}>
+            <Chip icon={I.edit} title="Sezioni su misura" sub="Aggiungi, sposta, personalizza" />
+          </Layer>
+          <Layer show={show} i={4} from="bottom" style={{ left: "44%", bottom: "6%" }}>
+            <Chip icon={I.play} accent="#fc03b0" title="Video tutorial inclusi" sub="Gestisci il tema in autonomia" />
+          </Layer>
+        </>
+      )}
+      {variant === "immersive" && (
+        <>
+          <Layer show={show} i={0} from="center" style={{ left: "4%", top: "15%", width: "74%" }}><Shot src="/services/immersive-desktop.webp" /></Layer>
+          <Layer show={show} i={1} from="right" style={{ left: "75%", top: "21%", width: "21%" }}><Shot src="/services/immersive-mobile.webp" /></Layer>
+          <Layer show={show} i={2} from="top" style={{ left: "40%", top: "5%" }}>
+            <Chip icon={I.cube} accent="#7c3aed" title="Scena 3D allo scroll" sub="Si entra nella boutique" />
+          </Layer>
+          <Layer show={show} i={3} from="bottom" style={{ left: "8%", bottom: "6%" }}>
+            <Chip icon={I.bolt} accent="#047cf9" title="Veloce anche da mobile" sub="Caricamento progressivo" />
+          </Layer>
+        </>
+      )}
     </div>
   )
 }
@@ -216,4 +249,6 @@ const LABELS: Record<ServiceRecapVariant, string> = {
   "siti-web": "Sito web Velatura su desktop e smartphone, con una nuova richiesta di preventivo",
   ecommerce: "E-commerce Orvek su desktop e smartphone, con carrello e notifica di un nuovo ordine",
   cro: "Sito Tornante con mappa dei clic, test A/B in corso e una frizione individuata",
+  "temi-shopify": "Tema Shopify su misura per VÆRK su desktop e smartphone, gestibile dall'editor",
+  immersive: "Esperienza immersiva Aurelle su desktop e smartphone, con scena 3D allo scroll",
 }

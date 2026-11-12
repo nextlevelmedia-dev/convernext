@@ -630,3 +630,13 @@
     padding: 16px 24px;
   }
 }
+/* 5 card (pagina Soluzioni): 3 sopra, 2 più larghe sotto */
+@media (min-width: 1024px) {
+  .services-grid-cards--wide { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .services-grid-cards--wide > * { grid-column: span 2; }
+  .services-grid-cards--wide > :nth-child(n + 4) { grid-column: span 3; }
+  .services-grid-cards--wide > :nth-child(n + 4) .services-grid-media { height: 340px; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .services-grid-cards--wide > :nth-child(5):last-child { grid-column: span 2; }
+}

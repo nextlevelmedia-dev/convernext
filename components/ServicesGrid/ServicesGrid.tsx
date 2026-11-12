@@ -32,6 +32,8 @@ type Props = {
   services?: Service[]
   ctaText?: string
   ctaHref?: string
+  // 5 card: 3 sopra e 2 più larghe sotto
+  wide?: boolean
 }
 
 function LazyVideo({
@@ -217,6 +219,7 @@ export default function ServicesGrid({
   services = [],
   ctaText = "Parliamo del tuo progetto",
   ctaHref = "/contatti",
+  wide = false,
 }: Props) {
   if (!services.length) return null
 
@@ -255,7 +258,7 @@ export default function ServicesGrid({
           </div>
         )}
 
-        <div className="services-grid-cards">
+        <div className={`services-grid-cards${wide ? " services-grid-cards--wide" : ""}`}>
           {services.map((service, index) => (
             <Link
               href={service.href || "/contatti"}
