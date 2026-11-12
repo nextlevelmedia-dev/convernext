@@ -22,7 +22,7 @@ export default function FaqSection({ titleHighlight, titleNormal, items }: FaqSe
   if (!items?.length) return null
 
   return (
-    <section className="faq-section relative overflow-hidden px-6 py-24 md:py-32">
+    <section className="faq-section relative overflow-x-clip px-6 py-24 md:py-32">
       {/* aloni del brand, solo decorativi */}
       <div
         aria-hidden

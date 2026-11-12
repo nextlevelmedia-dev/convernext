@@ -97,7 +97,7 @@ export default function ContactSection() {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_45%_at_0%_10%,rgb(252_3_176/0.08),transparent_70%),radial-gradient(50%_45%_at_100%_90%,rgb(4_124_249/0.08),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_45%_at_0%_10%,rgb(252_3_176/0.08),transparent_70%),radial-gradient(50%_45%_at_100%_90%,rgb(4_124_249/0.08),transparent_70%)] [mask-image:linear-gradient(to_bottom,transparent,black_22%,black_78%,transparent)]"
       />
 
       <div className="relative mx-auto grid w-full max-w-7xl gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">

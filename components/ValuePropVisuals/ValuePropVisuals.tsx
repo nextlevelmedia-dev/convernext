@@ -1550,13 +1550,13 @@ function CROABTestVisual() {
     <VisualShell>
       <style>{`
         @keyframes ab-fill-a {
-          from { height:0; y:180; }
-          to { height:80px; y:100; }
+          from { height:0; y:210; }
+          to { height:70px; y:140; }
         }
 
         @keyframes ab-fill-b {
-          from { height:0; y:180; }
-          to { height:130px; y:50; }
+          from { height:0; y:210; }
+          to { height:115px; y:95; }
         }
 
         @keyframes ab-badge {
@@ -1727,9 +1727,9 @@ function CROABTestVisual() {
         <rect
           className="ab-bar-a"
           x="155"
-          y="100"
+          y="140"
           width="70"
-          height="80"
+          height="70"
           rx="8"
           fill="url(#ab-ga)"
         />
@@ -1737,9 +1737,9 @@ function CROABTestVisual() {
         <rect
           className="ab-bar-b"
           x="295"
-          y="100"
+          y="95"
           width="70"
-          height="80"
+          height="115"
           rx="8"
           fill="url(#ab-gb)"
         />
@@ -2495,7 +2495,7 @@ function HomeConvertVisual() {
         </div>
 
         {/* hero */}
-        <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1.25fr 1fr", gap: 14, padding: "22px 18px 18px" }}>
+        <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1.25fr 1fr", gap: 14, padding: "34px 18px 30px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
               {[0, 1, 2, 3, 4].map((i) => (
@@ -2517,14 +2517,14 @@ function HomeConvertVisual() {
             </div>
           </div>
           {/* immagine prodotto/servizio */}
-          <div style={{ position: "relative", borderRadius: 10, minHeight: 112, overflow: "hidden", border: "1px solid var(--vp-border-soft)", background: "linear-gradient(150deg, rgba(252,3,176,.28), rgba(124,58,237,.22) 45%, rgba(4,124,249,.28))" }}>
+          <div style={{ position: "relative", borderRadius: 10, minHeight: 150, overflow: "hidden", border: "1px solid var(--vp-border-soft)", background: "linear-gradient(150deg, rgba(252,3,176,.28), rgba(124,58,237,.22) 45%, rgba(4,124,249,.28))" }}>
             <i style={{ position: "absolute", left: "22%", top: "18%", width: "56%", aspectRatio: "1", borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), rgba(255,255,255,.08) 60%, transparent 70%)" }} />
             <i style={{ position: "absolute", left: 10, right: 10, bottom: 10, height: 18, borderRadius: 6, background: "rgba(0,0,0,.25)", backdropFilter: "blur(4px)" }} />
           </div>
         </div>
 
         {/* strip loghi / prove */}
-        <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", padding: "10px 18px 14px", borderTop: "1px solid var(--vp-border-soft)" }}>
+        <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", padding: "16px 18px 20px", borderTop: "1px solid var(--vp-border-soft)" }}>
           {[34, 28, 38, 30, 26].map((w, i) => (
             <i key={i} style={{ width: w, height: 7, borderRadius: 3, background: "var(--vp-muted-soft)" }} />
           ))}

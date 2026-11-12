@@ -181,13 +181,47 @@ function FitVisual({ children }: { children: React.ReactNode }) {
         } catch {}
         content.dataset.fitted = "1"
       }
-      content.style.zoom = "1"
+      // tutte le grafiche alla stessa larghezza: il contenuto viene scalato (anche
+      // rimpicciolito) finché non occupa l'intera larghezza della colonna
+      // misura l'ingombro reale del disegno (unione dei suoi elementi visibili, esclusi
+      // sfondi a tutta area) e lo scala per occupare l'intera larghezza della colonna
+      content.style.transform = ""
+      content.style.marginBottom = ""
+      content.style.zoom = ""
       const cw = card.clientWidth
-      const ch = card.clientHeight
-      const r = content.getBoundingClientRect()
-      if (!r.width || !r.height) return
-      const z = Math.max(1, Math.min(1.8, (cw * 0.96) / r.width, (ch * 0.96) / r.height))
-      content.style.zoom = z.toFixed(3)
+      const base = content.getBoundingClientRect()
+      if (!base.width || !base.height || !cw) return
+      let l = Infinity, t = Infinity, r = -Infinity, btm = -Infinity
+      // se il contenitore stesso è un pannello (sfondo o bordo), conta anche lui
+      const own = getComputedStyle(content)
+      const visibleBox =
+        (own.backgroundColor !== "rgba(0, 0, 0, 0)" && own.backgroundColor !== "transparent") ||
+        own.backgroundImage !== "none" ||
+        parseFloat(own.borderTopWidth) > 0
+      if (visibleBox) {
+        l = base.left; t = base.top; r = base.right; btm = base.bottom
+      }
+      content.querySelectorAll<Element>("*").forEach((el) => {
+        if (el.tagName === "STYLE" || el.tagName === "defs") return
+        const rc = el.getBoundingClientRect()
+        if (rc.width < 2 || rc.height < 2) return
+        if (rc.width >= base.width * 0.97 && rc.height >= base.height * 0.85) return
+        const cs = getComputedStyle(el)
+        if (cs.display === "none" || cs.visibility === "hidden") return
+        l = Math.min(l, rc.left); t = Math.min(t, rc.top)
+        r = Math.max(r, rc.right); btm = Math.max(btm, rc.bottom)
+      })
+      if (!isFinite(l)) return
+      const uw = r - l, uh = btm - t
+      const s = Math.max(0.6, Math.min(2.4, cw / uw))
+      const ux = l - base.left, uy = t - base.top
+      // il riquadro può non partire dal bordo della colonna (margini auto): se ne tiene conto
+      const offX = base.left - card.getBoundingClientRect().left
+      const tx = (cw - uw * s) / 2 - ux * s - offX
+      const ty = -uy * s
+      content.style.transformOrigin = "0 0"
+      content.style.transform = `translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) scale(${s.toFixed(3)})`
+      content.style.marginBottom = `${(uh * s - base.height).toFixed(1)}px`
     }
     const schedule = () => {
       cancelAnimationFrame(raf)
@@ -381,7 +415,8 @@ export default function ValueProps({ items, bare = true }: ValuePropsProps & { b
           I pannelli interni prendono il blu del vecchio riquadro, così la grafica resta di quel colore. */}
       {bare && (
         <style>{`
-          .vp-bare .vp-visual-card { background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; }
+          .vp-bare .vp-visual-card { background: none !important; border: 0 !important; box-shadow: none !important; border-radius: 0 !important; overflow: visible !important; aspect-ratio: auto !important; display: block !important; }
+          .vp-bare .vp-visual-card > :is(div, svg):not([style*="position: absolute"]) { margin-left: auto; margin-right: auto; }
           .dark .vp-bare .vp-visual-card {
             --vp-panel: #12203d;
             --vp-panel-soft: #0f1b35;
@@ -390,6 +425,24 @@ export default function ValueProps({ items, bare = true }: ValuePropsProps & { b
             --vp-border-soft: rgba(255,255,255,0.07);
           }
           .vp-bare .vp-visual-card > div[style*="position: absolute"] { display: none; }
+          /* tema chiaro: pannelli bianchi pieni, bordo sottile e ombra morbida, con un alone del brand dietro */
+          html:not(.dark) .vp-bare .vp-visual-card {
+            --vp-panel: #ffffff;
+            --vp-panel-soft: #ffffff;
+            --vp-panel-subtle: #f6f7fb;
+            --vp-border: rgba(15,23,42,0.08);
+            --vp-border-soft: rgba(15,23,42,0.06);
+            position: relative;
+          }
+          html:not(.dark) .vp-bare .vp-visual-card::before {
+            content: ""; position: absolute; inset: 8% 6%; z-index: 0; pointer-events: none;
+            background: radial-gradient(50% 55% at 30% 40%, rgba(252,3,176,0.10), transparent 70%), radial-gradient(50% 55% at 72% 62%, rgba(4,124,249,0.10), transparent 70%);
+            filter: blur(10px);
+          }
+          html:not(.dark) .vp-bare .vp-visual-card > :not(style):not([style*="position: absolute"]) {
+            position: relative; z-index: 1;
+            filter: drop-shadow(0 22px 38px rgba(15,23,42,0.10)) drop-shadow(0 3px 8px rgba(15,23,42,0.06));
+          }
           .vp-bare .tn-wrap, .vp-bare .te-wrap { width: 100% !important; max-width: none !important; }
           @media (max-width: 640px) { .vp-bare .te-wrap { transform: none !important; } }
         `}</style>
