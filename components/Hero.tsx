@@ -1,3 +1,4 @@
+import HeroMarquee, { type MarqueeKey } from "./HeroMarquee/HeroMarquee"
 import type { ReactNode } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -35,6 +36,8 @@ type HeroProps = {
   socialProofStats?: SocialProofStat[]
 
   rightContent?: ReactNode
+  // banda con i punti forti sotto la hero
+  marquee?: MarqueeKey
 }
 
 const SHOW_PROOF_BAND = false
@@ -57,6 +60,7 @@ export default function Hero({
   socialProofBadgeSubtitle,
   socialProofStats,
   rightContent,
+  marquee,
 }: HeroProps) {
   const hasCtaProof = Boolean(ctaProofText)
 
@@ -77,7 +81,7 @@ export default function Hero({
           (#111118), così non c'è stacco con la sezione successiva
       ===================================================== */}
       <section
-        className="relative overflow-hidden bg-transparent px-5 pb-24 pt-28 md:px-6 md:pt-40 lg:flex lg:flex-1 lg:items-center lg:pb-12 lg:pt-28 text-black transition-colors duration-300 dark:text-white"
+        className="relative overflow-hidden bg-transparent px-5 pb-14 pt-28 md:px-6 md:pb-24 md:pt-40 lg:flex lg:flex-1 lg:items-center lg:pb-12 lg:pt-28 text-black transition-colors duration-300 dark:text-white"
         style={{
           fontFamily: "var(--font-lato), sans-serif",
         }}
@@ -448,6 +452,9 @@ export default function Hero({
           </div>
         </div>
       </section>
+
+      {/* PUNTI FORTI (marquee) */}
+      {marquee && <HeroMarquee variant={marquee} />}
 
       {/* =====================================================
           SOCIAL PROOF BAND

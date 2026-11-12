@@ -263,7 +263,7 @@ export default async function EcommercePage() {
 
       <div>
         {/* HERO */}
-        <Hero
+        <Hero marquee="ecommerce"
           ratingAvatars={page?.reviews?.socialProofAvatars}
           eyebrow={page?.hero?.eyebrow}
           title={page?.hero?.title}

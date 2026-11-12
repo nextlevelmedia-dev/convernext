@@ -2443,14 +2443,19 @@ function HomeConvertVisual() {
         fontWeight: 700,
         letterSpacing: ".04em",
         whiteSpace: "nowrap",
-        padding: "4px 9px",
+        padding: "4px 10px 4px 8px",
         borderRadius: 99,
-        color: "#fff",
-        background: "linear-gradient(90deg,#fc03b0,#7c3aed)",
-        boxShadow: "0 8px 20px -8px rgba(252,3,176,.7)",
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 6,
+        color: "var(--vp-text-strong)",
+        background: "var(--vp-panel)",
+        border: "1px solid var(--vp-border)",
+        boxShadow: "0 10px 24px -12px rgba(0,0,0,.45)",
         ...style,
       }}
     >
+      <i style={{ width: 6, height: 6, borderRadius: 99, flexShrink: 0, background: "linear-gradient(135deg,#fc03b0,#047cf9)" }} />
       {text}
     </b>
   )
@@ -2508,7 +2513,7 @@ function HomeConvertVisual() {
             <i style={{ width: "88%", height: 5, borderRadius: 99, marginTop: 4, background: "var(--vp-line-strong)" }} />
             <i style={{ width: "64%", height: 5, borderRadius: 99, background: "var(--vp-line-strong)" }} />
             <div style={{ position: "relative", marginTop: 8, alignSelf: "flex-start" }}>
-              <b className="hc-btn" style={{ display: "inline-block", fontSize: 9.5, fontWeight: 700, color: "#fff", padding: "7px 14px", borderRadius: 99, background: "linear-gradient(90deg,#fc03b0,#047cf9)", boxShadow: "0 8px 22px -8px rgba(252,3,176,.8)" }}>Richiedi un preventivo</b>
+              <b className="hc-btn" style={{ display: "inline-block", fontSize: 9.5, fontWeight: 700, color: "#fff", padding: "7px 14px", borderRadius: 99, background: "linear-gradient(150deg, rgba(252,3,176,.42), rgba(124,58,237,.34) 48%, rgba(4,124,249,.42))", border: "1px solid rgba(255,255,255,.16)", backdropFilter: "blur(6px)", boxShadow: "0 10px 24px -12px rgba(124,58,237,.7), inset 0 1px 0 rgba(255,255,255,.14)" }}>Richiedi un preventivo</b>
               <i className="hc-ring" style={{ position: "absolute", left: "92%", top: "50%", width: 22, height: 22, margin: "-11px 0 0 -11px", borderRadius: 99, border: "2px solid #fff" }} />
               {/* cursore */}
               <svg className="hc-cursor" width="16" height="16" viewBox="0 0 24 24" style={{ position: "absolute", left: "97%", top: "50%" }} aria-hidden>

@@ -132,7 +132,7 @@
   transition: background 0.35s ease;
 }
 
-.services-grid-card:hover {
+.services-grid-card:is(:hover, .is-focus) {
   transform: translateY(-8px);
 
   border-color: transparent;
@@ -142,7 +142,7 @@
     0 28px 60px rgba(15, 23, 42, 0.1);
 }
 
-.services-grid-card:hover::before {
+.services-grid-card:is(:hover, .is-focus)::before {
   background: linear-gradient(
     135deg,
     rgba(252, 3, 176, 0.75),
@@ -261,9 +261,9 @@
   transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.services-grid-card:hover .services-grid-video,
-.services-grid-card:hover .services-grid-image,
-.services-grid-card:hover .services-grid-lottie-wrapper {
+.services-grid-card:is(:hover, .is-focus) .services-grid-video,
+.services-grid-card:is(:hover, .is-focus) .services-grid-image,
+.services-grid-card:is(:hover, .is-focus) .services-grid-lottie-wrapper {
   transform: scale(1.035);
 }
 
@@ -391,7 +391,7 @@
     background 0.3s ease;
 }
 
-.services-grid-card:hover .services-grid-arrow {
+.services-grid-card:is(:hover, .is-focus) .services-grid-arrow {
   transform: translateX(3px);
 
   color: #ffffff;
@@ -479,7 +479,7 @@
   box-shadow: none;
 }
 
-.dark .services-grid-card:hover {
+.dark .services-grid-card:is(:hover, .is-focus) {
   border-color: transparent;
 
   box-shadow: 0 28px 60px rgba(0, 0, 0, 0.3);
@@ -585,7 +585,7 @@
     border-radius: 22px;
   }
 
-  .services-grid-card:hover {
+  .services-grid-card:is(:hover, .is-focus) {
     transform: none;
   }
 

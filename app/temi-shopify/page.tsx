@@ -273,7 +273,7 @@ export default async function TemiShopifyPage() {
 
       <div>
         {/* HERO */}
-        <Hero
+        <Hero marquee="temi-shopify"
           ratingAvatars={page?.reviews?.socialProofAvatars}
           eyebrow={page?.hero?.eyebrow}
           title={page?.hero?.title}

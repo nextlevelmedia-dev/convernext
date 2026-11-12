@@ -212,6 +212,50 @@ function ServiceMedia({ service }: { service: Service }) {
   )
 }
 
+/*
+ * Da mobile non c'è hover: la card al centro dello schermo si "accende"
+ * come al passaggio del mouse (come le card del metodo).
+ */
+function useFocusOnScroll(ref: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const list = ref.current
+    if (!list) return
+    const mq = window.matchMedia("(max-width: 639px)")
+    let frame = 0
+    const update = () => {
+      frame = 0
+      const cards = Array.from(list.children) as HTMLElement[]
+      if (!mq.matches) {
+        cards.forEach((c) => c.classList.remove("is-focus"))
+        return
+      }
+      const mid = window.innerHeight / 2
+      let best: HTMLElement | null = null
+      let bestDist = Infinity
+      cards.forEach((c) => {
+        const r = c.getBoundingClientRect()
+        const d = Math.abs(r.top + r.height / 2 - mid)
+        if (d < bestDist && r.bottom > 0 && r.top < window.innerHeight) {
+          bestDist = d
+          best = c
+        }
+      })
+      cards.forEach((c) => c.classList.toggle("is-focus", c === best && bestDist < window.innerHeight * 0.4))
+    }
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", onScroll)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
+    }
+  }, [ref])
+}
+
 export default function ServicesGrid({
   titleHighlight,
   titleNormal,
@@ -221,6 +265,9 @@ export default function ServicesGrid({
   ctaHref = "/contatti",
   wide = false,
 }: Props) {
+  const cardsRef = useRef<HTMLDivElement>(null)
+  useFocusOnScroll(cardsRef)
+
   if (!services.length) return null
 
   return (
@@ -258,7 +305,7 @@ export default function ServicesGrid({
           </div>
         )}
 
-        <div className={`services-grid-cards${wide ? " services-grid-cards--wide" : ""}`}>
+        <div ref={cardsRef} className={`services-grid-cards${wide ? " services-grid-cards--wide" : ""}`}>
           {services.map((service, index) => (
             <Link
               href={service.href || "/contatti"}

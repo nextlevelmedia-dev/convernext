@@ -204,7 +204,7 @@ export default async function OttimizzazioneConversioniPage() {
 
       <div>
         {/* HERO */}
-        <Hero
+        <Hero marquee="cro"
           ratingAvatars={page?.reviews?.socialProofAvatars}
           eyebrow={page?.hero?.eyebrow}
           title={page?.hero?.title}

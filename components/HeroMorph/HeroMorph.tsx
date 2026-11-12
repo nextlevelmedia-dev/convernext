@@ -210,7 +210,7 @@ export default function HeroMorph() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[560px] select-none pt-6 md:pt-10"
+      className="relative mx-auto -mt-8 w-full max-w-[560px] select-none pt-6 md:mt-0 md:pt-10"
       onPointerEnter={(e) => e.pointerType === "mouse" && hold(true)}
       onPointerLeave={(e) => e.pointerType === "mouse" && hold(false)}
     >

@@ -251,7 +251,7 @@ export default async function SitiWebPage() {
 
       <div>
         {/* HERO */}
-        <Hero
+        <Hero marquee="siti-web"
           ratingAvatars={data?.reviews?.socialProofAvatars}
           eyebrow={data?.hero?.eyebrow}
           title={data?.hero?.title}

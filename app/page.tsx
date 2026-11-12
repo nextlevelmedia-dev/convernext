@@ -249,7 +249,7 @@ export default async function Home() {
 
       <div>
         {/* HERO */}
-        <Hero {...page?.hero} ratingAvatars={page?.reviews?.socialProofAvatars} rightContent={<HeroMorph />} />
+        <Hero marquee="home" {...page?.hero} ratingAvatars={page?.reviews?.socialProofAvatars} rightContent={<HeroMorph />} />
 
         {/* RECENSIONI */}
         <ReviewsSection
