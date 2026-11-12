@@ -2364,6 +2364,192 @@ function HomeImmersiveVisual() {
   )
 }
 
+/* Home 1: analisi del business. Cliente target, offerta e mappa di posizionamento sui concorrenti */
+function HomeStrategyVisual() {
+  const persona: [string, string][] = [
+    ["Cosa cerca", "Un servizio affidabile, subito"],
+    ["Dubbi", "Prezzo, tempi, garanzie"],
+    ["Cosa lo convince", "Prove reali e chiarezza"],
+  ]
+  const rivals: [number, number][] = [[22, 30], [34, 62], [62, 70], [28, 78], [70, 40]]
+  return (
+    <VisualShell>
+      <style>{`
+        @keyframes hs-you { 0%, 15% { left: 46%; top: 52%; } 45%, 100% { left: 80%; top: 18%; } }
+        @keyframes hs-ring { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.4); opacity: 0; } }
+        @keyframes hs-row { 0%, 6% { opacity: .35; } 14%, 100% { opacity: 1; } }
+        .hs-you { animation: hs-you 7s cubic-bezier(.6,.05,.3,1) infinite alternate; }
+        .hs-you::after { content: ""; position: absolute; inset: 0; border-radius: 99px; border: 2px solid #fc03b0; animation: hs-ring 1.8s ease-out infinite; }
+        .hs-row { animation: hs-row 7s ease infinite alternate; }
+        @media (prefers-reduced-motion: reduce) { .hs-you, .hs-you::after, .hs-row { animation: none; } .hs-you { left: 80%; top: 18%; } }
+      `}</style>
+      <div style={{ position: "relative", zIndex: 2, width: "86%", display: "grid", gridTemplateColumns: "1.05fr 1fr", gap: 10 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 26, height: 26, borderRadius: 99, background: "linear-gradient(135deg,#fc03b0,#047cf9)", display: "grid", placeItems: "center" }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round"><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></svg>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <b style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".1em", color: "var(--vp-muted)" }}>CLIENTE TARGET</b>
+                <b style={{ fontSize: 11.5, fontWeight: 700, color: "var(--vp-text-strong)" }}>Chi ti sceglie e perché</b>
+              </div>
+            </div>
+            {persona.map(([k, v], i) => (
+              <div key={k} className="hs-row" style={{ animationDelay: `${i * 0.5}s`, display: "flex", justifyContent: "space-between", gap: 8, padding: "6px 8px", borderRadius: 8, background: "var(--vp-panel-subtle)", border: "1px solid var(--vp-border-soft)" }}>
+                <b style={{ fontSize: 9.5, fontWeight: 700, color: "var(--vp-text)", whiteSpace: "nowrap" }}>{k}</b>
+                <b style={{ fontSize: 9.5, fontWeight: 500, color: "var(--vp-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{v}</b>
+              </div>
+            ))}
+          </div>
+          <div style={{ borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 12, display: "flex", flexDirection: "column", gap: 7 }}>
+            <b style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".1em", color: "var(--vp-muted)" }}>LA TUA OFFERTA</b>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {["Valore unico", "Garanzie", "Prezzo chiaro"].map((t) => (
+                <b key={t} style={{ fontSize: 9.5, fontWeight: 600, padding: "4px 9px", borderRadius: 99, border: "1px solid rgba(124,58,237,.45)", background: "rgba(124,58,237,.12)", color: "var(--vp-text)" }}>{t}</b>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div style={{ borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", padding: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+          <b style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".1em", color: "var(--vp-muted)" }}>POSIZIONAMENTO</b>
+          <div style={{ position: "relative", flex: 1, minHeight: 150, borderRadius: 8, background: "var(--vp-panel-subtle)", border: "1px solid var(--vp-border-soft)", overflow: "hidden" }}>
+            <i style={{ position: "absolute", left: "50%", top: 6, bottom: 6, width: 1, background: "var(--vp-line-strong)" }} />
+            <i style={{ position: "absolute", top: "50%", left: 6, right: 6, height: 1, background: "var(--vp-line-strong)" }} />
+            <i style={{ position: "absolute", right: 4, top: 4, width: "44%", height: "40%", borderRadius: 8, background: "radial-gradient(circle, rgba(252,3,176,.18), transparent 70%)" }} />
+            {rivals.map(([x, y], i) => (
+              <i key={i} style={{ position: "absolute", left: `${x}%`, top: `${y}%`, width: 9, height: 9, margin: "-4.5px 0 0 -4.5px", borderRadius: 99, background: "var(--vp-muted-soft)" }} />
+            ))}
+            <i className="hs-you" style={{ position: "absolute", width: 13, height: 13, margin: "-6.5px 0 0 -6.5px", borderRadius: 99, background: "linear-gradient(135deg,#fc03b0,#047cf9)", boxShadow: "0 0 14px rgba(252,3,176,.7)" }} />
+            <b style={{ position: "absolute", right: 8, bottom: 6, fontSize: 8.5, fontWeight: 600, color: "var(--vp-muted)" }}>● concorrenti</b>
+          </div>
+          <b style={{ fontSize: 10, fontWeight: 600, color: "var(--vp-text)" }}>Lo spazio libero dove crei valore</b>
+        </div>
+      </div>
+    </VisualShell>
+  )
+}
+
+/* Home 2: hero stilizzata di un sito a conversione. Ogni elemento ha il suo compito
+   (beneficio, prova, CTA) e il cursore arriva fino alla richiesta */
+function HomeConvertVisual() {
+  const tag = (text: string, style: React.CSSProperties, delay: string) => (
+    <b
+      className="hc-tag"
+      style={{
+        position: "absolute",
+        animationDelay: delay,
+        fontSize: 9,
+        fontWeight: 700,
+        letterSpacing: ".04em",
+        whiteSpace: "nowrap",
+        padding: "4px 9px",
+        borderRadius: 99,
+        color: "#fff",
+        background: "linear-gradient(90deg,#fc03b0,#7c3aed)",
+        boxShadow: "0 8px 20px -8px rgba(252,3,176,.7)",
+        ...style,
+      }}
+    >
+      {text}
+    </b>
+  )
+  return (
+    <VisualShell>
+      <style>{`
+        @keyframes hc-tag { 0%, 6% { opacity: 0; transform: translateY(4px) scale(.96); } 12%, 88% { opacity: 1; transform: none; } 96%, 100% { opacity: 0; } }
+        @keyframes hc-cursor {
+          0% { transform: translate(120px, 50px); opacity: 0; }
+          10%, 30% { transform: translate(120px, 50px); opacity: 1; }
+          55%, 92% { transform: translate(0, 0); opacity: 1; }
+          100% { transform: translate(0, 0); opacity: 0; }
+        }
+        @keyframes hc-press { 0%, 56% { transform: scale(1); } 60% { transform: scale(.94); } 64%, 100% { transform: scale(1); } }
+        @keyframes hc-ring { 0%, 57% { opacity: 0; transform: scale(.4); } 60% { opacity: .9; } 74%, 100% { opacity: 0; transform: scale(2.2); } }
+        @keyframes hc-toast { 0%, 64% { opacity: 0; transform: translateY(8px); } 70%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+        .hc-tag { opacity: 0; animation: hc-tag 7s ease infinite; }
+        .hc-cursor { animation: hc-cursor 7s cubic-bezier(.6,.05,.3,1) infinite; }
+        .hc-btn { animation: hc-press 7s ease infinite; }
+        .hc-ring { animation: hc-ring 7s ease-out infinite; }
+        .hc-toast { opacity: 0; animation: hc-toast 7s ease infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .hc-tag, .hc-toast { animation: none; opacity: 1; }
+          .hc-cursor, .hc-btn, .hc-ring { animation: none; }
+          .hc-ring { opacity: 0; }
+        }
+      `}</style>
+      <div style={{ position: "relative", zIndex: 2, width: "84%", borderRadius: 14, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", overflow: "visible", boxShadow: "0 24px 50px -28px rgba(0,0,0,.6)" }}>
+        {/* barra browser + menu */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 12px", borderBottom: "1px solid var(--vp-border-soft)" }}>
+          <div style={{ display: "flex", gap: 5 }}>
+            {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+              <i key={c} style={{ width: 7, height: 7, borderRadius: 99, background: c }} />
+            ))}
+          </div>
+          <i style={{ width: 46, height: 7, borderRadius: 99, marginLeft: 8, background: "linear-gradient(90deg,#fc03b0,#047cf9)" }} />
+          <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+            {[22, 26, 20].map((w, i) => (
+              <i key={i} style={{ width: w, height: 5, borderRadius: 99, background: "var(--vp-line-strong)" }} />
+            ))}
+          </div>
+        </div>
+
+        {/* hero */}
+        <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1.25fr 1fr", gap: 14, padding: "22px 18px 18px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              {[0, 1, 2, 3, 4].map((i) => (
+                <svg key={i} width="9" height="9" viewBox="0 0 24 24" fill="#fbbf24" aria-hidden><path d="M12 2l3 7h7l-5.6 4.3L18.5 21 12 16.8 5.5 21l2.1-7.7L2 9h7z" /></svg>
+              ))}
+              <i style={{ width: 40, height: 5, borderRadius: 99, marginLeft: 4, background: "var(--vp-line-strong)" }} />
+            </div>
+            <i style={{ width: "92%", height: 12, borderRadius: 4, background: "var(--vp-text-strong)", opacity: .85 }} />
+            <i style={{ width: "70%", height: 12, borderRadius: 4, background: "linear-gradient(90deg,#fc03b0,#047cf9)" }} />
+            <i style={{ width: "88%", height: 5, borderRadius: 99, marginTop: 4, background: "var(--vp-line-strong)" }} />
+            <i style={{ width: "64%", height: 5, borderRadius: 99, background: "var(--vp-line-strong)" }} />
+            <div style={{ position: "relative", marginTop: 8, alignSelf: "flex-start" }}>
+              <b className="hc-btn" style={{ display: "inline-block", fontSize: 9.5, fontWeight: 700, color: "#fff", padding: "7px 14px", borderRadius: 99, background: "linear-gradient(90deg,#fc03b0,#047cf9)", boxShadow: "0 8px 22px -8px rgba(252,3,176,.8)" }}>Richiedi un preventivo</b>
+              <i className="hc-ring" style={{ position: "absolute", left: "92%", top: "50%", width: 22, height: 22, margin: "-11px 0 0 -11px", borderRadius: 99, border: "2px solid #fff" }} />
+              {/* cursore */}
+              <svg className="hc-cursor" width="16" height="16" viewBox="0 0 24 24" style={{ position: "absolute", left: "97%", top: "50%" }} aria-hidden>
+                <path d="M4 2l16 9-7 2-3 7z" fill="#fff" stroke="#0b0f1d" strokeWidth="1.5" strokeLinejoin="round" />
+              </svg>
+            </div>
+          </div>
+          {/* immagine prodotto/servizio */}
+          <div style={{ position: "relative", borderRadius: 10, minHeight: 112, overflow: "hidden", border: "1px solid var(--vp-border-soft)", background: "linear-gradient(150deg, rgba(252,3,176,.28), rgba(124,58,237,.22) 45%, rgba(4,124,249,.28))" }}>
+            <i style={{ position: "absolute", left: "22%", top: "18%", width: "56%", aspectRatio: "1", borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), rgba(255,255,255,.08) 60%, transparent 70%)" }} />
+            <i style={{ position: "absolute", left: 10, right: 10, bottom: 10, height: 18, borderRadius: 6, background: "rgba(0,0,0,.25)", backdropFilter: "blur(4px)" }} />
+          </div>
+        </div>
+
+        {/* strip loghi / prove */}
+        <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", padding: "10px 18px 14px", borderTop: "1px solid var(--vp-border-soft)" }}>
+          {[34, 28, 38, 30, 26].map((w, i) => (
+            <i key={i} style={{ width: w, height: 7, borderRadius: 3, background: "var(--vp-muted-soft)" }} />
+          ))}
+        </div>
+
+        {/* etichette: il compito di ogni elemento */}
+        {tag("Il beneficio, subito", { left: "-4%", top: "30%" }, "0s")}
+        {tag("Prove reali", { left: "30%", top: "13%" }, ".6s")}
+        {tag("Un'azione chiara", { left: "16%", bottom: "6%" }, "1.2s")}
+
+        {/* conferma */}
+        <div className="hc-toast" style={{ position: "absolute", right: "-5%", bottom: "16%", display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 12, border: "1px solid var(--vp-border)", background: "var(--vp-panel)", boxShadow: "0 14px 30px -12px rgba(0,0,0,.55)" }}>
+          <span style={{ width: 18, height: 18, borderRadius: 99, background: "#16a34a", display: "grid", placeItems: "center" }}>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12l5 5 9-10" /></svg>
+          </span>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <b style={{ fontSize: 10, fontWeight: 700, color: "var(--vp-text-strong)" }}>Nuova richiesta</b>
+            <b style={{ fontSize: 8.5, fontWeight: 500, color: "var(--vp-muted)" }}>ti hanno scelto</b>
+          </div>
+        </div>
+      </div>
+    </VisualShell>
+  )
+}
+
 /* Home: referente diretto, una conversazione con il fondatore */
 function HomeReferenteVisual() {
   const msgs: [boolean, string][] = [
@@ -4275,6 +4461,10 @@ export function ValuePropVisual({
     case "temi-editor":
       return <TemiEditorVisual />
 
+    case "home-strategy":
+      return <HomeStrategyVisual />
+    case "home-convert":
+      return <HomeConvertVisual />
     case "home-immersive":
       return <HomeImmersiveVisual />
 

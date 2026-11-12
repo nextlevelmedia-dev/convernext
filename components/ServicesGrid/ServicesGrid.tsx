@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import "./ServicesGrid.css"
+import ServiceRecap, { serviceRecapFor } from "./ServiceRecap"
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false })
 
@@ -164,6 +165,10 @@ function LazyLottie({ file }: { file: string }) {
 }
 
 function ServiceMedia({ service }: { service: Service }) {
+  // schermate vere dei progetti, nello stile del recap finale
+  const recap = serviceRecapFor(service.href)
+  if (recap) return <ServiceRecap variant={recap} />
+
   if (
     service.mediaType === "video" &&
     (service.videoWebm || service.videoMp4)
