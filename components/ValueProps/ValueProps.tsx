@@ -406,7 +406,7 @@ export default function ValueProps({ items, bare = true }: ValuePropsProps & { b
 
   return (
     <section
-      className={`${bare ? "vp-bare " : ""}bg-transparent px-6 py-24 text-slate-950 dark:text-white`}
+      className={`${bare ? "vp-bare " : ""}overflow-x-clip bg-transparent px-6 py-24 text-slate-950 dark:text-white`}
       style={{
         fontFamily: "var(--font-lato), sans-serif",
       }}

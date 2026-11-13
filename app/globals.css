@@ -99,9 +99,18 @@ header a.cta-bubble *,
 .dark .main-bg h2,
 .dark .main-bg h3,
 .dark .main-bg h4,
-.dark .main-bg p,
 .dark .main-bg span:not([class*="bg-brand"]),
 .dark .main-bg a:not([class*="bg-brand"]) {
+  color: #ffffff;
+}
+
+/* testo del body in dark: grigio chiaro; titoli e paragrafi in grassetto
+   (nomi, etichette, link) restano bianchi */
+.dark .main-bg p {
+  color: #b6b8c4;
+}
+
+.dark .main-bg p:is([class*="font-bold"], [class*="font-semibold"], [class~="dark:text-white"], .review-card-author) {
   color: #ffffff;
 }
 

@@ -2589,11 +2589,11 @@ function HomeReferenteVisual() {
               maxWidth: "82%",
               padding: "8px 11px",
               borderRadius: me ? "12px 12px 4px 12px" : "12px 12px 12px 4px",
-              background: me ? "linear-gradient(120deg,#fc03b0,#047cf9)" : "var(--vp-panel-subtle)",
-              border: me ? "none" : "1px solid var(--vp-border-soft)",
+              background: me ? "linear-gradient(150deg, rgba(252,3,176,.14), rgba(124,58,237,.12) 50%, rgba(4,124,249,.14))" : "var(--vp-panel-subtle)",
+              border: me ? "1px solid rgba(124,58,237,.3)" : "1px solid var(--vp-border-soft)",
             }}
           >
-            <b style={{ fontSize: 11, fontWeight: 500, lineHeight: 1.4, color: me ? "#fff" : "var(--vp-text)" }}>{text}</b>
+            <b style={{ fontSize: 11, fontWeight: 500, lineHeight: 1.4, color: "var(--vp-text)" }}>{text}</b>
           </div>
         ))}
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", paddingTop: 4 }}>
