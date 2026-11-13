@@ -64,11 +64,13 @@ export default function TeamIntro({
                 />
 
                 {(name || role) && (
-                  <figcaption className="absolute inset-x-3 bottom-3 rounded-2xl border border-white/15 bg-black/35 px-5 py-4 backdrop-blur-md">
+                  // niente riquadro: sfumatura scura dal basso e testo direttamente sulla foto
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent px-6 pb-6 pt-24">
                     {name && (
                       <strong
-                        className="block text-lg text-white"
+                        className="block text-[22px] leading-tight tracking-[-0.02em]"
                         style={{
+                          color: "#fff",
                           fontFamily: "var(--font-archivo), sans-serif",
                           fontWeight: 600,
                         }}
@@ -77,7 +79,11 @@ export default function TeamIntro({
                       </strong>
                     )}
                     {role && (
-                      <span className="mt-0.5 block text-sm text-white/75">
+                      <span
+                        className="mt-1.5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em]"
+                        style={{ color: "rgb(255 255 255 / 0.72)" }}
+                      >
+                        <span aria-hidden className="h-px w-6 shrink-0 bg-brand-gradient" />
                         {role}
                       </span>
                     )}
