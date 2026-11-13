@@ -170,6 +170,7 @@ const query = `*[_type == "page" && slug.current == "ecommerce"][0]{
     highlightLast,
     titleHighlight,
     titleNormal,
+    titleAfter,
     subtitle,
     ctaText,
     ctaHref,

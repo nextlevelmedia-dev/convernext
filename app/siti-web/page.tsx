@@ -156,6 +156,7 @@ async function getPageData() {
       highlightLast,
       titleHighlight,
       titleNormal,
+      titleAfter,
       subtitle,
       ctaText,
       ctaHref,

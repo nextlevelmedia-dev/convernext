@@ -10,6 +10,7 @@ interface ValuePropItem {
   titleHighlight?: string
   titleNormal?: string
   highlightLast?: boolean
+  titleAfter?: string
   subtitle?: string
   ctaText?: string
   ctaHref?: string
@@ -154,6 +155,10 @@ function FitVisual({ children }: { children: React.ReactNode }) {
     const host = ref.current
     if (!host) return
     let raf = 0
+    // ultima scala applicata e larghezza misurata: si ricalcola solo se la colonna
+    // cambia davvero larghezza, così le animazioni interne non fanno "scattare" la grafica
+    let lastScale = 0
+    let lastWidth = 0
     const fit = () => {
       const card = host.querySelector<HTMLElement>(".vp-visual-card")
       if (!card) return
@@ -185,10 +190,11 @@ function FitVisual({ children }: { children: React.ReactNode }) {
       // rimpicciolito) finché non occupa l'intera larghezza della colonna
       // misura l'ingombro reale del disegno (unione dei suoi elementi visibili, esclusi
       // sfondi a tutta area) e lo scala per occupare l'intera larghezza della colonna
+      const cw = card.clientWidth
+      if (lastScale && Math.abs(cw - lastWidth) < 2) return
       content.style.transform = ""
       content.style.marginBottom = ""
       content.style.zoom = ""
-      const cw = card.clientWidth
       const base = content.getBoundingClientRect()
       if (!base.width || !base.height || !cw) return
       let l = Infinity, t = Infinity, r = -Infinity, btm = -Infinity
@@ -214,6 +220,8 @@ function FitVisual({ children }: { children: React.ReactNode }) {
       if (!isFinite(l)) return
       const uw = r - l, uh = btm - t
       const s = Math.max(0.6, Math.min(2.4, cw / uw))
+      lastScale = s
+      lastWidth = cw
       const ux = l - base.left, uy = t - base.top
       // il riquadro può non partire dal bordo della colonna (margini auto): se ne tiene conto
       const offX = base.left - card.getBoundingClientRect().left
@@ -354,6 +362,7 @@ function ValuePropRow({
                 {item.titleHighlight && (
                   <span className="bg-brand-gradient bg-clip-text text-transparent">{item.titleHighlight}</span>
                 )}
+                {item.titleAfter && ` ${item.titleAfter.trim()}`}
               </>
             ) : (
               <>

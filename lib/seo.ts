@@ -6,7 +6,7 @@ export const site = {
   url: "https://convernext.com",
   description:
     "Studio digitale specializzato in realizzazione di siti web, sviluppo ecommerce Shopify e ottimizzazione delle conversioni (CRO). Trasformiamo il traffico in clienti con dati reali e UX strategica.",
-  email: "nextlevelmedia.creator@gmail.com",
+  email: "info@convernext.com",
   phone: "+39 3334187542",
   phoneDisplay: "+39 333 418 7542",
   vatId: "01831470198",

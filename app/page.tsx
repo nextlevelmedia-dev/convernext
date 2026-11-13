@@ -133,6 +133,7 @@ const query = `*[_type == "page" && slug.current == "home"][0]{
     highlightLast,
     titleHighlight,
     titleNormal,
+    titleAfter,
     subtitle,
     ctaText,
     ctaHref,

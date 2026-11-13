@@ -1333,6 +1333,13 @@ defineField({
             }),
 
             defineField({
+              name: "titleAfter",
+              title: "Titolo - testo dopo il gradient (opzionale)",
+              description: "Con 'Parte in gradient in fondo al titolo' attivo: parte normale → gradient → questo testo",
+              type: "string",
+            }),
+
+            defineField({
               name: "subtitle",
               title: "Paragrafo",
               type: "text",

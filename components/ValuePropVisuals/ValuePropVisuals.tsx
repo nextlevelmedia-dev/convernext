@@ -130,336 +130,627 @@ function VisualShell({ children }: { children: ReactNode }) {
 ========================================================= */
 
 function EcommerceUXVisual() {
+  // scheda prodotto animata (ciclo 8s): il cursore sceglie il colore, aggiunge al carrello,
+  // il prodotto vola nel carrello e compare la conferma. I bordi del disegno sono fissi
+  // (le card laterali si muovono di pochi px) così il ridimensionamento non scatta.
   return (
     <VisualShell>
       <style>{`
-        @keyframes ux-float {
-          0%,100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
+        .ux2 {
+          --u-card: #ffffff;
+          --u-card-b: rgba(15,23,42,0.09);
+          --u-t: #0f172a;
+          --u-m: rgba(15,23,42,0.52);
+          --u-chip: #f1f3f8;
         }
-
-        @keyframes ux-pulse {
-          0%,100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.7;
-            transform: scale(0.96);
-          }
+        .dark .ux2 {
+          --u-card: #12203d;
+          --u-card-b: rgba(255,255,255,0.10);
+          --u-t: #ffffff;
+          --u-m: rgba(255,255,255,0.55);
+          --u-chip: rgba(255,255,255,0.06);
         }
+        .ux2 * { transform-box: fill-box; }
 
-        @keyframes ux-slide-in {
-          from {
-            opacity: 0;
-            transform: translateX(-12px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
+        @keyframes ux2-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+        .ux2-f1 { animation: ux2-float 5s ease-in-out infinite; }
+        .ux2-f2 { animation: ux2-float 5s ease-in-out infinite -1.6s; }
+        .ux2-f3 { animation: ux2-float 5s ease-in-out infinite -3.2s; }
+
+        @keyframes ux2-cursor {
+          0%, 6%   { transform: translate(300px, 262px); }
+          16%, 20% { transform: translate(222px, 246px); }
+          30%, 38% { transform: translate(240px, 246px); }
+          52%, 62% { transform: translate(262px, 292px); }
+          80%, 100% { transform: translate(300px, 262px); }
         }
+        .ux2-cursor { animation: ux2-cursor 8s cubic-bezier(.6,0,.3,1) infinite; transform-box: view-box; }
 
-        @keyframes ux-cart {
-          0% { transform: translateX(0); }
-          60% { transform: translateX(6px); }
-          100% { transform: translateX(0); }
+        @keyframes ux2-tap {
+          0%, 17%, 23%, 35%, 41%, 58%, 66%, 100% { opacity: 0; transform: scale(.3); }
+          18%, 36%, 59% { opacity: .9; transform: scale(.5); }
+          21%, 39%, 63% { opacity: 0; transform: scale(1.5); }
         }
+        .ux2-tap { animation: ux2-tap 8s linear infinite; transform-origin: center; }
 
-        @keyframes ux-badge {
-          0%,100% { transform: scale(1); }
-          50% { transform: scale(1.15); }
+        @keyframes ux2-ring {
+          0%, 17%   { transform: translateX(0); }
+          19%, 35%  { transform: translateX(18px); }
+          37%, 94%  { transform: translateX(36px); }
+          97%, 100% { transform: translateX(0); }
         }
+        .ux2-ring { animation: ux2-ring 8s ease infinite; }
 
-        .ux-phone {
-          animation: ux-float 3.5s ease-in-out infinite;
+        @keyframes ux2-color {
+          0%, 17%   { fill: #fc03b0; stroke: #fc03b0; }
+          19%, 35%  { fill: #7c3aed; stroke: #7c3aed; }
+          37%, 94%  { fill: #047cf9; stroke: #047cf9; }
+          97%, 100% { fill: #fc03b0; stroke: #fc03b0; }
         }
+        .ux2-prod { animation: ux2-color 8s ease infinite; }
+        .ux2-prod-s { animation: ux2-color 8s ease infinite; fill: none !important; }
 
-        .ux-heart1 {
-          animation: ux-pulse 2s ease-in-out infinite;
+        @keyframes ux2-btn {
+          0%, 58%, 66%, 100% { transform: scale(1); }
+          60% { transform: scale(.94); }
+          63% { transform: scale(1.03); }
         }
+        .ux2-btn { animation: ux2-btn 8s ease infinite; transform-origin: center; }
 
-        .ux-heart2 {
-          animation: ux-pulse 2s ease-in-out infinite 0.6s;
+        @keyframes ux2-fly {
+          0%, 59%  { opacity: 0; transform: translate(0,0) scale(1); }
+          61%      { opacity: 1; transform: translate(0,0) scale(1); }
+          71%      { opacity: 1; transform: translate(48px,-66px) scale(.25); }
+          73%, 100% { opacity: 0; transform: translate(48px,-66px) scale(.25); }
         }
+        .ux2-fly { animation: ux2-fly 8s cubic-bezier(.5,0,.4,1) infinite; transform-origin: center; }
 
-        .ux-cart {
-          animation: ux-cart 2.5s ease-in-out infinite 1s;
+        @keyframes ux2-n1 { 0%, 71% { opacity: 1 } 72%, 95% { opacity: 0 } 97%, 100% { opacity: 1 } }
+        @keyframes ux2-n2 { 0%, 71% { opacity: 0 } 72%, 95% { opacity: 1 } 97%, 100% { opacity: 0 } }
+        .ux2-n1 { animation: ux2-n1 8s linear infinite; }
+        .ux2-n2 { animation: ux2-n2 8s linear infinite; }
+        @keyframes ux2-badge { 0%, 71%, 78%, 100% { transform: scale(1) } 74% { transform: scale(1.35) } }
+        .ux2-badge { animation: ux2-badge 8s ease infinite; transform-origin: center; }
+
+        @keyframes ux2-toast {
+          0%, 63%  { opacity: 0; transform: translateX(14px); }
+          67%, 92% { opacity: 1; transform: translateX(0); }
+          96%, 100% { opacity: 0; transform: translateX(14px); }
         }
+        .ux2-toast { animation: ux2-toast 8s ease infinite; }
 
-        .ux-badge {
-          animation: ux-badge 2s ease-in-out infinite 0.3s;
-        }
+        @keyframes ux2-heart { 0%, 40%, 100% { fill-opacity: 0 } 45%, 92% { fill-opacity: 1 } }
+        .ux2-heart { animation: ux2-heart 8s ease infinite; }
 
-        .ux-item1 {
-          animation: ux-slide-in 0.5s ease forwards 0.2s;
-          opacity: 0;
-        }
+        @keyframes ux2-spark { 0% { stroke-dashoffset: 120 } 40%, 100% { stroke-dashoffset: 0 } }
+        .ux2-spark { stroke-dasharray: 120; animation: ux2-spark 8s ease-out infinite; }
 
-        .ux-item2 {
-          animation: ux-slide-in 0.5s ease forwards 0.5s;
-          opacity: 0;
-        }
-
-        .ux-item3 {
-          animation: ux-slide-in 0.5s ease forwards 0.8s;
-          opacity: 0;
+        @media (prefers-reduced-motion: reduce) {
+          .ux2 *, .ux2-cursor { animation: none !important; }
+          .ux2-toast, .ux2-n1 { opacity: 1; }
+          .ux2-n2, .ux2-fly, .ux2-tap { opacity: 0; }
+          .ux2-cursor { transform: translate(262px, 292px); }
+          .ux2-prod { fill: #fc03b0; stroke: #fc03b0; }
+          .ux2-spark { stroke-dashoffset: 0; }
         }
       `}</style>
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(ellipse at 30% 50%, rgba(252,3,176,0.10) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(4,124,249,0.08) 0%, transparent 60%)",
-        }}
-      />
-
       <svg
-        viewBox="0 0 520 320"
-        style={{ width: "90%", maxWidth: 480 }}
+        className="ux2"
+        viewBox="0 0 520 340"
+        style={{ width: "92%", maxWidth: 500 }}
         xmlns="http://www.w3.org/2000/svg"
+        fontFamily="inherit"
       >
         <defs>
-          <linearGradient id="ux-g1" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="ux2-g" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor={gradStart} />
             <stop offset="100%" stopColor={gradEnd} />
           </linearGradient>
-
-          <linearGradient id="ux-g2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#1a2a4a" />
-            <stop offset="100%" stopColor="#0d1b38" />
+          <linearGradient id="ux2-img" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="rgba(252,3,176,0.16)" />
+            <stop offset="100%" stopColor="rgba(4,124,249,0.14)" />
           </linearGradient>
-
-          <filter id="ux-blur">
-            <feGaussianBlur stdDeviation="8" />
-          </filter>
         </defs>
 
-        <ellipse
-          cx="160"
-          cy="160"
-          rx="80"
-          ry="60"
-          fill={gradStart}
-          opacity="0.08"
-          filter="url(#ux-blur)"
-        />
+        {/* ---- card sinistra: checkout veloce ---- */}
+        <g className="ux2-f1">
+          <rect x="20" y="64" width="146" height="62" rx="14" fill="var(--u-card)" stroke="var(--u-card-b)" />
+          <circle cx="40" cy="84" r="9" fill="url(#ux2-g)" />
+          <path d="M36 84 l3 3 l5 -6" stroke="#fff" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <text x="56" y="81" fontSize="10" fontWeight="700" fill="var(--u-t)">Checkout in 1 tap</text>
+          <text x="56" y="92" fontSize="7.5" fill="var(--u-m)">senza registrazione</text>
+          {["Carta", "Wallet", "3 rate"].map((l, i) => (
+            <g key={l}>
+              <rect x={32 + i * 42} y="102" width="38" height="14" rx="7" fill="var(--u-chip)" stroke="var(--u-card-b)" />
+              <text x={51 + i * 42} y="111.5" fontSize="7" fontWeight="600" textAnchor="middle" fill="var(--u-t)">{l}</text>
+            </g>
+          ))}
+        </g>
 
-        <ellipse
-          cx="360"
-          cy="160"
-          rx="80"
-          ry="60"
-          fill={gradEnd}
-          opacity="0.08"
-          filter="url(#ux-blur)"
-        />
+        {/* ---- card sinistra: aggiunte al carrello ---- */}
+        <g className="ux2-f2">
+          <rect x="20" y="214" width="146" height="78" rx="14" fill="var(--u-card)" stroke="var(--u-card-b)" />
+          <text x="34" y="234" fontSize="8" fontWeight="600" fill="var(--u-m)" letterSpacing="0.6">AGGIUNTE AL CARRELLO</text>
+          <text x="34" y="258" fontSize="20" fontWeight="800" fill="url(#ux2-g)">+38%</text>
+          <path className="ux2-spark" d="M34 280 L58 276 L80 278 L104 268 L128 266 L152 252" stroke="url(#ux2-g)" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="152" cy="252" r="3" fill={gradEnd} />
+        </g>
 
-        <g className="ux-phone">
-          <rect
-            x="155"
-            y="30"
-            width="120"
-            height="210"
-            rx="18"
-            fill="url(#ux-g2)"
-            stroke="rgba(255,255,255,0.12)"
-          />
+        {/* ---- telefono ---- */}
+        <rect x="180" y="12" width="150" height="316" rx="26" fill="#0c1529" stroke="rgba(255,255,255,0.14)" />
+        <rect x="180" y="12" width="150" height="316" rx="26" fill="none" stroke="url(#ux2-g)" strokeWidth="1.4" opacity="0.45" />
+        <rect x="188" y="20" width="134" height="300" rx="20" fill="#111d38" />
+        <rect x="235" y="26" width="40" height="7" rx="3.5" fill="#000" opacity="0.55" />
 
-          <rect
-            x="155"
-            y="30"
-            width="120"
-            height="210"
-            rx="18"
-            fill="none"
-            stroke="url(#ux-g1)"
-            strokeWidth="1.5"
-            opacity="0.4"
-          />
+        {/* header: indietro + carrello */}
+        <path d="M202 45 l-5 5 l5 5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M296 45 h3 l3 10 h9 l2 -7 h-13" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="303.5" cy="58" r="1.3" fill="rgba(255,255,255,0.8)" />
+        <circle cx="310" cy="58" r="1.3" fill="rgba(255,255,255,0.8)" />
+        <g className="ux2-badge">
+          <circle cx="314" cy="43" r="6" fill="url(#ux2-g)" />
+          <text className="ux2-n1" x="314" y="45.6" fontSize="7.5" fontWeight="800" textAnchor="middle" fill="#fff">1</text>
+          <text className="ux2-n2" x="314" y="45.6" fontSize="7.5" fontWeight="800" textAnchor="middle" fill="#fff">2</text>
+        </g>
 
-          <rect
-            x="195"
-            y="36"
-            width="40"
-            height="7"
-            rx="4"
-            fill="rgba(0,0,0,0.5)"
-          />
+        {/* immagine prodotto */}
+        <rect x="196" y="66" width="118" height="102" rx="14" fill="url(#ux2-img)" stroke="rgba(255,255,255,0.06)" />
+        <ellipse cx="255" cy="152" rx="32" ry="4" fill="#000" opacity="0.25" />
+        <path className="ux2-prod-s" d="M243 102 v-8 a12 12 0 0 1 24 0 v8" strokeWidth="4" strokeLinecap="round" />
+        <rect className="ux2-prod" x="228" y="100" width="54" height="50" rx="9" />
+        <rect x="228" y="100" width="54" height="50" rx="9" fill="url(#ux2-g)" opacity="0.18" />
+        <rect x="236" y="108" width="18" height="4" rx="2" fill="#fff" opacity="0.35" />
+        <path className="ux2-heart" d="M300 80 c-2 -3 -7 -2 -7 2 c0 3 4 5 7 8 c3 -3 7 -5 7 -8 c0 -4 -5 -5 -7 -2 z" fill={gradStart} stroke="rgba(255,255,255,0.75)" strokeWidth="1.2" />
+        <circle cx="247" cy="176" r="2.4" fill="url(#ux2-g)" />
+        <circle cx="255" cy="176" r="1.8" fill="rgba(255,255,255,0.25)" />
+        <circle cx="263" cy="176" r="1.8" fill="rgba(255,255,255,0.25)" />
 
-          <rect
-            x="165"
-            y="52"
-            width="100"
-            height="80"
-            rx="10"
-            fill="rgba(255,255,255,0.04)"
-            stroke="rgba(255,255,255,0.06)"
-          />
+        {/* dettagli */}
+        <text x="198" y="196" fontSize="11" fontWeight="700" fill="#fff">Borsa Weekender</text>
+        <text x="198" y="209" fontSize="8.5" fill="#fbbf24" letterSpacing="0.5">★★★★★</text>
+        <text x="248" y="209" fontSize="7.5" fill="rgba(255,255,255,0.55)">4,9 (1.240)</text>
+        <text x="198" y="229" fontSize="14" fontWeight="800" fill="#fff">€ 89</text>
+        <text x="234" y="229" fontSize="8.5" fill="rgba(255,255,255,0.4)" textDecoration="line-through">€ 119</text>
+        <rect x="264" y="220" width="30" height="12" rx="6" fill="rgba(252,3,176,0.18)" />
+        <text x="279" y="229" fontSize="7.5" fontWeight="800" textAnchor="middle" fill="#ff5fcf">-25%</text>
 
-          <rect
-            x="185"
-            y="68"
-            width="60"
-            height="48"
-            rx="6"
-            fill="rgba(252,3,176,0.15)"
-          />
+        {/* colori */}
+        <circle cx="204" cy="246" r="6" fill="#fc03b0" />
+        <circle cx="222" cy="246" r="6" fill="#7c3aed" />
+        <circle cx="240" cy="246" r="6" fill="#047cf9" />
+        <circle className="ux2-ring" cx="204" cy="246" r="9" fill="none" stroke="#fff" strokeWidth="1.5" />
+        <text x="256" y="249" fontSize="7.5" fill="#34d399" fontWeight="600">✓ Arriva domani</text>
 
-          <circle
-            cx="215"
-            cy="92"
-            r="18"
-            fill="rgba(252,3,176,0.2)"
-          />
+        {/* bottone */}
+        <g className="ux2-btn">
+          <rect x="196" y="279" width="118" height="27" rx="13.5" fill="#fff" />
+          <text x="255" y="296" fontSize="9.5" fontWeight="800" textAnchor="middle" fill="#0c1529">Aggiungi al carrello</text>
+        </g>
 
-          <circle
-            cx="215"
-            cy="92"
-            r="10"
-            fill="rgba(252,3,176,0.4)"
-          />
+        {/* prodotto che vola nel carrello */}
+        <rect className="ux2-fly" x="246" y="112" width="18" height="16" rx="4" fill="url(#ux2-g)" />
 
-          <g className="ux-item1">
-            <rect
-              x="165"
-              y="142"
-              width="70"
-              height="6"
-              rx="3"
-              fill="rgba(255,255,255,0.7)"
-            />
+        {/* ---- card destra: conferma ---- */}
+        <g className="ux2-toast">
+          <rect x="344" y="56" width="156" height="52" rx="14" fill="var(--u-card)" stroke="var(--u-card-b)" />
+          <circle cx="366" cy="82" r="11" fill="url(#ux2-g)" />
+          <path d="M361 82 l3.5 3.5 l6 -7" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <text x="384" y="79" fontSize="10" fontWeight="700" fill="var(--u-t)">Aggiunto al carrello</text>
+          <text x="384" y="91" fontSize="7.5" fill="var(--u-m)">Borsa Weekender · € 89</text>
+        </g>
 
-            <rect
-              x="165"
-              y="154"
-              width="45"
-              height="5"
-              rx="2.5"
-              fill="rgba(255,255,255,0.3)"
-            />
+        {/* ---- card destra: recensioni ---- */}
+        <g className="ux2-f3">
+          <rect x="344" y="212" width="156" height="80" rx="14" fill="var(--u-card)" stroke="var(--u-card-b)" />
+          <text x="358" y="232" fontSize="8" fontWeight="600" fill="var(--u-m)" letterSpacing="0.6">RECENSIONI VERIFICATE</text>
+          <text x="358" y="250" fontSize="11" fill="#fbbf24" letterSpacing="1">★★★★★</text>
+          <text x="420" y="249" fontSize="11" fontWeight="800" fill="var(--u-t)">4,9</text>
+          <circle cx="366" cy="272" r="8" fill="#fc03b0" stroke="var(--u-card)" strokeWidth="2" />
+          <circle cx="378" cy="272" r="8" fill="#7c3aed" stroke="var(--u-card)" strokeWidth="2" />
+          <circle cx="390" cy="272" r="8" fill="#047cf9" stroke="var(--u-card)" strokeWidth="2" />
+          <text x="404" y="275" fontSize="8" fontWeight="600" fill="var(--u-t)">+1.200 clienti</text>
+        </g>
+
+        {/* ---- cursore ---- */}
+        <g className="ux2-cursor">
+          <circle className="ux2-tap" cx="0" cy="0" r="12" fill="none" stroke="#fff" strokeWidth="2" />
+          <path d="M0 0 L0 16 L4.5 12 L7.5 19 L10.5 17.7 L7.5 11 L13 11 Z" fill="#fff" stroke="#0f172a" strokeWidth="1" strokeLinejoin="round" />
+        </g>
+      </svg>
+    </VisualShell>
+  )
+}
+
+/* =========================================================
+   ECOMMERCE — VELOCITÀ CHE VENDE (solo pagina e-commerce)
+========================================================= */
+
+function EcommerceSpeedVisual() {
+  // ciclo 6s: la pagina prodotto si carica (barra + scheletro → contenuto in 0,8 s),
+  // poi crescono le barre "conversione per velocità di caricamento"
+  const bars = [
+    { label: "1 s", value: "3,1%", h: 118, hi: true },
+    { label: "2 s", value: "2,3%", h: 86 },
+    { label: "3 s", value: "1,6%", h: 58 },
+    { label: "5 s", value: "0,9%", h: 32 },
+  ]
+  return (
+    <VisualShell>
+      <style>{`
+        .sp2 {
+          --s-card: #ffffff;
+          --s-card-b: rgba(15,23,42,0.09);
+          --s-t: #0f172a;
+          --s-m: rgba(15,23,42,0.52);
+          --s-bar: rgba(15,23,42,0.10);
+          --s-grid: rgba(15,23,42,0.07);
+        }
+        .dark .sp2 {
+          --s-card: #12203d;
+          --s-card-b: rgba(255,255,255,0.10);
+          --s-t: #ffffff;
+          --s-m: rgba(255,255,255,0.55);
+          --s-bar: rgba(255,255,255,0.12);
+          --s-grid: rgba(255,255,255,0.06);
+        }
+        .sp2 * { transform-box: fill-box; }
+
+        @keyframes sp2-load { 0% { transform: scaleX(0); opacity: 1 } 14% { transform: scaleX(1); opacity: 1 } 18%, 100% { transform: scaleX(1); opacity: 0 } }
+        .sp2-load { animation: sp2-load 6s cubic-bezier(.3,0,.2,1) infinite; transform-origin: left center; }
+
+        @keyframes sp2-skel { 0%, 13% { opacity: 1 } 17%, 94% { opacity: 0 } 98%, 100% { opacity: 1 } }
+        .sp2-skel { animation: sp2-skel 6s ease infinite; }
+        @keyframes sp2-shimmer { 0%, 100% { opacity: .55 } 50% { opacity: 1 } }
+        .sp2-skel rect { animation: sp2-shimmer 1s ease-in-out infinite; }
+
+        @keyframes sp2-content { 0%, 13% { opacity: 0; transform: translateY(4px) } 18%, 93% { opacity: 1; transform: translateY(0) } 98%, 100% { opacity: 0; transform: translateY(4px) } }
+        .sp2-content { animation: sp2-content 6s ease infinite; }
+
+        @keyframes sp2-chip { 0%, 16% { opacity: 0; transform: scale(.85) } 21%, 92% { opacity: 1; transform: scale(1) } 97%, 100% { opacity: 0; transform: scale(.85) } }
+        .sp2-chip { animation: sp2-chip 6s ease infinite; transform-origin: center; }
+
+        @keyframes sp2-bar { 0%, 18% { transform: scaleY(0) } 34%, 93% { transform: scaleY(1) } 99%, 100% { transform: scaleY(0) } }
+        .sp2-bar { animation: sp2-bar 6s cubic-bezier(.3,.7,.2,1) infinite; transform-origin: bottom center; }
+        .sp2-b1 { animation-delay: 0s } .sp2-b2 { animation-delay: .12s } .sp2-b3 { animation-delay: .24s } .sp2-b4 { animation-delay: .36s }
+
+        @keyframes sp2-val { 0%, 30% { opacity: 0 } 38%, 92% { opacity: 1 } 97%, 100% { opacity: 0 } }
+        .sp2-val { animation: sp2-val 6s ease infinite; }
+
+        @keyframes sp2-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+        .sp2-f1 { animation: sp2-float 5s ease-in-out infinite; }
+        .sp2-f2 { animation: sp2-float 5s ease-in-out infinite -2.5s; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .sp2 * { animation: none !important; }
+          .sp2-skel, .sp2-load { opacity: 0; }
+        }
+      `}</style>
+
+      <svg
+        className="sp2"
+        viewBox="0 0 520 340"
+        style={{ width: "92%", maxWidth: 500 }}
+        xmlns="http://www.w3.org/2000/svg"
+        fontFamily="inherit"
+      >
+        <defs>
+          <linearGradient id="sp2-g" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={gradStart} />
+            <stop offset="100%" stopColor={gradEnd} />
+          </linearGradient>
+          <linearGradient id="sp2-gv" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stopColor={gradEnd} />
+            <stop offset="100%" stopColor={gradStart} />
+          </linearGradient>
+          <linearGradient id="sp2-img" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="rgba(252,3,176,0.22)" />
+            <stop offset="100%" stopColor="rgba(4,124,249,0.20)" />
+          </linearGradient>
+        </defs>
+
+        {/* ---- telefono con pagina prodotto ---- */}
+        <rect x="20" y="12" width="150" height="316" rx="26" fill="#0c1529" stroke="rgba(255,255,255,0.14)" />
+        <rect x="20" y="12" width="150" height="316" rx="26" fill="none" stroke="url(#sp2-g)" strokeWidth="1.4" opacity="0.45" />
+        <rect x="28" y="20" width="134" height="300" rx="20" fill="#111d38" />
+        <rect x="75" y="26" width="40" height="7" rx="3.5" fill="#000" opacity="0.55" />
+
+        {/* barra indirizzo + caricamento */}
+        <rect x="38" y="42" width="114" height="16" rx="8" fill="rgba(255,255,255,0.06)" />
+        <path d="M46 47.5 v-1.5 a2.5 2.5 0 0 1 5 0 v1.5" stroke="rgba(255,255,255,0.5)" strokeWidth="1" fill="none" />
+        <rect x="45" y="47.5" width="7" height="5.5" rx="1.2" fill="rgba(255,255,255,0.5)" />
+        <text x="58" y="53.5" fontSize="7" fill="rgba(255,255,255,0.55)">tuostore.it/prodotto</text>
+        <rect className="sp2-load" x="38" y="61" width="114" height="2" rx="1" fill="url(#sp2-g)" />
+
+        {/* scheletro (prima del caricamento) */}
+        <g className="sp2-skel">
+          <rect x="38" y="70" width="114" height="104" rx="12" fill="rgba(255,255,255,0.07)" />
+          <rect x="38" y="186" width="84" height="8" rx="4" fill="rgba(255,255,255,0.08)" />
+          <rect x="38" y="200" width="54" height="6" rx="3" fill="rgba(255,255,255,0.06)" />
+          <rect x="38" y="216" width="40" height="12" rx="4" fill="rgba(255,255,255,0.08)" />
+          <rect x="38" y="280" width="114" height="27" rx="13.5" fill="rgba(255,255,255,0.07)" />
+        </g>
+
+        {/* contenuto caricato */}
+        <g className="sp2-content">
+          <rect x="38" y="70" width="114" height="104" rx="12" fill="url(#sp2-img)" />
+          <ellipse cx="95" cy="158" rx="30" ry="4" fill="#000" opacity="0.25" />
+          <path d="M64 146 C64 132 70 120 80 116 L88 118 C92 124 100 126 106 124 L112 130 C122 132 132 137 132 146 Z" fill="url(#sp2-g)" />
+          <path d="M64 146 h68 v4 a5 5 0 0 1 -5 5 h-58 a5 5 0 0 1 -5 -5 z" fill="#fff" opacity="0.92" />
+          <path d="M92 128 l6 -3 M95 133 l7 -3 M98 138 l7 -3" stroke="#fff" strokeWidth="1.6" opacity="0.8" strokeLinecap="round" />
+          <circle cx="74" cy="134" r="3" fill="#fff" opacity="0.35" />
+          <text x="38" y="194" fontSize="11" fontWeight="700" fill="#fff">Sneaker Runner</text>
+          <text x="38" y="207" fontSize="8.5" fill="#fbbf24" letterSpacing="0.5">★★★★★</text>
+          <text x="38" y="228" fontSize="14" fontWeight="800" fill="#fff">€ 129</text>
+          {["39", "40", "41", "42"].map((s, i) => (
+            <g key={s}>
+              <rect x={38 + i * 29} y="240" width="25" height="18" rx="6" fill={i === 2 ? "rgba(124,58,237,0.25)" : "rgba(255,255,255,0.05)"} stroke={i === 2 ? "#7c3aed" : "rgba(255,255,255,0.12)"} />
+              <text x={50.5 + i * 29} y="252" fontSize="8" fontWeight="600" textAnchor="middle" fill="#fff">{s}</text>
+            </g>
+          ))}
+          <rect x="38" y="280" width="114" height="27" rx="13.5" fill="#fff" />
+          <text x="95" y="297" fontSize="9.5" fontWeight="800" textAnchor="middle" fill="#0c1529">Acquista ora</text>
+        </g>
+
+        {/* chip tempo di caricamento */}
+        <g className="sp2-chip">
+          <rect x="92" y="78" width="54" height="18" rx="9" fill="#0c1529" stroke="rgba(52,211,153,0.6)" />
+          <path d="M102 81 l-4 7 h4 l-2 6 l6 -8 h-4 l2 -5 z" fill="#34d399" />
+          <text x="111" y="90.5" fontSize="8" fontWeight="800" fill="#34d399">0,8 s</text>
+        </g>
+
+        {/* ---- grafico: conversione per velocità ---- */}
+        <g className="sp2-f1">
+          <rect x="194" y="12" width="306" height="232" rx="16" fill="var(--s-card)" stroke="var(--s-card-b)" />
+          <text x="214" y="38" fontSize="12" fontWeight="800" fill="var(--s-t)">Conversione per velocità</text>
+          <text x="214" y="52" fontSize="8" fill="var(--s-m)">Tasso di conversione in base al tempo di caricamento</text>
+          {[0, 1, 2].map((i) => (
+            <line key={i} x1="214" x2="480" y1={100 + i * 36} y2={100 + i * 36} stroke="var(--s-grid)" strokeDasharray="3 4" />
+          ))}
+          <line x1="214" x2="480" y1="208" y2="208" stroke="var(--s-bar)" />
+          {bars.map((b, i) => {
+            const x = 228 + i * 64
+            return (
+              <g key={b.label}>
+                <rect
+                  className={`sp2-bar sp2-b${i + 1}`}
+                  x={x}
+                  y={208 - b.h}
+                  width="44"
+                  height={b.h}
+                  rx="8"
+                  fill={b.hi ? "url(#sp2-gv)" : "var(--s-bar)"}
+                />
+                <text className="sp2-val" x={x + 22} y={202 - b.h} fontSize="10" fontWeight="800" textAnchor="middle" fill={b.hi ? "var(--s-t)" : "var(--s-m)"}>
+                  {b.value}
+                </text>
+                <text x={x + 22} y="226" fontSize="8.5" fontWeight="600" textAnchor="middle" fill="var(--s-m)">
+                  {b.label}
+                </text>
+              </g>
+            )
+          })}
+          <g className="sp2-val">
+            <path d="M286 80 L280 84 L286 88 Z" fill={gradStart} />
+            <rect x="285" y="75" width="64" height="18" rx="9" fill="url(#sp2-g)" />
+            <text x="317" y="87" fontSize="8" fontWeight="800" textAnchor="middle" fill="#fff">Il tuo store</text>
           </g>
+        </g>
 
-          <g className="ux-item2">
-            <rect
-              x="165"
-              y="166"
-              width="50"
-              height="6"
-              rx="3"
-              fill="url(#ux-g1)"
-              opacity="0.9"
-            />
+        {/* ---- badge sotto ---- */}
+        <g className="sp2-f2">
+          <rect x="194" y="262" width="148" height="44" rx="14" fill="var(--s-card)" stroke="var(--s-card-b)" />
+          <circle cx="215" cy="284" r="10" fill="rgba(52,211,153,0.16)" />
+          <path d="M210.5 284 l3 3 l5.5 -6" stroke="#34d399" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <text x="232" y="281" fontSize="9.5" fontWeight="700" fill="var(--s-t)">Core Web Vitals</text>
+          <text x="232" y="293" fontSize="7.5" fill="var(--s-m)">superati su mobile</text>
+
+          <rect x="352" y="262" width="148" height="44" rx="14" fill="var(--s-card)" stroke="var(--s-card-b)" />
+          <text x="368" y="290" fontSize="18" fontWeight="800" fill="url(#sp2-g)">-1,6 s</text>
+          <text x="428" y="281" fontSize="7.5" fill="var(--s-m)">tempo di</text>
+          <text x="428" y="292" fontSize="7.5" fill="var(--s-m)">caricamento</text>
+        </g>
+      </svg>
+    </VisualShell>
+  )
+}
+
+/* =========================================================
+   ECOMMERCE — VALORE MEDIO DELL'ORDINE
+========================================================= */
+
+function EcommerceValoreVisual() {
+  // carrello animato (ciclo 7s): il cursore aggiunge il prodotto abbinato, si sblocca la
+  // spedizione gratuita e lo scontrino passa da € 89 a € 118
+  return (
+    <VisualShell>
+      <style>{`
+        .va2 {
+          --v-card: #ffffff;
+          --v-card-b: rgba(15,23,42,0.09);
+          --v-t: #0f172a;
+          --v-m: rgba(15,23,42,0.52);
+          --v-track: rgba(15,23,42,0.08);
+        }
+        .dark .va2 {
+          --v-card: #12203d;
+          --v-card-b: rgba(255,255,255,0.10);
+          --v-t: #ffffff;
+          --v-m: rgba(255,255,255,0.55);
+          --v-track: rgba(255,255,255,0.10);
+        }
+        .va2 * { transform-box: fill-box; }
+
+        @keyframes va2-cursor {
+          0%, 6%   { transform: translate(300px, 300px); }
+          22%, 34% { transform: translate(290px, 225px); }
+          50%, 100% { transform: translate(300px, 300px); }
+        }
+        .va2-cursor { animation: va2-cursor 7s cubic-bezier(.6,0,.3,1) infinite; transform-box: view-box; }
+        @keyframes va2-tap { 0%, 25%, 34%, 100% { opacity: 0; transform: scale(.3) } 27% { opacity: .9; transform: scale(.5) } 31% { opacity: 0; transform: scale(1.5) } }
+        .va2-tap { animation: va2-tap 7s linear infinite; transform-origin: center; }
+
+        /* stato "prima" visibile fino al click, poi lo stato "dopo" */
+        @keyframes va2-before { 0%, 27% { opacity: 1 } 29%, 94% { opacity: 0 } 97%, 100% { opacity: 1 } }
+        @keyframes va2-after  { 0%, 27% { opacity: 0 } 29%, 94% { opacity: 1 } 97%, 100% { opacity: 0 } }
+        .va2-b { animation: va2-before 7s linear infinite; }
+        .va2-a { animation: va2-after 7s linear infinite; }
+
+        @keyframes va2-in { 0%, 27% { opacity: 0; transform: translateY(-6px) } 32%, 94% { opacity: 1; transform: translateY(0) } 97%, 100% { opacity: 0; transform: translateY(-6px) } }
+        .va2-in { animation: va2-in 7s ease infinite; }
+
+        @keyframes va2-bar { 0%, 28% { transform: scaleX(.89) } 36%, 94% { transform: scaleX(1) } 98%, 100% { transform: scaleX(.89) } }
+        .va2-bar { animation: va2-bar 7s cubic-bezier(.3,.7,.2,1) infinite; transform-origin: left center; }
+
+        @keyframes va2-grow { 0%, 28% { transform: scaleX(.75) } 38%, 94% { transform: scaleX(1) } 98%, 100% { transform: scaleX(.75) } }
+        .va2-grow { animation: va2-grow 7s cubic-bezier(.3,.7,.2,1) infinite; transform-origin: left center; }
+
+        @keyframes va2-pop { 0%, 28%, 40%, 100% { transform: scale(1) } 33% { transform: scale(1.12) } }
+        .va2-pop { animation: va2-pop 7s ease infinite; transform-origin: center; }
+
+        @keyframes va2-toast { 0%, 31% { opacity: 0; transform: translateX(14px) } 36%, 90% { opacity: 1; transform: translateX(0) } 95%, 100% { opacity: 0; transform: translateX(14px) } }
+        .va2-toast { animation: va2-toast 7s ease infinite; }
+
+        @keyframes va2-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+        .va2-f1 { animation: va2-float 5s ease-in-out infinite; }
+        .va2-f2 { animation: va2-float 5s ease-in-out infinite -2.5s; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .va2 *, .va2-cursor { animation: none !important; }
+          .va2-b, .va2-tap { opacity: 0; }
+          .va2-a, .va2-in, .va2-toast { opacity: 1; }
+          .va2-cursor { transform: translate(300px, 300px); }
+        }
+      `}</style>
+
+      <svg
+        className="va2"
+        viewBox="0 0 520 340"
+        style={{ width: "92%", maxWidth: 500 }}
+        xmlns="http://www.w3.org/2000/svg"
+        fontFamily="inherit"
+      >
+        <defs>
+          <linearGradient id="va2-g" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={gradStart} />
+            <stop offset="100%" stopColor={gradEnd} />
+          </linearGradient>
+          <linearGradient id="va2-g2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#7c3aed" />
+            <stop offset="100%" stopColor={gradEnd} />
+          </linearGradient>
+        </defs>
+
+        {/* ---- sinistra: scontrino medio ---- */}
+        <g className="va2-f1">
+          <rect x="20" y="58" width="146" height="92" rx="14" fill="var(--v-card)" stroke="var(--v-card-b)" />
+          <text x="34" y="80" fontSize="8" fontWeight="600" fill="var(--v-m)" letterSpacing="0.6">SCONTRINO MEDIO</text>
+          <text className="va2-b" x="34" y="108" fontSize="24" fontWeight="800" fill="var(--v-t)">€ 89</text>
+          <text className="va2-a" x="34" y="108" fontSize="24" fontWeight="800" fill="url(#va2-g)">€ 118</text>
+          <g className="va2-in">
+            <rect x="112" y="92" width="42" height="18" rx="9" fill="rgba(52,211,153,0.15)" />
+            <text x="133" y="104.5" fontSize="8.5" fontWeight="800" textAnchor="middle" fill="#34d399">↑ 33%</text>
           </g>
-
-          <g className="ux-item3">
-            <rect
-              x="165"
-              y="180"
-              width="100"
-              height="26"
-              rx="13"
-              fill="url(#ux-g1)"
-            />
-
-            <rect
-              x="185"
-              y="190"
-              width="60"
-              height="6"
-              rx="3"
-              fill="rgba(255,255,255,0.9)"
-            />
-          </g>
-
-          <circle cx="205" cy="226" r="3" fill="url(#ux-g1)" />
-          <circle cx="215" cy="226" r="2" fill="rgba(255,255,255,0.2)" />
-          <circle cx="225" cy="226" r="2" fill="rgba(255,255,255,0.2)" />
+          <text x="34" y="132" fontSize="7.5" fill="var(--v-m)">stesse visite, più fatturato</text>
         </g>
 
-        <g className="ux-heart1">
-          <text x="92" y="105" fontSize="22" fill={gradStart}>
-            ♥
-          </text>
+        {/* ---- sinistra: prima / dopo ---- */}
+        <g className="va2-f2">
+          <rect x="20" y="180" width="146" height="100" rx="14" fill="var(--v-card)" stroke="var(--v-card-b)" />
+          <text x="34" y="202" fontSize="8" fontWeight="600" fill="var(--v-m)" letterSpacing="0.6">FATTURATO / MESE</text>
+          <text x="34" y="224" fontSize="7.5" fill="var(--v-m)">Prima</text>
+          <rect x="34" y="229" width="90" height="10" rx="5" fill="var(--v-track)" />
+          <text x="34" y="256" fontSize="7.5" fill="var(--v-m)">Dopo</text>
+          <rect className="va2-grow" x="34" y="261" width="120" height="10" rx="5" fill="url(#va2-g)" />
         </g>
 
-        <g className="ux-heart2">
-          <text x="340" y="85" fontSize="16" fill={gradEnd}>
-            ♥
-          </text>
+        {/* ---- telefono: carrello ---- */}
+        <rect x="180" y="12" width="150" height="316" rx="26" fill="#0c1529" stroke="rgba(255,255,255,0.14)" />
+        <rect x="180" y="12" width="150" height="316" rx="26" fill="none" stroke="url(#va2-g)" strokeWidth="1.4" opacity="0.45" />
+        <rect x="188" y="20" width="134" height="300" rx="20" fill="#111d38" />
+        <rect x="235" y="26" width="40" height="7" rx="3.5" fill="#000" opacity="0.55" />
+
+        <text x="198" y="54" fontSize="11" fontWeight="800" fill="#fff">Carrello</text>
+        <text className="va2-b" x="246" y="54" fontSize="9" fontWeight="600" fill="rgba(255,255,255,0.5)">(1)</text>
+        <text className="va2-a" x="246" y="54" fontSize="9" fontWeight="600" fill="rgba(255,255,255,0.5)">(2)</text>
+        <path d="M304 46 l8 8 M312 46 l-8 8" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" />
+
+        {/* articolo 1 */}
+        <rect x="196" y="64" width="30" height="30" rx="8" fill="url(#va2-g)" />
+        <path d="M206 75 v-2 a5 5 0 0 1 10 0 v2" stroke="#fff" strokeWidth="1.4" fill="none" />
+        <rect x="203" y="74" width="16" height="13" rx="3" fill="#fff" opacity="0.9" />
+        <text x="232" y="77" fontSize="8.5" fontWeight="700" fill="#fff">Borsa Weekender</text>
+        <text x="232" y="89" fontSize="7" fill="rgba(255,255,255,0.5)">Nero · 1 pz</text>
+        <text x="314" y="89" fontSize="9" fontWeight="800" textAnchor="end" fill="#fff">€ 89</text>
+
+        {/* articolo 2 (aggiunto) */}
+        <g className="va2-in">
+          <rect x="196" y="102" width="30" height="30" rx="8" fill="url(#va2-g2)" />
+          <rect x="203" y="111" width="16" height="12" rx="3" fill="#fff" opacity="0.9" />
+          <line x1="203" x2="219" y1="115" y2="115" stroke="#7c3aed" strokeWidth="1.2" />
+          <text x="232" y="115" fontSize="8.5" fontWeight="700" fill="#fff">Portafoglio</text>
+          <text x="232" y="127" fontSize="7" fill="rgba(255,255,255,0.5)">Abbinato · 1 pz</text>
+          <text x="314" y="127" fontSize="9" fontWeight="800" textAnchor="end" fill="#fff">€ 29</text>
         </g>
 
-        <g className="ux-cart" transform="translate(340,130)">
-          <rect
-            width="100"
-            height="52"
-            rx="14"
-            fill="var(--vp-panel)"
-            stroke="var(--vp-border)"
-          />
+        {/* spedizione gratuita */}
+        <rect x="196" y="142" width="118" height="36" rx="10" fill="rgba(255,255,255,0.05)" />
+        <text x="204" y="157" fontSize="7.5" fontWeight="700" fill="#fff">Spedizione gratis</text>
+        <text className="va2-b" x="306" y="157" fontSize="7" textAnchor="end" fill="rgba(255,255,255,0.55)">mancano € 11</text>
+        <text className="va2-a" x="306" y="157" fontSize="7" fontWeight="800" textAnchor="end" fill="#34d399">sbloccata ✓</text>
+        <rect x="204" y="164" width="102" height="6" rx="3" fill="rgba(255,255,255,0.1)" />
+        <rect className="va2-bar" x="204" y="164" width="102" height="6" rx="3" fill="url(#va2-g)" />
 
-          <text x="16" y="22" fontSize="18">
-            🛒
-          </text>
-
-          <rect
-            x="38"
-            y="10"
-            width="50"
-            height="5"
-            rx="2.5"
-            fill="var(--vp-text)"
-            opacity="0.6"
-          />
-
-          <rect
-            x="38"
-            y="20"
-            width="35"
-            height="4"
-            rx="2"
-            fill="var(--vp-muted)"
-          />
-
-          <rect
-            x="38"
-            y="32"
-            width="42"
-            height="12"
-            rx="6"
-            fill="url(#ux-g1)"
-          />
-
-          <rect
-            x="50"
-            y="36"
-            width="18"
-            height="4"
-            rx="2"
-            fill="white"
-          />
+        {/* suggerimento */}
+        <rect x="196" y="188" width="118" height="54" rx="10" fill="rgba(124,58,237,0.13)" stroke="rgba(124,58,237,0.4)" />
+        <text x="204" y="201" fontSize="6" fontWeight="700" fill="rgba(255,255,255,0.55)" letterSpacing="0.6">SPESSO COMPRATI INSIEME</text>
+        <rect x="204" y="208" width="26" height="26" rx="7" fill="url(#va2-g2)" />
+        <rect x="209" y="215" width="16" height="12" rx="3" fill="#fff" opacity="0.9" />
+        <text x="235" y="219" fontSize="7" fontWeight="700" fill="#fff">Portafoglio</text>
+        <text x="235" y="230" fontSize="7" fill="rgba(255,255,255,0.55)">€ 29</text>
+        <g className="va2-pop">
+          <rect className="va2-b" x="273" y="216" width="35" height="17" rx="8.5" fill="#fff" />
+          <text className="va2-b" x="290.5" y="227.5" fontSize="6.5" fontWeight="800" textAnchor="middle" fill="#0c1529">+ Aggiungi</text>
+          <rect className="va2-a" x="273" y="216" width="35" height="17" rx="8.5" fill="rgba(52,211,153,0.18)" stroke="rgba(52,211,153,0.6)" />
+          <text className="va2-a" x="290.5" y="227.5" fontSize="6.5" fontWeight="800" textAnchor="middle" fill="#34d399">Aggiunto</text>
         </g>
 
-        <g className="ux-badge" transform="translate(68,175)">
-          <rect
-            width="78"
-            height="38"
-            rx="10"
-            fill="rgba(252,3,176,0.12)"
-            stroke="rgba(252,3,176,0.3)"
-          />
+        {/* totale + checkout */}
+        <text x="198" y="264" fontSize="8" fill="rgba(255,255,255,0.55)">Totale</text>
+        <g className="va2-pop">
+          <text className="va2-b" x="312" y="265" fontSize="12" fontWeight="800" textAnchor="end" fill="#fff">€ 89</text>
+          <text className="va2-a" x="312" y="265" fontSize="12" fontWeight="800" textAnchor="end" fill="#fff">€ 118</text>
+        </g>
+        <rect x="196" y="278" width="118" height="28" rx="14" fill="#fff" />
+        <text x="255" y="295.5" fontSize="9.5" fontWeight="800" textAnchor="middle" fill="#0c1529">Vai al checkout</text>
 
-          <text
-            x="12"
-            y="24"
-            fontSize="15"
-            fontWeight="800"
-            fill={gradStart}
-          >
-            +42%
-          </text>
+        {/* ---- destra: bundle ---- */}
+        <g className="va2-f2">
+          <rect x="344" y="58" width="156" height="92" rx="14" fill="var(--v-card)" stroke="var(--v-card-b)" />
+          <text x="358" y="80" fontSize="8" fontWeight="600" fill="var(--v-m)" letterSpacing="0.6">BUNDLE</text>
+          <rect x="358" y="90" width="30" height="30" rx="8" fill="url(#va2-g)" />
+          <rect x="365" y="100" width="16" height="13" rx="3" fill="#fff" opacity="0.9" />
+          <text x="396" y="110" fontSize="12" fontWeight="800" fill="var(--v-m)">+</text>
+          <rect x="406" y="90" width="30" height="30" rx="8" fill="url(#va2-g2)" />
+          <rect x="413" y="99" width="16" height="12" rx="3" fill="#fff" opacity="0.9" />
+          <rect x="446" y="96" width="42" height="18" rx="9" fill="rgba(252,3,176,0.15)" />
+          <text x="467" y="108.5" fontSize="8.5" fontWeight="800" textAnchor="middle" fill="#ff5fcf">-10%</text>
+          <text x="358" y="138" fontSize="7.5" fill="var(--v-m)">se li prendi insieme</text>
+        </g>
+
+        {/* ---- destra: notifica ---- */}
+        <g className="va2-toast">
+          <rect x="344" y="190" width="156" height="52" rx="14" fill="var(--v-card)" stroke="var(--v-card-b)" />
+          <circle cx="366" cy="216" r="11" fill="rgba(52,211,153,0.16)" />
+          <path d="M361 216 l3.5 3.5 l6 -7" stroke="#34d399" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <text x="384" y="213" fontSize="9.5" fontWeight="700" fill="var(--v-t)">Spedizione gratuita</text>
+          <text x="384" y="225" fontSize="7.5" fill="var(--v-m)">sbloccata con l&apos;abbinato</text>
+        </g>
+
+        {/* ---- cursore ---- */}
+        <g className="va2-cursor">
+          <circle className="va2-tap" cx="0" cy="0" r="12" fill="none" stroke="#fff" strokeWidth="2" />
+          <path d="M0 0 L0 16 L4.5 12 L7.5 19 L10.5 17.7 L7.5 11 L13 11 Z" fill="#fff" stroke="#0f172a" strokeWidth="1" strokeLinejoin="round" />
         </g>
       </svg>
     </VisualShell>
@@ -781,434 +1072,211 @@ function EcommercePerformanceVisual() {
 ========================================================= */
 
 function EcommerceScalabileVisual() {
+  // dashboard dello store al centro: integrazioni a sinistra che "alimentano" lo store
+  // (flussi animati), feed ordini live a destra e canali di vendita sotto. Ciclo 6s.
+  const integrations = [
+    { label: "Pagamenti", sub: "Carte, wallet, rate", y: 52, icon: "card" },
+    { label: "Spedizioni", sub: "Etichette automatiche", y: 128, icon: "box" },
+    { label: "Magazzino", sub: "Stock sincronizzato", y: 204, icon: "stack" },
+  ]
+  const feed = [
+    { t: "Nuovo ordine", s: "#1048 · € 89", c: gradStart, y: 52 },
+    { t: "Pagamento ricevuto", s: "#1047 · € 129", c: "#7c3aed", y: 116 },
+    { t: "Ordine spedito", s: "#1046 · Milano", c: gradEnd, y: 180 },
+  ]
+  const channels = ["Sito", "Instagram", "Google", "Marketplace"]
   return (
     <VisualShell>
       <style>{`
-        @keyframes sc-notify {
-          0% {
-            opacity:0;
-            transform:translateY(8px);
-          }
-          20% {
-            opacity:1;
-            transform:translateY(0);
-          }
-          80% {
-            opacity:1;
-            transform:translateY(0);
-          }
-          100% {
-            opacity:0;
-            transform:translateY(-8px);
-          }
+        .sc2 {
+          --c-card: #ffffff;
+          --c-card-b: rgba(15,23,42,0.09);
+          --c-t: #0f172a;
+          --c-m: rgba(15,23,42,0.52);
+          --c-chip: #f1f3f8;
+          --c-line: rgba(15,23,42,0.14);
+          --c-grid: rgba(15,23,42,0.07);
         }
-
-        @keyframes sc-count {
-          from {
-            opacity:0;
-            transform:translateY(6px);
-          }
-          to {
-            opacity:1;
-            transform:translateY(0);
-          }
+        .dark .sc2 {
+          --c-card: #12203d;
+          --c-card-b: rgba(255,255,255,0.10);
+          --c-t: #ffffff;
+          --c-m: rgba(255,255,255,0.55);
+          --c-chip: rgba(255,255,255,0.06);
+          --c-line: rgba(255,255,255,0.16);
+          --c-grid: rgba(255,255,255,0.06);
         }
+        .sc2 * { transform-box: fill-box; }
 
-        @keyframes sc-pulse {
-          0%,100% { opacity:0.4; }
-          50% { opacity:1; }
+        @keyframes sc2-flow { to { stroke-dashoffset: -24 } }
+        .sc2-flow { stroke-dasharray: 4 8; animation: sc2-flow 1.2s linear infinite; }
+
+        @keyframes sc2-draw { 0% { stroke-dashoffset: 260 } 45%, 100% { stroke-dashoffset: 0 } }
+        .sc2-line { stroke-dasharray: 260; animation: sc2-draw 6s cubic-bezier(.4,0,.2,1) infinite; }
+        @keyframes sc2-area { 0%, 10% { opacity: 0 } 45%, 92% { opacity: 1 } 100% { opacity: 0 } }
+        .sc2-area { animation: sc2-area 6s ease infinite; }
+
+        @keyframes sc2-live { 0%,100% { opacity: 1; transform: scale(1) } 50% { opacity: .35; transform: scale(.7) } }
+        .sc2-live { animation: sc2-live 1.4s ease-in-out infinite; transform-origin: center; }
+
+        @keyframes sc2-feed {
+          0%, 4%  { opacity: 0; transform: translateX(12px); }
+          10%, 88% { opacity: 1; transform: translateX(0); }
+          96%, 100% { opacity: 0; transform: translateX(0); }
         }
+        .sc2-feed { animation: sc2-feed 6s ease infinite; }
+        .sc2-d1 { animation-delay: 0s } .sc2-d2 { animation-delay: .5s } .sc2-d3 { animation-delay: 1s }
 
-        .sc-notify1 {
-          animation:sc-notify 3s ease-in-out infinite 0.5s;
-          opacity:0;
-        }
+        @keyframes sc2-ping { 0%, 40% { opacity: 0; transform: scale(.6) } 50% { opacity: .9; transform: scale(1) } 70%, 100% { opacity: 0; transform: scale(1.8) } }
+        .sc2-ping { animation: sc2-ping 2.4s ease-out infinite; transform-origin: center; }
 
-        .sc-notify2 {
-          animation:sc-notify 3s ease-in-out infinite 1.8s;
-          opacity:0;
-        }
+        @keyframes sc2-num1 { 0%, 45% { opacity: 1 } 50%, 95% { opacity: 0 } 100% { opacity: 1 } }
+        @keyframes sc2-num2 { 0%, 45% { opacity: 0 } 50%, 95% { opacity: 1 } 100% { opacity: 0 } }
+        .sc2-n1 { animation: sc2-num1 6s linear infinite; }
+        .sc2-n2 { animation: sc2-num2 6s linear infinite; }
 
-        .sc-notify3 {
-          animation:sc-notify 3s ease-in-out infinite 3.1s;
-          opacity:0;
-        }
+        @keyframes sc2-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+        .sc2-float { animation: sc2-float 5s ease-in-out infinite; }
 
-        .sc-count {
-          animation:sc-count 0.6s ease forwards 0.4s;
-          opacity:0;
-        }
-
-        .sc-dot {
-          animation:sc-pulse 1.5s ease-in-out infinite;
+        @media (prefers-reduced-motion: reduce) {
+          .sc2 * { animation: none !important; }
+          .sc2-feed, .sc2-area, .sc2-n2 { opacity: 1; }
+          .sc2-n1, .sc2-ping { opacity: 0; }
+          .sc2-line { stroke-dashoffset: 0; }
         }
       `}</style>
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(ellipse at 60% 50%, rgba(4,124,249,0.10) 0%, transparent 60%), radial-gradient(ellipse at 20% 50%, rgba(252,3,176,0.08) 0%, transparent 60%)",
-        }}
-      />
-
       <svg
-        viewBox="0 0 520 320"
-        style={{ width: "90%", maxWidth: 480 }}
+        className="sc2"
+        viewBox="0 0 520 340"
+        style={{ width: "92%", maxWidth: 500 }}
         xmlns="http://www.w3.org/2000/svg"
+        fontFamily="inherit"
       >
         <defs>
-          <linearGradient id="sc-g1" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="sc2-g" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor={gradStart} />
             <stop offset="100%" stopColor={gradEnd} />
           </linearGradient>
+          <linearGradient id="sc2-area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#7c3aed" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
+          </linearGradient>
         </defs>
 
-        {/* telefono volutamente scuro anche in light */}
-        <rect
-          x="185"
-          y="18"
-          width="150"
-          height="284"
-          rx="26"
-          fill="#0d1b38"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth="1.5"
-        />
-
-        <rect
-          x="185"
-          y="18"
-          width="150"
-          height="284"
-          rx="26"
-          fill="none"
-          stroke="url(#sc-g1)"
-          strokeWidth="1.5"
-          opacity="0.35"
-        />
-
-        <rect
-          x="228"
-          y="26"
-          width="64"
-          height="10"
-          rx="5"
-          fill="rgba(0,0,0,0.6)"
-        />
-
-        <text
-          x="260"
-          y="72"
-          textAnchor="middle"
-          fontSize="10"
-          fill="rgba(255,255,255,0.35)"
-        >
-          Monday, June 5
-        </text>
-
-        <text
-          x="260"
-          y="102"
-          textAnchor="middle"
-          fontSize="36"
-          fontWeight="200"
-          fill="white"
-        >
-          9:41
-        </text>
-
-        <rect
-          x="196"
-          y="115"
-          width="128"
-          height="0.5"
-          fill="rgba(255,255,255,0.1)"
-        />
-
-        <g className="sc-notify1">
-          <rect
-            x="196"
-            y="124"
-            width="128"
-            height="44"
-            rx="12"
-            fill="rgba(255,255,255,0.07)"
-            stroke="rgba(255,255,255,0.08)"
+        {/* ---- connessioni integrazioni → store ---- */}
+        {integrations.map((it) => (
+          <path
+            key={it.label}
+            className="sc2-flow"
+            d={`M128 ${it.y + 22} C 140 ${it.y + 22}, 140 128, 152 128`}
+            stroke="url(#sc2-g)"
+            strokeWidth="1.6"
+            fill="none"
+            strokeLinecap="round"
           />
-
-          <rect
-            x="206"
-            y="134"
-            width="22"
-            height="22"
-            rx="6"
-            fill="#96BF48"
+        ))}
+        {/* store → feed */}
+        {feed.map((f) => (
+          <path
+            key={f.t}
+            className="sc2-flow"
+            d={`M368 128 C 378 128, 378 ${f.y + 22}, 388 ${f.y + 22}`}
+            stroke="var(--c-line)"
+            strokeWidth="1.4"
+            fill="none"
+            strokeLinecap="round"
           />
+        ))}
 
-          <text x="217" y="150" textAnchor="middle" fontSize="12">
-            🛍
-          </text>
-
-          <rect
-            x="234"
-            y="132"
-            width="68"
-            height="6"
-            rx="3"
-            fill="rgba(255,255,255,0.5)"
-          />
-
-          <rect
-            x="234"
-            y="143"
-            width="48"
-            height="5"
-            rx="2"
-            fill="rgba(255,255,255,0.25)"
-          />
-
-          <text
-            x="316"
-            y="138"
-            textAnchor="end"
-            fontSize="8"
-            fill={gradStart}
-            fontWeight="700"
-          >
-            now
-          </text>
-
-          <text
-            x="234"
-            y="158"
-            fontSize="7"
-            fill="rgba(255,255,255,0.45)"
-          >
-            Nuovo ordine ricevuto
-          </text>
-        </g>
-
-        <g className="sc-notify2">
-          <rect
-            x="196"
-            y="180"
-            width="128"
-            height="44"
-            rx="12"
-            fill="rgba(255,255,255,0.07)"
-            stroke="rgba(255,255,255,0.08)"
-          />
-
-          <rect
-            x="206"
-            y="190"
-            width="22"
-            height="22"
-            rx="6"
-            fill="#96BF48"
-          />
-
-          <text x="217" y="206" textAnchor="middle" fontSize="12">
-            💳
-          </text>
-
-          <rect
-            x="234"
-            y="188"
-            width="56"
-            height="6"
-            rx="3"
-            fill="rgba(255,255,255,0.5)"
-          />
-
-          <rect
-            x="234"
-            y="199"
-            width="40"
-            height="5"
-            rx="2"
-            fill="rgba(255,255,255,0.25)"
-          />
-
-          <text
-            x="316"
-            y="194"
-            textAnchor="end"
-            fontSize="8"
-            fill={gradStart}
-            fontWeight="700"
-          >
-            now
-          </text>
-
-          <text
-            x="234"
-            y="214"
-            fontSize="7"
-            fill="rgba(255,255,255,0.45)"
-          >
-            Pagamento confermato
-          </text>
-        </g>
-
-        <g className="sc-notify3">
-          <rect
-            x="196"
-            y="236"
-            width="128"
-            height="44"
-            rx="12"
-            fill="rgba(255,255,255,0.07)"
-            stroke="rgba(255,255,255,0.08)"
-          />
-
-          <rect
-            x="206"
-            y="246"
-            width="22"
-            height="22"
-            rx="6"
-            fill="#96BF48"
-          />
-
-          <text x="217" y="262" textAnchor="middle" fontSize="12">
-            📦
-          </text>
-
-          <rect
-            x="234"
-            y="244"
-            width="74"
-            height="6"
-            rx="3"
-            fill="rgba(255,255,255,0.5)"
-          />
-
-          <rect
-            x="234"
-            y="255"
-            width="52"
-            height="5"
-            rx="2"
-            fill="rgba(255,255,255,0.25)"
-          />
-
-          <text
-            x="316"
-            y="250"
-            textAnchor="end"
-            fontSize="8"
-            fill={gradStart}
-            fontWeight="700"
-          >
-            now
-          </text>
-
-          <text
-            x="234"
-            y="270"
-            fontSize="7"
-            fill="rgba(255,255,255,0.45)"
-          >
-            Ordine spedito
-          </text>
-        </g>
-
-        <rect
-          x="232"
-          y="290"
-          width="56"
-          height="4"
-          rx="2"
-          fill="rgba(255,255,255,0.2)"
-        />
-
-        <g transform="translate(30,80)">
-          <rect
-            width="120"
-            height="64"
-            rx="14"
-            fill="var(--vp-panel)"
-            stroke="var(--vp-border)"
-          />
-
-          <text
-            x="14"
-            y="22"
-            fontSize="9"
-            fill="var(--vp-muted)"
-          >
-            ORDINI OGGI
-          </text>
-
-          <g className="sc-count">
-            <text
-              x="14"
-              y="48"
-              fontSize="28"
-              fontWeight="800"
-              fill="var(--vp-text-strong)"
-            >
-              247
-            </text>
+        {/* ---- integrazioni ---- */}
+        {integrations.map((it) => (
+          <g key={it.label}>
+            <rect x="12" y={it.y} width="116" height="44" rx="12" fill="var(--c-card)" stroke="var(--c-card-b)" />
+            <rect x="22" y={it.y + 10} width="24" height="24" rx="7" fill="url(#sc2-g)" />
+            {it.icon === "card" && (
+              <g stroke="#fff" strokeWidth="1.4" fill="none">
+                <rect x="27" y={it.y + 16} width="14" height="11" rx="2" />
+                <line x1="27" x2="41" y1={it.y + 20} y2={it.y + 20} />
+              </g>
+            )}
+            {it.icon === "box" && (
+              <g stroke="#fff" strokeWidth="1.4" fill="none" strokeLinejoin="round">
+                <path d={`M34 ${it.y + 15} l7 3.5 v8 l-7 3.5 l-7 -3.5 v-8 z`} />
+                <path d={`M27 ${it.y + 18.5} l7 3.5 l7 -3.5 M34 ${it.y + 22} v8`} />
+              </g>
+            )}
+            {it.icon === "stack" && (
+              <g stroke="#fff" strokeWidth="1.4" fill="none" strokeLinejoin="round">
+                <path d={`M34 ${it.y + 15} l7 3.5 l-7 3.5 l-7 -3.5 z`} />
+                <path d={`M27 ${it.y + 22.5} l7 3.5 l7 -3.5 M27 ${it.y + 26.5} l7 3.5 l7 -3.5`} />
+              </g>
+            )}
+            <text x="54" y={it.y + 20} fontSize="9.5" fontWeight="700" fill="var(--c-t)">{it.label}</text>
+            <text x="54" y={it.y + 31} fontSize="6.8" fill="var(--c-m)">{it.sub}</text>
           </g>
+        ))}
 
-          <circle
-            cx="100"
-            cy="18"
-            r="6"
-            fill="rgba(34,197,94,0.3)"
-          />
+        {/* ---- dashboard store ---- */}
+        <g className="sc2-float">
+          <rect x="152" y="30" width="216" height="210" rx="18" fill="var(--c-card)" stroke="var(--c-card-b)" />
+          <rect x="152" y="30" width="216" height="210" rx="18" fill="none" stroke="url(#sc2-g)" strokeWidth="1.4" opacity="0.5" />
+          <text x="170" y="56" fontSize="10" fontWeight="700" fill="var(--c-t)">Il tuo store</text>
+          <circle className="sc2-ping" cx="322" cy="52" r="7" fill="none" stroke="#34d399" strokeWidth="1.5" />
+          <circle className="sc2-live" cx="322" cy="52" r="3" fill="#34d399" />
+          <text x="330" y="55" fontSize="7.5" fontWeight="800" fill="#34d399" letterSpacing="0.8">LIVE</text>
 
-          <circle
-            className="sc-dot"
-            cx="100"
-            cy="18"
-            r="4"
-            fill="#22c55e"
-          />
+          <text x="170" y="78" fontSize="7.5" fontWeight="600" fill="var(--c-m)" letterSpacing="0.6">FATTURATO DEL MESE</text>
+          <text className="sc2-n1" x="170" y="102" fontSize="22" fontWeight="800" fill="var(--c-t)">€ 31.960</text>
+          <text className="sc2-n2" x="170" y="102" fontSize="22" fontWeight="800" fill="var(--c-t)">€ 32.480</text>
+          <rect x="294" y="88" width="46" height="16" rx="8" fill="rgba(52,211,153,0.15)" />
+          <text x="317" y="99" fontSize="8" fontWeight="800" textAnchor="middle" fill="#34d399">↑ 18%</text>
+
+          {[0, 1, 2].map((i) => (
+            <line key={i} x1="170" x2="350" y1={124 + i * 22} y2={124 + i * 22} stroke="var(--c-grid)" strokeDasharray="3 4" />
+          ))}
+          <path className="sc2-area" d="M170 178 L196 170 L222 172 L248 158 L274 160 L300 142 L326 136 L350 120 L350 180 L170 180 Z" fill="url(#sc2-area)" />
+          <path className="sc2-line" d="M170 178 L196 170 L222 172 L248 158 L274 160 L300 142 L326 136 L350 120" stroke="url(#sc2-g)" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="350" cy="120" r="3.5" fill={gradEnd} stroke="var(--c-card)" strokeWidth="2" />
+
+          <line x1="166" x2="354" y1="192" y2="192" stroke="var(--c-grid)" />
+          {[
+            { k: "Ordini", v: "247", x: 170 },
+            { k: "Conversione", v: "3,4%", x: 230 },
+            { k: "Scontrino", v: "€ 131", x: 300 },
+          ].map((m) => (
+            <g key={m.k}>
+              <text x={m.x} y="208" fontSize="6.8" fill="var(--c-m)">{m.k}</text>
+              <text x={m.x} y="224" fontSize="12" fontWeight="800" fill="var(--c-t)">{m.v}</text>
+            </g>
+          ))}
         </g>
 
-        <g transform="translate(370,80)">
-          <rect
-            width="120"
-            height="64"
-            rx="14"
-            fill="var(--vp-panel)"
-            stroke="var(--vp-border)"
-          />
+        {/* ---- feed ordini ---- */}
+        {feed.map((f, i) => (
+          <g key={f.t} className={`sc2-feed sc2-d${i + 1}`}>
+            <rect x="388" y={f.y} width="120" height="44" rx="12" fill="var(--c-card)" stroke="var(--c-card-b)" />
+            <circle cx="404" cy={f.y + 22} r="7" fill={f.c} opacity="0.18" />
+            <circle cx="404" cy={f.y + 22} r="3.2" fill={f.c} />
+            <text x="417" y={f.y + 19} fontSize="8.5" fontWeight="700" fill="var(--c-t)">{f.t}</text>
+            <text x="417" y={f.y + 31} fontSize="7" fill="var(--c-m)">{f.s}</text>
+          </g>
+        ))}
 
-          <text
-            x="14"
-            y="22"
-            fontSize="9"
-            fill="var(--vp-muted)"
-          >
-            REVENUE
-          </text>
-
-          <text
-            x="14"
-            y="48"
-            fontSize="24"
-            fontWeight="800"
-            fill="var(--vp-text-strong)"
-          >
-            €32k
-          </text>
-
-          <text
-            x="14"
-            y="62"
-            fontSize="9"
-            fill="#22c55e"
-            fontWeight="700"
-          >
-            ↑ +18%
-          </text>
-        </g>
+        {/* ---- canali di vendita ---- */}
+        <path d="M260 240 V 262" stroke="var(--c-line)" strokeWidth="1.4" />
+        <path d="M110 262 H 410" stroke="var(--c-line)" strokeWidth="1.4" fill="none" />
+        {channels.map((c, i) => {
+          const cx = 110 + i * 100
+          return (
+            <g key={c}>
+              <path className="sc2-flow" d={`M${cx} 262 V 278`} stroke="url(#sc2-g)" strokeWidth="1.4" />
+              <rect x={cx - 44} y="278" width="88" height="28" rx="14" fill="var(--c-chip)" stroke="var(--c-card-b)" />
+              <circle cx={cx - 30} cy="292" r="3" fill="url(#sc2-g)" />
+              <text x={cx + 4} y="295.5" fontSize="8.5" fontWeight="700" textAnchor="middle" fill="var(--c-t)">{c}</text>
+            </g>
+          )
+        })}
       </svg>
     </VisualShell>
   )
@@ -4446,7 +4514,10 @@ export function ValuePropVisual({
       return <EcommerceUXVisual />
 
     case "ecommerce-performance":
-      return <EcommercePerformanceVisual />
+      return <EcommerceSpeedVisual />
+
+    case "ecommerce-valore":
+      return <EcommerceValoreVisual />
 
     case "ecommerce-scalabile":
       return <EcommerceScalabileVisual />

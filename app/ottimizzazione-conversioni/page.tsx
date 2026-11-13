@@ -111,6 +111,7 @@ const query = `*[_type == "page" && slug.current == "ottimizzazione-conversioni"
     highlightLast,
     titleHighlight,
     titleNormal,
+    titleAfter,
     subtitle,
     ctaText,
     ctaHref,

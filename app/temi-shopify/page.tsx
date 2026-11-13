@@ -180,6 +180,7 @@ const query = `*[_type == "page" && slug.current == "temi-shopify"][0]{
     highlightLast,
     titleHighlight,
     titleNormal,
+    titleAfter,
     subtitle,
     ctaText,
     ctaHref,
