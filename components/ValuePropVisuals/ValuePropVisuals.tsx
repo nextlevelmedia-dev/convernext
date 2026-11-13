@@ -2674,824 +2674,549 @@ function HomeReferenteVisual() {
   )
 }
 
-/* Struttura di pagina a conversione: le sezioni si accendono in sequenza */
+/* Variabili colore condivise dalle grafiche "Siti web" (card chiare / scure) */
+const SW_VARS = `
+  .sw2 {
+    --w-card: #ffffff;
+    --w-card-b: rgba(15,23,42,0.09);
+    --w-t: #0f172a;
+    --w-m: rgba(15,23,42,0.52);
+    --w-chip: #f1f3f8;
+  }
+  .dark .sw2 {
+    --w-card: #12203d;
+    --w-card-b: rgba(255,255,255,0.10);
+    --w-t: #ffffff;
+    --w-m: rgba(255,255,255,0.55);
+    --w-chip: rgba(255,255,255,0.06);
+  }
+  .sw2 * { transform-box: fill-box; }
+  /* le rotazioni scritte nell'attributo transform usano le coordinate del disegno */
+  .sw2 [transform] { transform-box: view-box; }
+`
+
+/* Struttura di pagina a conversione: la pagina scorre nel browser e a destra
+   si accende, in sincrono, la sezione che il visitatore sta leggendo (ciclo 12s) */
 function SitiwebStrutturaVisual() {
-  const rows: [string, string, number][] = [
-    ["Hero", "Beneficio per il cliente", 30],
-    ["Problema", "Il dubbio che risolvi", 18],
-    ["Proposta di valore", "Perché scegliere te", 18],
-    ["Recensioni", "Prova sociale", 14],
-    ["Differenze", "Rispetto ai concorrenti", 14],
-    ["Metodo", "Come lavori", 12],
-    ["CTA", "Il passo successivo", 12],
+  const steps = [
+    { n: "Hero", h: "Beneficio + CTA" },
+    { n: "Problema", h: "Il dubbio che risolvi" },
+    { n: "Proposta di valore", h: "Perché scegliere te" },
+    { n: "Recensioni", h: "Prova sociale" },
+    { n: "Metodo", h: "Come lavori" },
+    { n: "Contatto", h: "Il passo successivo" },
+  ]
+  // posizione (y) e altezza di ogni sezione nella pagina che scorre
+  const sec = [
+    { y: 58, h: 108 },
+    { y: 174, h: 62 },
+    { y: 244, h: 72 },
+    { y: 324, h: 72 },
+    { y: 404, h: 52 },
+    { y: 464, h: 96 },
   ]
   return (
     <VisualShell>
       <style>{`
-        @keyframes st-on {
-          0%, 8% { border-color: var(--vp-border); box-shadow: none; }
-          14%, 26% { border-color: rgba(124,58,237,.55); box-shadow: 0 10px 30px -14px rgba(124,58,237,.55); }
-          34%, 100% { border-color: var(--vp-border); box-shadow: none; }
+        ${SW_VARS}
+        @keyframes st2-scroll {
+          0%, 12%   { transform: translateY(0); }
+          17%, 29%  { transform: translateY(-104px); }
+          34%, 46%  { transform: translateY(-174px); }
+          51%, 95%  { transform: translateY(-250px); }
+          100%      { transform: translateY(0); }
         }
-        @keyframes st-dot {
-          0%, 8% { opacity: .25; }
-          14%, 26% { opacity: 1; }
-          34%, 100% { opacity: .25; }
-        }
-        .st-row { animation: st-on 7s ease-in-out infinite; }
-        .st-row i { animation: st-dot 7s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .st-row, .st-row i { animation: none; } }
-      `}</style>
-      <div style={{ position: "relative", zIndex: 2, width: "78%", display: "flex", flexDirection: "column", gap: 5 }}>
-        {rows.map(([name, hint, h], i) => (
-          <div
-            key={name}
-            className="st-row"
-            style={{
-              animationDelay: `${i * 0.9}s`,
-              height: h * 2.2,
-              minHeight: 22,
-              borderRadius: 9,
-              border: "1px solid var(--vp-border)",
-              background: i === 0 ? "linear-gradient(120deg, rgba(252,3,176,.14), rgba(4,124,249,.14))" : "var(--vp-panel)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "0 12px",
-              gap: 10,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-              <i
-                style={{
-                  animationDelay: `${i * 0.9}s`,
-                  width: 7,
-                  height: 7,
-                  borderRadius: 99,
-                  flexShrink: 0,
-                  background: "linear-gradient(90deg,#fc03b0,#047cf9)",
-                }}
-              />
-              <b style={{ fontSize: 11, fontWeight: 700, color: "var(--vp-text-strong)", whiteSpace: "nowrap" }}>{name}</b>
-            </div>
-            <b style={{ fontSize: 10, fontWeight: 500, color: "var(--vp-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{hint}</b>
-          </div>
-        ))}
-      </div>
-    </VisualShell>
-  )
-}
+        .st2-page { animation: st2-scroll 12s cubic-bezier(.6,0,.25,1) infinite; }
 
-function SitiwebImmersiveVisual() {
-  return (
-    <VisualShell>
-      <style>{`
-        @keyframes im-layer1 {
-          0% {
-            transform:translateY(0) translateX(0);
-          }
-          50% {
-            transform:translateY(-6px) translateX(3px);
-          }
-          100% {
-            transform:translateY(0) translateX(0);
-          }
-        }
+        @keyframes st2-on { 0%, 1% { opacity: 0 } 3%, 15% { opacity: 1 } 17%, 100% { opacity: 0 } }
+        .st2-on { animation: st2-on 12s ease infinite; }
 
-        @keyframes im-layer2 {
-          0% { transform:translateY(0); }
-          50% { transform:translateY(-10px); }
-          100% { transform:translateY(0); }
-        }
+        @keyframes st2-bar { 0% { transform: scaleY(0) } 100% { transform: scaleY(1) } }
+        .st2-prog { animation: st2-bar 12s linear infinite; transform-origin: center top; }
 
-        @keyframes im-layer3 {
-          0% {
-            transform:translateY(0) translateX(0);
-          }
-          50% {
-            transform:translateY(-4px) translateX(-3px);
-          }
-          100% {
-            transform:translateY(0) translateX(0);
-          }
-        }
+        @keyframes st2-toast { 0%, 88% { opacity: 0; transform: translateY(6px) } 91%, 98% { opacity: 1; transform: translateY(0) } 100% { opacity: 0 } }
+        .st2-toast { animation: st2-toast 12s ease infinite; }
 
-        @keyframes im-glow {
-          0%,100% { opacity:0.5; }
-          50% { opacity:1; }
-        }
-
-        @keyframes im-cursor {
-          0% { transform:translate(0,0); }
-          33% { transform:translate(30px,-20px); }
-          66% { transform:translate(-20px,20px); }
-          100% { transform:translate(0,0); }
-        }
-
-        @keyframes im-ripple {
-          0% {
-            r:0;
-            opacity:0.6;
-          }
-          100% {
-            r:30;
-            opacity:0;
-          }
-        }
-
-        .im-l1 {
-          animation:im-layer1 4s ease-in-out infinite;
-        }
-
-        .im-l2 {
-          animation:im-layer2 3s ease-in-out infinite 0.5s;
-        }
-
-        .im-l3 {
-          animation:im-layer3 5s ease-in-out infinite 1s;
-        }
-
-        .im-glow {
-          animation:im-glow 2s ease-in-out infinite;
-        }
-
-        .im-cursor {
-          animation:im-cursor 5s ease-in-out infinite;
-        }
-
-        .im-ripple {
-          animation:im-ripple 2s ease-out infinite 1s;
+        @media (prefers-reduced-motion: reduce) {
+          .sw2 * { animation: none !important; }
+          .st2-on { opacity: 0; }
+          .st2-on.st2-first { opacity: 1; }
         }
       `}</style>
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(ellipse at 50% 50%, rgba(124,58,237,0.10) 0%, transparent 60%)",
-        }}
-      />
-
-      <svg
-        viewBox="0 0 520 320"
-        style={{ width: "90%", maxWidth: 480 }}
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg className="sw2" viewBox="0 0 520 340" style={{ width: "92%", maxWidth: 500 }} xmlns="http://www.w3.org/2000/svg" fontFamily="inherit">
         <defs>
-          <linearGradient id="im-g1" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="st2-g" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor={gradStart} />
             <stop offset="100%" stopColor={gradEnd} />
           </linearGradient>
-
-          <filter id="im-blur">
-            <feGaussianBlur stdDeviation="10" />
-          </filter>
+          <linearGradient id="st2-gv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={gradStart} />
+            <stop offset="100%" stopColor={gradEnd} />
+          </linearGradient>
+          <linearGradient id="st2-img" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="rgba(252,3,176,0.30)" />
+            <stop offset="100%" stopColor="rgba(4,124,249,0.28)" />
+          </linearGradient>
+          <clipPath id="st2-clip">
+            <rect x="22" y="50" width="276" height="268" rx="0" />
+          </clipPath>
         </defs>
 
-        <rect
-          x="60"
-          y="25"
-          width="400"
-          height="255"
-          rx="16"
-          fill="var(--vp-panel)"
-          stroke="var(--vp-border)"
-        />
+        {/* ---- browser ---- */}
+        <rect x="20" y="16" width="280" height="306" rx="16" fill="#0c1529" stroke="rgba(255,255,255,0.14)" />
+        <rect x="20" y="16" width="280" height="306" rx="16" fill="none" stroke="url(#st2-g)" strokeWidth="1.3" opacity="0.4" />
+        <circle cx="36" cy="33" r="3.5" fill="#ff5f57" />
+        <circle cx="48" cy="33" r="3.5" fill="#febc2e" />
+        <circle cx="60" cy="33" r="3.5" fill="#28c840" />
+        <rect x="96" y="25" width="150" height="16" rx="8" fill="rgba(255,255,255,0.06)" />
+        <text x="171" y="36" fontSize="7.5" textAnchor="middle" fill="rgba(255,255,255,0.55)">tuosito.it</text>
+        <line x1="20" x2="300" y1="48" y2="48" stroke="rgba(255,255,255,0.08)" />
 
-        <g className="im-l3" opacity="0.5">
-          <ellipse
-            cx="260"
-            cy="140"
-            rx="120"
-            ry="80"
-            fill={gradStart}
-            opacity="0.06"
-            filter="url(#im-blur)"
-          />
+        <g clipPath="url(#st2-clip)" data-fit-ignore="">
+          <g className="st2-page">
+            {/* hero */}
+            <rect x="34" y={sec[0].y} width="252" height={sec[0].h} rx="10" fill="rgba(255,255,255,0.03)" />
+            <rect x="46" y="74" width="120" height="9" rx="4.5" fill="#fff" opacity="0.9" />
+            <rect x="46" y="88" width="96" height="9" rx="4.5" fill="url(#st2-g)" />
+            <rect x="46" y="106" width="118" height="5" rx="2.5" fill="rgba(255,255,255,0.35)" />
+            <rect x="46" y="115" width="92" height="5" rx="2.5" fill="rgba(255,255,255,0.25)" />
+            <rect x="46" y="132" width="62" height="18" rx="9" fill="#fff" />
+            <rect x="56" y="139" width="42" height="4" rx="2" fill="#0c1529" />
+            <rect x="184" y="70" width="90" height="84" rx="10" fill="url(#st2-img)" />
+            <circle cx="229" cy="112" r="18" fill="url(#st2-g)" opacity="0.8" />
 
-          <ellipse
-            cx="300"
-            cy="160"
-            rx="100"
-            ry="70"
-            fill={gradEnd}
-            opacity="0.08"
-            filter="url(#im-blur)"
-          />
-        </g>
-
-        <g className="im-l2">
-          <rect
-            x="120"
-            y="70"
-            width="280"
-            height="160"
-            rx="12"
-            fill="var(--vp-panel-soft)"
-            stroke="var(--vp-border)"
-          />
-
-          <rect
-            x="140"
-            y="90"
-            width="180"
-            height="18"
-            rx="4"
-            fill="var(--vp-line-strong)"
-          />
-
-          <rect
-            x="140"
-            y="115"
-            width="240"
-            height="12"
-            rx="3"
-            fill="var(--vp-line)"
-          />
-
-          <rect
-            x="140"
-            y="133"
-            width="200"
-            height="12"
-            rx="3"
-            fill="var(--vp-line)"
-          />
-
-          <rect
-            x="140"
-            y="160"
-            width="100"
-            height="32"
-            rx="16"
-            fill="url(#im-g1)"
-          />
-
-          <rect
-            x="152"
-            y="172"
-            width="76"
-            height="8"
-            rx="4"
-            fill="white"
-            opacity="0.9"
-          />
-        </g>
-
-        <g className="im-l1">
-          <rect
-            x="80"
-            y="175"
-            width="100"
-            height="70"
-            rx="12"
-            fill="rgba(252,3,176,0.08)"
-            stroke="rgba(252,3,176,0.2)"
-          />
-
-          <rect
-            x="92"
-            y="188"
-            width="76"
-            height="8"
-            rx="4"
-            fill="rgba(252,3,176,0.3)"
-          />
-
-          <rect
-            x="92"
-            y="202"
-            width="55"
-            height="6"
-            rx="3"
-            fill="var(--vp-line-strong)"
-          />
-
-          <rect
-            x="340"
-            y="60"
-            width="100"
-            height="70"
-            rx="12"
-            fill="rgba(4,124,249,0.08)"
-            stroke="rgba(4,124,249,0.2)"
-          />
-
-          <rect
-            x="352"
-            y="73"
-            width="76"
-            height="8"
-            rx="4"
-            fill="rgba(4,124,249,0.5)"
-          />
-
-          <rect
-            x="352"
-            y="87"
-            width="55"
-            height="6"
-            rx="3"
-            fill="var(--vp-line-strong)"
-          />
-        </g>
-
-        <g className="im-cursor" transform="translate(230,150)">
-          <circle
-            className="im-ripple"
-            r="0"
-            fill={gradStart}
-            opacity="0"
-          />
-
-          <polygon
-            points="0,0 0,18 5,14 9,20 11,19 7,13 14,13"
-            fill="var(--vp-text-strong)"
-            opacity="0.9"
-          />
-        </g>
-
-        <circle
-          className="im-glow"
-          cx="260"
-          cy="140"
-          r="60"
-          fill="url(#im-g1)"
-          opacity="0.04"
-          filter="url(#im-blur)"
-        />
-
-        <g transform="translate(80,290)">
-          {["SEO tecnico", "SEO locale", "Dati strutturati"].map(
-            (text, i) => (
-              <g key={text} transform={`translate(${i * 130},0)`}>
-                <rect
-                  width="110"
-                  height="18"
-                  rx="9"
-                  fill="var(--vp-panel)"
-                  stroke="var(--vp-border)"
-                />
-
-                <text
-                  x="10"
-                  y="13"
-                  fontSize="8"
-                  fill="var(--vp-muted)"
-                >
-                  {text}
-                </text>
+            {/* problema */}
+            <rect x="34" y={sec[1].y} width="252" height={sec[1].h} rx="10" fill="rgba(255,255,255,0.03)" />
+            <rect x="96" y="184" width="128" height="7" rx="3.5" fill="#fff" opacity="0.8" />
+            {[0, 1, 2].map((i) => (
+              <g key={i}>
+                <circle cx={70 + i * 80} cy="212" r="7" fill="rgba(252,3,176,0.2)" />
+                <text x={70 + i * 80} y="215" fontSize="8" fontWeight="800" textAnchor="middle" fill="#ff5fcf">?</text>
+                <rect x={52 + i * 80} y="223" width="36" height="4" rx="2" fill="rgba(255,255,255,0.3)" />
               </g>
-            )
-          )}
+            ))}
+
+            {/* proposta di valore */}
+            <rect x="34" y={sec[2].y} width="252" height={sec[2].h} rx="10" fill="rgba(255,255,255,0.03)" />
+            {[0, 1, 2].map((i) => (
+              <g key={i}>
+                <rect x={42 + i * 82} y="254" width="74" height="54" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" />
+                <rect x={50 + i * 82} y="262" width="14" height="14" rx="4" fill="url(#st2-g)" />
+                <rect x={50 + i * 82} y="284" width="50" height="5" rx="2.5" fill="#fff" opacity="0.75" />
+                <rect x={50 + i * 82} y="294" width="38" height="4" rx="2" fill="rgba(255,255,255,0.3)" />
+              </g>
+            ))}
+
+            {/* recensioni */}
+            <rect x="34" y={sec[3].y} width="252" height={sec[3].h} rx="10" fill="rgba(255,255,255,0.03)" />
+            {[0, 1].map((i) => (
+              <g key={i}>
+                <rect x={42 + i * 124} y="334" width="116" height="54" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" />
+                <text x={52 + i * 124} y="350" fontSize="8" fill="#fbbf24" letterSpacing="0.5">★★★★★</text>
+                <rect x={52 + i * 124} y="358" width="92" height="4" rx="2" fill="rgba(255,255,255,0.35)" />
+                <rect x={52 + i * 124} y="366" width="70" height="4" rx="2" fill="rgba(255,255,255,0.25)" />
+                <circle cx={58 + i * 124} cy="379" r="5" fill={i ? gradEnd : gradStart} />
+                <rect x={68 + i * 124} y="377" width="34" height="4" rx="2" fill="rgba(255,255,255,0.4)" />
+              </g>
+            ))}
+
+            {/* metodo */}
+            <rect x="34" y={sec[4].y} width="252" height={sec[4].h} rx="10" fill="rgba(255,255,255,0.03)" />
+            <line x1="76" x2="244" y1="426" y2="426" stroke="rgba(255,255,255,0.15)" strokeDasharray="3 4" />
+            {[0, 1, 2].map((i) => (
+              <g key={i}>
+                <circle cx={76 + i * 84} cy="426" r="10" fill="#0c1529" stroke="url(#st2-g)" strokeWidth="1.5" />
+                <text x={76 + i * 84} y="429.5" fontSize="9" fontWeight="800" textAnchor="middle" fill="#fff">{i + 1}</text>
+                <rect x={60 + i * 84} y="443" width="32" height="4" rx="2" fill="rgba(255,255,255,0.3)" />
+              </g>
+            ))}
+
+            {/* contatto */}
+            <rect x="34" y={sec[5].y} width="252" height={sec[5].h} rx="10" fill="url(#st2-img)" opacity="0.6" />
+            <rect x="96" y="476" width="128" height="8" rx="4" fill="#fff" opacity="0.9" />
+            <rect x="70" y="494" width="180" height="16" rx="6" fill="rgba(255,255,255,0.1)" />
+            <rect x="70" y="514" width="180" height="16" rx="6" fill="rgba(255,255,255,0.1)" />
+            <rect x="120" y="536" width="80" height="18" rx="9" fill="#fff" />
+            <rect x="136" y="543" width="48" height="4" rx="2" fill="#0c1529" />
+
+            {/* evidenziazione della sezione attiva */}
+            {sec.map((s, i) => (
+              <rect
+                key={i}
+                className="st2-on"
+                style={{ animationDelay: `${i * 2 - 12}s` }}
+                x="31"
+                y={s.y - 3}
+                width="258"
+                height={s.h + 6}
+                rx="12"
+                fill="none"
+                stroke="url(#st2-g)"
+                strokeWidth="1.6"
+              />
+            ))}
+          </g>
+        </g>
+
+        {/* ---- percorso a destra ---- */}
+        <line x1="333" x2="333" y1="38" y2="298" stroke="var(--w-card-b)" strokeWidth="2" strokeLinecap="round" />
+        <rect className="st2-prog" x="332" y="38" width="2" height="260" rx="1" fill="url(#st2-gv)" />
+        {steps.map((st, i) => {
+          const y = 22 + i * 52
+          return (
+            <g key={st.n}>
+              <rect x="344" y={y} width="156" height="40" rx="12" fill="var(--w-card)" stroke="var(--w-card-b)" />
+              <rect
+                className={`st2-on${i === 0 ? " st2-first" : ""}`}
+                style={{ animationDelay: `${i * 2 - 12}s` }}
+                x="344"
+                y={y}
+                width="156"
+                height="40"
+                rx="12"
+                fill="rgba(124,58,237,0.10)"
+                stroke="url(#st2-g)"
+                strokeWidth="1.4"
+              />
+              <circle cx="333" cy={y + 20} r="5" fill="var(--w-card)" stroke="var(--w-card-b)" strokeWidth="1.5" />
+              <circle className={`st2-on${i === 0 ? " st2-first" : ""}`} style={{ animationDelay: `${i * 2 - 12}s` }} cx="333" cy={y + 20} r="5" fill="url(#st2-g)" />
+              <text x="358" y={y + 18} fontSize="9.5" fontWeight="700" fill="var(--w-t)">{st.n}</text>
+              <text x="358" y={y + 30} fontSize="7.5" fill="var(--w-m)">{st.h}</text>
+              <text x="490" y={y + 24} fontSize="8" fontWeight="700" textAnchor="end" fill="var(--w-m)">{`0${i + 1}`}</text>
+            </g>
+          )
+        })}
+
+        {/* richiesta arrivata a fine percorso */}
+        <g className="st2-toast">
+          <rect x="150" y="262" width="138" height="44" rx="12" fill="var(--w-card)" stroke="var(--w-card-b)" />
+          <circle cx="170" cy="284" r="10" fill="rgba(52,211,153,0.16)" />
+          <path d="M165.5 284 l3 3 l5.5 -6" stroke="#34d399" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <text x="186" y="281" fontSize="9" fontWeight="700" fill="var(--w-t)">Nuova richiesta</text>
+          <text x="186" y="293" fontSize="7" fill="var(--w-m)">dal modulo contatti</text>
         </g>
       </svg>
     </VisualShell>
   )
 }
 
-/* =========================================================
-   SITI WEB — SVILUPPO
-========================================================= */
+/* SEO locale: ricerca su Google con la tua attività in cima a mappa e risultati (ciclo 8s) */
+function SitiwebSeoVisual() {
+  const checks = ["Testi per le ricerche in zona", "Dati strutturati", "Scheda Google collegata", "Pagine veloci"]
+  return (
+    <VisualShell>
+      <style>{`
+        ${SW_VARS}
+        @keyframes seo2-type { 0%, 2% { transform: scaleX(1) } 16%, 94% { transform: scaleX(0) } 100% { transform: scaleX(1) } }
+        .seo2-cover { animation: seo2-type 8s steps(22, end) infinite; transform-origin: right center; }
+        @keyframes seo2-caret { 0%, 50% { opacity: 1 } 51%, 100% { opacity: 0 } }
+        .seo2-caret { animation: seo2-caret 1s step-end infinite; }
 
+        @keyframes seo2-in { 0%, 17% { opacity: 0; transform: translateY(6px) } 22%, 94% { opacity: 1; transform: translateY(0) } 98%, 100% { opacity: 0 } }
+        .seo2-in { animation: seo2-in 8s ease infinite; }
+        .seo2-in2 { animation-delay: .25s } .seo2-in3 { animation-delay: .5s }
+
+        @keyframes seo2-pin { 0%, 18% { transform: translateY(-14px); opacity: 0 } 24% { transform: translateY(0); opacity: 1 } 28% { transform: translateY(-4px) } 32%, 94% { transform: translateY(0); opacity: 1 } 98%, 100% { opacity: 0 } }
+        .seo2-pin { animation: seo2-pin 8s ease infinite; }
+        @keyframes seo2-ping { 0%, 28% { opacity: 0; transform: scale(.4) } 34% { opacity: .8 } 48%, 100% { opacity: 0; transform: scale(1.8) } }
+        .seo2-ping { animation: seo2-ping 8s ease-out infinite; transform-origin: center; }
+
+        @keyframes seo2-check { 0%, 24% { opacity: .25 } 28%, 94% { opacity: 1 } 98%, 100% { opacity: .25 } }
+        .seo2-check { animation: seo2-check 8s ease infinite; }
+
+        @keyframes seo2-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+        .seo2-f1 { animation: seo2-float 5s ease-in-out infinite; }
+        .seo2-f2 { animation: seo2-float 5s ease-in-out infinite -2.5s; }
+
+        @media (prefers-reduced-motion: reduce) {
+          .sw2 * { animation: none !important; }
+          .seo2-cover, .seo2-ping { opacity: 0; }
+        }
+      `}</style>
+
+      <svg className="sw2" viewBox="0 0 520 340" style={{ width: "92%", maxWidth: 500 }} xmlns="http://www.w3.org/2000/svg" fontFamily="inherit">
+        <defs>
+          <linearGradient id="seo2-g" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={gradStart} />
+            <stop offset="100%" stopColor={gradEnd} />
+          </linearGradient>
+          <clipPath id="seo2-map">
+            <rect x="34" y="66" width="262" height="96" rx="10" />
+          </clipPath>
+        </defs>
+
+        {/* ---- pannello ricerca ---- */}
+        <rect x="20" y="16" width="290" height="308" rx="16" fill="#0c1529" stroke="rgba(255,255,255,0.14)" />
+        <rect x="20" y="16" width="290" height="308" rx="16" fill="none" stroke="url(#seo2-g)" strokeWidth="1.3" opacity="0.4" />
+
+        {/* barra di ricerca con testo che si scrive */}
+        <rect x="34" y="28" width="262" height="26" rx="13" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.1)" />
+        <circle cx="50" cy="40.5" r="4.5" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" fill="none" />
+        <line x1="53.5" y1="44" x2="57" y2="47.5" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" />
+        <text x="64" y="44.5" fontSize="9.5" fill="#fff">idraulico a Bergamo</text>
+        <rect className="seo2-cover" x="62" y="32" width="100" height="18" fill="#1a2438" />
+        <rect className="seo2-caret" x="163" y="35" width="1.2" height="12" fill="#fff" />
+
+        {/* mappa */}
+        <g clipPath="url(#seo2-map)">
+          <rect x="34" y="66" width="262" height="96" fill="#132341" />
+          <path d="M34 120 C 90 110, 130 140, 296 104" stroke="rgba(255,255,255,0.10)" strokeWidth="9" fill="none" />
+          <path d="M120 66 L 150 162" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
+          <path d="M230 66 C 220 100, 250 130, 240 162" stroke="rgba(255,255,255,0.08)" strokeWidth="6" fill="none" />
+          <path d="M34 84 L 296 92" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
+          <rect x="60" y="134" width="40" height="22" rx="4" fill="rgba(52,211,153,0.10)" />
+        </g>
+        {/* concorrenti */}
+        {[
+          [84, 98],
+          [258, 140],
+          [272, 84],
+        ].map(([x, y]) => (
+          <g key={`${x}`}>
+            <path d={`M${x} ${y} c-5 -6 -7 -9 -7 -12 a7 7 0 0 1 14 0 c0 3 -2 6 -7 12 z`} fill="rgba(255,255,255,0.28)" />
+            <circle cx={x} cy={y - 12} r="2.4" fill="#0c1529" />
+          </g>
+        ))}
+        {/* la tua attività */}
+        <circle className="seo2-ping" cx="180" cy="120" r="14" fill="none" stroke={gradStart} strokeWidth="2" />
+        <g className="seo2-pin">
+          <path d="M180 120 c-8 -9 -11 -14 -11 -19 a11 11 0 0 1 22 0 c0 5 -3 10 -11 19 z" fill="url(#seo2-g)" stroke="#fff" strokeWidth="1.2" />
+          <circle cx="180" cy="101" r="4" fill="#fff" />
+        </g>
+
+        {/* risultati locali */}
+        <g className="seo2-in">
+          <rect x="34" y="172" width="262" height="58" rx="10" fill="rgba(124,58,237,0.13)" stroke="url(#seo2-g)" strokeWidth="1.2" />
+          <rect x="44" y="182" width="38" height="38" rx="8" fill="url(#seo2-g)" />
+          <path d="M55 207 l8 -10 l8 10 z M58 207 v5 h10 v-5" fill="#fff" opacity="0.9" />
+          <text x="90" y="192" fontSize="9.5" fontWeight="800" fill="#fff">La tua attività</text>
+          <text x="90" y="204" fontSize="8" fill="#fbbf24" letterSpacing="0.4">★★★★★</text>
+          <text x="138" y="204" fontSize="7.5" fill="rgba(255,255,255,0.6)">4,9 · Idraulico</text>
+          <text x="90" y="216" fontSize="7.5" fontWeight="700" fill="#34d399">Aperto ora</text>
+          <text x="134" y="216" fontSize="7.5" fill="rgba(255,255,255,0.5)">· Bergamo centro</text>
+          <rect x="236" y="182" width="50" height="16" rx="8" fill="none" stroke="rgba(255,255,255,0.35)" />
+          <text x="261" y="193" fontSize="7" fontWeight="700" textAnchor="middle" fill="#fff">Sito web</text>
+          <rect x="236" y="204" width="50" height="16" rx="8" fill="none" stroke="rgba(255,255,255,0.35)" />
+          <text x="261" y="215" fontSize="7" fontWeight="700" textAnchor="middle" fill="#fff">Chiama</text>
+        </g>
+        {[0, 1].map((i) => (
+          <g key={i} className={`seo2-in seo2-in${i + 2}`} opacity="0.55">
+            <rect x="34" y={238 + i * 40} width="262" height="34" rx="10" fill="rgba(255,255,255,0.04)" />
+            <rect x="44" y={245 + i * 40} width="20" height="20" rx="6" fill="rgba(255,255,255,0.12)" />
+            <rect x="72" y={248 + i * 40} width="90" height="5" rx="2.5" fill="rgba(255,255,255,0.4)" />
+            <rect x="72" y={258 + i * 40} width="60" height="4" rx="2" fill="rgba(255,255,255,0.22)" />
+          </g>
+        ))}
+
+        {/* ---- destra: risultato organico ---- */}
+        <g className="seo2-f1">
+          <rect x="326" y="40" width="176" height="100" rx="14" fill="var(--w-card)" stroke="var(--w-card-b)" />
+          <circle cx="344" cy="60" r="7" fill="url(#seo2-g)" />
+          <text x="356" y="58" fontSize="7.5" fontWeight="700" fill="var(--w-t)">tuosito.it</text>
+          <text x="356" y="67" fontSize="6.5" fill="var(--w-m)">› servizi › bergamo</text>
+          <text x="338" y="86" fontSize="10" fontWeight="700" fill="#4f8dff">Idraulico a Bergamo,</text>
+          <text x="338" y="98" fontSize="10" fontWeight="700" fill="#4f8dff">pronto intervento 24h</text>
+          <text x="338" y="114" fontSize="8" fill="#fbbf24" letterSpacing="0.4">★★★★★</text>
+          <text x="386" y="114" fontSize="7" fill="var(--w-m)">Valutazione 4,9</text>
+          <rect x="338" y="122" width="140" height="4" rx="2" fill="var(--w-card-b)" />
+        </g>
+
+        {/* ---- destra: cosa curiamo ---- */}
+        <g className="seo2-f2">
+          <rect x="326" y="158" width="176" height="128" rx="14" fill="var(--w-card)" stroke="var(--w-card-b)" />
+          <text x="340" y="178" fontSize="8" fontWeight="600" fill="var(--w-m)" letterSpacing="0.6">GIÀ INCLUSO NEL SITO</text>
+          {checks.map((c, i) => (
+            <g key={c} className="seo2-check" style={{ animationDelay: `${i * 0.35}s` }}>
+              <circle cx="349" cy={198 + i * 22} r="8" fill="rgba(52,211,153,0.16)" />
+              <path d={`M345 ${198 + i * 22} l2.8 2.8 l5 -5.6`} stroke="#34d399" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              <text x="364" y={201 + i * 22} fontSize="8.5" fontWeight="600" fill="var(--w-t)">{c}</text>
+            </g>
+          ))}
+        </g>
+      </svg>
+    </VisualShell>
+  )
+}
+
+/* Sviluppo su misura: dal pannello modifichi il titolo, l'anteprima si aggiorna;
+   nell'anteprima un oggetto 3D animato, sotto il componente che lo genera (ciclo 8s) */
 function SitiwebSviluppoVisual() {
   return (
     <VisualShell>
       <style>{`
-        @keyframes sv-cursor {
-          0%,100% { opacity:1; }
-          50% { opacity:0; }
-        }
+        ${SW_VARS}
+        @keyframes dev2-a { 0%, 38% { opacity: 1 } 42%, 92% { opacity: 0 } 96%, 100% { opacity: 1 } }
+        @keyframes dev2-b { 0%, 38% { opacity: 0 } 42%, 92% { opacity: 1 } 96%, 100% { opacity: 0 } }
+        .dev2-a { animation: dev2-a 8s linear infinite; }
+        .dev2-b { animation: dev2-b 8s linear infinite; }
 
-        @keyframes sv-line {
-          from {
-            opacity:0;
-            transform:translateY(6px);
-          }
-          to {
-            opacity:1;
-            transform:translateY(0);
-          }
-        }
+        @keyframes dev2-focus { 0%, 14% { opacity: 0 } 18%, 40% { opacity: 1 } 44%, 100% { opacity: 0 } }
+        .dev2-focus { animation: dev2-focus 8s ease infinite; }
 
-        @keyframes sv-tag {
-          0% { transform:scale(1); }
-          50% { transform:scale(1.08); }
-          100% { transform:scale(1); }
-        }
+        @keyframes dev2-type { 0%, 18% { transform: scaleX(1) } 38%, 94% { transform: scaleX(0) } 100% { transform: scaleX(1) } }
+        .dev2-cover { animation: dev2-type 8s steps(16, end) infinite; transform-origin: right center; }
 
-        .sv-l1 {
-          animation:sv-line 0.4s ease forwards 0.3s;
-          opacity:0;
-        }
+        @keyframes dev2-pub { 0%, 44%, 52%, 100% { transform: scale(1) } 48% { transform: scale(.93) } }
+        .dev2-pub { animation: dev2-pub 8s ease infinite; transform-origin: center; }
 
-        .sv-l2 {
-          animation:sv-line 0.4s ease forwards 0.6s;
-          opacity:0;
-        }
+        @keyframes dev2-flash { 0%, 46% { opacity: 0 } 50% { opacity: .9 } 62%, 100% { opacity: 0 } }
+        .dev2-flash { animation: dev2-flash 8s ease infinite; }
 
-        .sv-l3 {
-          animation:sv-line 0.4s ease forwards 0.9s;
-          opacity:0;
-        }
+        @keyframes dev2-bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-5px) } }
+        .dev2-orb { animation: dev2-bob 4s ease-in-out infinite; }
 
-        .sv-l4 {
-          animation:sv-line 0.4s ease forwards 1.2s;
-          opacity:0;
-        }
+        @keyframes dev2-drag { 0%, 56% { transform: translateY(0) } 62%, 80% { transform: translateY(22px) } 86%, 100% { transform: translateY(0) } }
+        @keyframes dev2-drag2 { 0%, 56% { transform: translateY(0) } 62%, 80% { transform: translateY(-22px) } 86%, 100% { transform: translateY(0) } }
+        .dev2-r1 { animation: dev2-drag 8s cubic-bezier(.5,0,.3,1) infinite; }
+        .dev2-r2 { animation: dev2-drag2 8s cubic-bezier(.5,0,.3,1) infinite; }
 
-        .sv-l5 {
-          animation:sv-line 0.4s ease forwards 1.5s;
-          opacity:0;
-        }
+        @keyframes dev2-float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+        .dev2-f { animation: dev2-float 5s ease-in-out infinite; }
 
-        .sv-l6 {
-          animation:sv-line 0.4s ease forwards 1.8s;
-          opacity:0;
-        }
-
-        .sv-cursor {
-          animation:sv-cursor 1s ease-in-out infinite 2s;
-        }
-
-        .sv-tag1 {
-          animation:sv-tag 2.5s ease-in-out infinite 0.5s;
-        }
-
-        .sv-tag2 {
-          animation:sv-tag 2.5s ease-in-out infinite 1s;
-        }
-
-        .sv-tag3 {
-          animation:sv-tag 2.5s ease-in-out infinite 1.5s;
+        @media (prefers-reduced-motion: reduce) {
+          .sw2 * { animation: none !important; }
+          .dev2-a, .dev2-focus, .dev2-flash, .dev2-cover { opacity: 0; }
+          .dev2-b { opacity: 1; }
         }
       `}</style>
 
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(ellipse at 30% 50%, rgba(4,124,249,0.08) 0%, transparent 55%)",
-        }}
-      />
-
-      <svg
-        viewBox="0 0 520 320"
-        style={{ width: "90%", maxWidth: 480 }}
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg className="sw2" viewBox="0 0 520 340" style={{ width: "92%", maxWidth: 500 }} xmlns="http://www.w3.org/2000/svg" fontFamily="inherit">
         <defs>
-          <linearGradient id="sv-g1" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="dev2-g" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor={gradStart} />
             <stop offset="100%" stopColor={gradEnd} />
           </linearGradient>
+          <radialGradient id="dev2-orb" cx="35%" cy="30%" r="75%">
+            <stop offset="0%" stopColor="#ffd1f1" />
+            <stop offset="35%" stopColor={gradStart} />
+            <stop offset="75%" stopColor="#7c3aed" />
+            <stop offset="100%" stopColor="#1e1b6b" />
+          </radialGradient>
+          <radialGradient id="dev2-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="rgba(252,3,176,0.45)" />
+            <stop offset="100%" stopColor="rgba(252,3,176,0)" />
+          </radialGradient>
         </defs>
 
-        {/* editor volutamente scuro anche in light */}
-        <rect
-          x="52"
-          y="30"
-          width="260"
-          height="260"
-          rx="14"
-          fill="var(--vp-code-bg)"
-          stroke="var(--vp-border)"
-        />
+        {/* ---- pannello di gestione ---- */}
+        <g className="dev2-f">
+          <rect x="16" y="30" width="160" height="276" rx="16" fill="var(--w-card)" stroke="var(--w-card-b)" />
+          <rect x="30" y="44" width="16" height="16" rx="5" fill="url(#dev2-g)" />
+          <text x="54" y="56" fontSize="10" fontWeight="800" fill="var(--w-t)">Pannello</text>
+          <text x="162" y="56" fontSize="7" textAnchor="end" fill="var(--w-m)">Home</text>
 
-        <rect
-          x="52"
-          y="30"
-          width="260"
-          height="32"
-          rx="14"
-          fill="rgba(255,255,255,0.03)"
-        />
+          <text x="30" y="82" fontSize="7.5" fontWeight="600" fill="var(--w-m)">Titolo hero</text>
+          <rect x="30" y="88" width="132" height="24" rx="8" fill="var(--w-chip)" stroke="var(--w-card-b)" />
+          <rect className="dev2-focus" x="30" y="88" width="132" height="24" rx="8" fill="none" stroke="url(#dev2-g)" strokeWidth="1.5" />
+          <text className="dev2-a" x="40" y="103.5" fontSize="8.5" fill="var(--w-t)">Benvenuti sul sito</text>
+          <g className="dev2-b">
+            <text x="40" y="103.5" fontSize="8.5" fill="var(--w-t)">Arredi su misura</text>
+          </g>
 
-        <rect
-          x="52"
-          y="48"
-          width="260"
-          height="14"
-          fill="rgba(255,255,255,0.03)"
-        />
+          <text x="30" y="132" fontSize="7.5" fontWeight="600" fill="var(--w-m)">Sezioni</text>
+          {[
+            { n: "Hero 3D", c: "dev2-r0" },
+            { n: "Servizi", c: "dev2-r1" },
+            { n: "Recensioni", c: "dev2-r2" },
+          ].map((r, i) => (
+            <g key={r.n} className={r.c}>
+              <rect x="30" y={138 + i * 22} width="132" height="18" rx="6" fill="var(--w-chip)" stroke="var(--w-card-b)" />
+              <g fill="var(--w-m)">
+                <circle cx="38" cy={144 + i * 22} r="1" />
+                <circle cx="42" cy={144 + i * 22} r="1" />
+                <circle cx="38" cy={150 + i * 22} r="1" />
+                <circle cx="42" cy={150 + i * 22} r="1" />
+              </g>
+              <text x="50" y={150 + i * 22} fontSize="8" fontWeight="600" fill="var(--w-t)">{r.n}</text>
+            </g>
+          ))}
 
-        <rect
-          x="66"
-          y="36"
-          width="70"
-          height="20"
-          rx="4"
-          fill="rgba(255,255,255,0.06)"
-        />
+          <text x="30" y="226" fontSize="8" fontWeight="600" fill="var(--w-t)">Animazioni</text>
+          <rect x="134" y="217" width="28" height="15" rx="7.5" fill="url(#dev2-g)" />
+          <circle cx="154.5" cy="224.5" r="5.5" fill="#fff" />
+          <text x="30" y="250" fontSize="8" fontWeight="600" fill="var(--w-t)">Modalità scura</text>
+          <rect x="134" y="241" width="28" height="15" rx="7.5" fill="var(--w-chip)" stroke="var(--w-card-b)" />
+          <circle cx="141.5" cy="248.5" r="5.5" fill="var(--w-m)" />
 
-        <text
-          x="76"
-          y="51"
-          fontSize="8"
-          fill="rgba(255,255,255,0.5)"
-        >
-          index.tsx
-        </text>
+          <g className="dev2-pub">
+            <rect x="30" y="268" width="132" height="26" rx="13" fill="var(--w-t)" />
+            <text x="96" y="284.5" fontSize="9" fontWeight="800" textAnchor="middle" fill="var(--w-card)">Pubblica</text>
+          </g>
+        </g>
 
-        <rect
-          x="144"
-          y="40"
-          width="60"
-          height="14"
-          rx="3"
-          fill="rgba(255,255,255,0.03)"
-        />
+        {/* ---- anteprima del sito ---- */}
+        <rect x="192" y="16" width="312" height="214" rx="16" fill="#0c1529" stroke="rgba(255,255,255,0.14)" />
+        <rect x="192" y="16" width="312" height="214" rx="16" fill="none" stroke="url(#dev2-g)" strokeWidth="1.3" opacity="0.4" />
+        <circle cx="208" cy="31" r="3.2" fill="#ff5f57" />
+        <circle cx="219" cy="31" r="3.2" fill="#febc2e" />
+        <circle cx="230" cy="31" r="3.2" fill="#28c840" />
+        <rect x="290" y="23" width="116" height="15" rx="7.5" fill="rgba(255,255,255,0.06)" />
+        <text x="348" y="33.5" fontSize="7" textAnchor="middle" fill="rgba(255,255,255,0.55)">tuosito.it</text>
+        <line x1="192" x2="504" y1="45" y2="45" stroke="rgba(255,255,255,0.08)" />
 
-        <text
-          x="152"
-          y="51"
-          fontSize="8"
-          fill="rgba(255,255,255,0.25)"
-        >
-          styles.css
-        </text>
-
-        {[1,2,3,4,5,6,7,8,9,10].map((n, i) => (
-          <text
-            key={n}
-            x="66"
-            y={82 + i * 18}
-            fontSize="8"
-            fill="rgba(255,255,255,0.15)"
-            textAnchor="end"
-          >
-            {n}
-          </text>
+        {/* nav */}
+        <rect x="208" y="58" width="34" height="6" rx="3" fill="url(#dev2-g)" />
+        {[0, 1, 2].map((i) => (
+          <rect key={i} x={370 + i * 34} y="59" width="24" height="4" rx="2" fill="rgba(255,255,255,0.35)" />
         ))}
 
-        <g className="sv-l1" transform="translate(76,80)">
-          <text fontSize="9" fill="#7dd3fc" fontFamily="monospace">
-            {"<"}
-          </text>
-
-          <text
-            x="8"
-            fontSize="9"
-            fill={gradStart}
-            fontFamily="monospace"
-          >
-            Hero
-          </text>
-
-          <text
-            x="44"
-            fontSize="9"
-            fill="#7dd3fc"
-            fontFamily="monospace"
-          >
-            {"/>"}
-          </text>
+        {/* hero: titolo che si aggiorna */}
+        <text className="dev2-a" x="208" y="104" fontSize="17" fontWeight="800" fill="#fff">Benvenuti</text>
+        <text className="dev2-a" x="208" y="124" fontSize="17" fontWeight="800" fill="#fff">sul sito</text>
+        <g className="dev2-b">
+          <text x="208" y="104" fontSize="17" fontWeight="800" fill="#fff">Arredi</text>
+          <text x="208" y="124" fontSize="17" fontWeight="800" fill="url(#dev2-g)">su misura</text>
         </g>
+        <rect x="208" y="138" width="110" height="5" rx="2.5" fill="rgba(255,255,255,0.35)" />
+        <rect x="208" y="148" width="86" height="5" rx="2.5" fill="rgba(255,255,255,0.25)" />
+        <rect x="208" y="166" width="70" height="20" rx="10" fill="#fff" />
+        <rect x="222" y="174" width="42" height="4" rx="2" fill="#0c1529" />
+        <rect className="dev2-flash" x="200" y="84" width="140" height="50" rx="8" fill="rgba(255,255,255,0.12)" />
 
-        <g className="sv-l2" transform="translate(76,98)">
-          <text
-            x="10"
-            fontSize="9"
-            fill="#86efac"
-            fontFamily="monospace"
-          >
-            title
-          </text>
-
-          <text
-            x="42"
-            fontSize="9"
-            fill="rgba(255,255,255,0.4)"
-            fontFamily="monospace"
-          >
-            =
-          </text>
-
-          <text
-            x="50"
-            fontSize="9"
-            fill="#fde68a"
-            fontFamily="monospace"
-          >
-            "Convernext"
-          </text>
+        {/* oggetto 3D */}
+        <circle cx="420" cy="130" r="62" fill="url(#dev2-glow)" />
+        <g className="dev2-orb">
+          <circle cx="420" cy="130" r="34" fill="url(#dev2-orb)" />
+          <g transform="rotate(-18 420 130)">
+            <ellipse cx="420" cy="130" rx="56" ry="15" fill="none" stroke="url(#dev2-g)" strokeWidth="1.6" opacity="0.85" />
+            <circle r="3.5" fill="#fff">
+              <animateMotion dur="6s" repeatCount="indefinite" path="M476 130 A56 15 0 1 1 364 130 A56 15 0 1 1 476 130" />
+            </circle>
+          </g>
+          <ellipse cx="420" cy="130" rx="48" ry="12" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1" transform="rotate(28 420 130)" />
+          <ellipse cx="408" cy="116" rx="9" ry="5" fill="#fff" opacity="0.35" transform="rotate(-30 408 116)" />
         </g>
+        <ellipse cx="420" cy="206" rx="34" ry="5" fill="#000" opacity="0.3" />
 
-        <g className="sv-l3" transform="translate(76,116)">
-          <text
-            x="10"
-            fontSize="9"
-            fill="#86efac"
-            fontFamily="monospace"
-          >
-            gradient
-          </text>
-
-          <text
-            x="62"
-            fontSize="9"
-            fill="rgba(255,255,255,0.4)"
-            fontFamily="monospace"
-          >
-            =
-          </text>
-
-          <text
-            x="70"
-            fontSize="9"
-            fill="#c4b5fd"
-            fontFamily="monospace"
-          >
-            {"{brand}"}
-          </text>
-        </g>
-
-        <g className="sv-l4" transform="translate(76,134)">
-          <text fontSize="9" fill="#7dd3fc" fontFamily="monospace">
-            {"<"}
-          </text>
-
-          <text
-            x="8"
-            fontSize="9"
-            fill={gradEnd}
-            fontFamily="monospace"
-          >
-            Section
-          </text>
-
-          <text
-            x="60"
-            fontSize="9"
-            fill="#7dd3fc"
-            fontFamily="monospace"
-          >
-            {"/>"}
-          </text>
-        </g>
-
-        <g className="sv-l5" transform="translate(76,152)">
-          <text
-            x="10"
-            fontSize="9"
-            fill="#86efac"
-            fontFamily="monospace"
-          >
-            cms
-          </text>
-
-          <text
-            x="34"
-            fontSize="9"
-            fill="rgba(255,255,255,0.4)"
-            fontFamily="monospace"
-          >
-            =
-          </text>
-
-          <text
-            x="42"
-            fontSize="9"
-            fill="#fde68a"
-            fontFamily="monospace"
-          >
-            "sanity"
-          </text>
-        </g>
-
-        <g className="sv-l6" transform="translate(76,170)">
-          <text fontSize="9" fill="#7dd3fc" fontFamily="monospace">
-            {"<"}
-          </text>
-
-          <text
-            x="8"
-            fontSize="9"
-            fill={gradStart}
-            fontFamily="monospace"
-          >
-            Footer
-          </text>
-
-          <text
-            x="52"
-            fontSize="9"
-            fill="#7dd3fc"
-            fontFamily="monospace"
-          >
-            {"/>"}
-          </text>
-
-          <rect
-            className="sv-cursor"
-            x="64"
-            y="-10"
-            width="2"
-            height="12"
-            fill="white"
-            rx="1"
-          />
-        </g>
-
-        {[
-          {
-            cls: "sv-tag1",
-            x: 340,
-            y: 50,
-            width: 70,
-            icon: "⚛️",
-            text: "React",
-            border: "rgba(4,124,249,0.3)",
-          },
-          {
-            cls: "sv-tag2",
-            x: 330,
-            y: 95,
-            width: 80,
-            icon: "▲",
-            text: "Next.js",
-            border: "rgba(252,3,176,0.3)",
-          },
-          {
-            cls: "",
-            x: 345,
-            y: 140,
-            width: 70,
-            icon: "🎨",
-            text: "CSS",
-            border: "rgba(34,197,94,0.3)",
-          },
-          {
-            cls: "sv-tag3",
-            x: 330,
-            y: 185,
-            width: 90,
-            icon: "🔷",
-            text: "TypeScript",
-            border: "rgba(250,204,21,0.3)",
-          },
-          {
-            cls: "",
-            x: 340,
-            y: 230,
-            width: 70,
-            icon: "🟣",
-            text: "Sanity",
-            border: "rgba(167,139,250,0.3)",
-          },
-        ].map((tag) => (
-          <g
-            key={tag.text}
-            className={tag.cls}
-            transform={`translate(${tag.x},${tag.y})`}
-          >
-            <rect
-              width={tag.width}
-              height="28"
-              rx="10"
-              fill="var(--vp-panel)"
-              stroke={tag.border}
-            />
-
-            <text x="14" y="19" fontSize="12">
-              {tag.icon}
-            </text>
-
-            <text
-              x="32"
-              y="19"
-              fontSize="9"
-              fill="var(--vp-text)"
-              fontWeight="600"
-            >
-              {tag.text}
-            </text>
+        {/* ---- codice del componente ---- */}
+        <rect x="192" y="244" width="312" height="78" rx="14" fill="#0a1222" stroke="rgba(255,255,255,0.12)" />
+        <text x="206" y="264" fontSize="7" fill="rgba(255,255,255,0.4)">Hero.tsx</text>
+        <text x="206" y="282" fontSize="9" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+          <tspan fill="rgba(255,255,255,0.45)">&lt;</tspan>
+          <tspan fill="#ff5fcf">Hero3D</tspan>
+          <tspan fill="#8fb8ff"> title</tspan>
+          <tspan fill="rgba(255,255,255,0.6)">=</tspan>
+          <tspan fill="#34d399">{"{cms.title}"}</tspan>
+        </text>
+        <text x="218" y="296" fontSize="9" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+          <tspan fill="#8fb8ff">motion</tspan>
+          <tspan fill="rgba(255,255,255,0.6)">=</tspan>
+          <tspan fill="#fbbf24">&quot;orbit&quot;</tspan>
+          <tspan fill="rgba(255,255,255,0.45)"> /&gt;</tspan>
+        </text>
+        <rect x="408" y="256" width="84" height="18" rx="9" fill="rgba(52,211,153,0.14)" />
+        <text x="450" y="268" fontSize="7.5" fontWeight="800" textAnchor="middle" fill="#34d399">✓ Build ok</text>
+        {["Next.js", "Sanity", "3D"].map((t, i) => (
+          <g key={t}>
+            <rect x={392 + i * 36} y="290" width="32" height="16" rx="8" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" />
+            <text x={408 + i * 36} y="301" fontSize="6.5" fontWeight="700" textAnchor="middle" fill="rgba(255,255,255,0.75)">{t}</text>
           </g>
         ))}
-
-        <rect
-          x="52"
-          y="260"
-          width="260"
-          height="30"
-          fill="rgba(255,255,255,0.02)"
-        />
-
-        <text
-          x="76"
-          y="279"
-          fontSize="8"
-          fill="#22c55e"
-        >
-          ✓ Build successful — 0 errors
-        </text>
       </svg>
     </VisualShell>
   )
 }
-
 
 /* =========================================================
    HOME — RESEARCH
@@ -4551,7 +4276,7 @@ export function ValuePropVisual({
       return <SitiwebStrutturaVisual />
 
     case "sitiweb-immersive":
-      return <SitiwebImmersiveVisual />
+      return <SitiwebSeoVisual />
 
     case "sitiweb-performance":
       return <EcommercePerformanceVisual />

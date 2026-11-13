@@ -209,6 +209,8 @@ function FitVisual({ children }: { children: React.ReactNode }) {
       }
       content.querySelectorAll<Element>("*").forEach((el) => {
         if (el.tagName === "STYLE" || el.tagName === "defs") return
+        // contenuto che scorre dentro una finestra ritagliata: non conta per l'ingombro
+        if (el.closest("[data-fit-ignore]")) return
         const rc = el.getBoundingClientRect()
         if (rc.width < 2 || rc.height < 2) return
         if (rc.width >= base.width * 0.97 && rc.height >= base.height * 0.85) return

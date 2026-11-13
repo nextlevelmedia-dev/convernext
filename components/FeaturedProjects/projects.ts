@@ -80,6 +80,15 @@ export const featuredProjects: Project[] = [
     preview: "/media/work/aurelle-cover.webp",
   },
   {
+    slug: "rotberg",
+    name: "Rotberg",
+    tags: ["Sito web", "Custom development", "Consulenza"],
+    description:
+      "Sito per uno studio di consulenza economica che affianca imprese e famiglie: organizzazione, controllo dei costi e budget di casa.",
+    url: "https://rotberg-seven.vercel.app/",
+    preview: "/media/work/rotberg.webp",
+  },
+  {
     slug: "vaerk",
     name: "VÆRK",
     tags: ["E-commerce", "Custom development", "3D"],

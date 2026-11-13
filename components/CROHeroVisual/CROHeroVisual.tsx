@@ -26,7 +26,7 @@ function Marker({ n, label, style }: { n: number; label: string; style: React.CS
 export default function CROHeroVisual() {
   return (
     <div
-      className="relative mx-auto w-full max-w-[600px] select-none pt-4 max-md:-mt-4 max-md:pt-0"
+      className="relative mx-auto w-full max-w-[540px] select-none pt-4 max-md:-mt-4 max-md:pt-0"
       role="img"
       aria-label="Test A/B su una pagina prodotto: la variante B aggiunge recensioni in evidenza, resi gratuiti in vista e un pulsante d'acquisto sempre visibile."
     >
